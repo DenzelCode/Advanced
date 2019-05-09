@@ -137,7 +137,7 @@ class TemplateProvider{
 
         $templateCache = self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php';
 
-        File::check(str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath)), Bootstrap::getLanguageProvider(false)->getText('template.default', null, $templatePath));
+        File::check($templatePath, Bootstrap::getLanguageProvider(false)->getText('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
         
         self::defaults();
 
