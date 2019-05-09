@@ -1,0 +1,32 @@
+{
+    "general": {
+        "guest": "Guest"
+    },
+
+    "exceptions": {
+        "exception": "Error: {0} file {1} on line {2}",
+
+        "user": {
+            "characters": "Username must have from {0} to {1} characters",
+            "invalid_name": "Invalid username, try deleting characters or removing special characters",
+            "invalid_email": "Invalid email address"
+        },
+
+        "router": {
+            "method_not_exists": "Method {0} does not exists"
+        },
+
+        "database": {
+            "error": "An error occurred on the database",
+            "pdo_required": "Advanced require PDO extension",
+            "connecting": "Error connecting to MySQL Server: {0}",
+            "needed": "You must set a Database to the Bootstrap to use this feature. Ex: Bootstrap::setDatabase()"
+        }
+    },
+
+    "template": {
+        "not_exists": "Template {0} does not exists",
+        "default": "New template created on file {0}",
+        "undefined": "Undefined"
+    }
+}
