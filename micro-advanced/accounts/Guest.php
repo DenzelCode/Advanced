@@ -3,10 +3,12 @@
  * Advanced microFramework
  * -
  * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soul)
+ * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  */
 
 namespace advanced\accounts;
+
+use advanced\Bootstrap;
 
 /**
  * Guest class

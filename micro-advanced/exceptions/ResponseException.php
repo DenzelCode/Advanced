@@ -3,14 +3,14 @@
  * Advanced microFramework
  * -
  * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soul)
+ * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  */
 
  namespace advanced\exceptions;
 
 /**
-* AdvancedException class
-*/	
+ * ResponseException class
+ */	
 class ResponseException extends AdvancedException {
     
 }
