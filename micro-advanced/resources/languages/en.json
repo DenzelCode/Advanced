@@ -27,6 +27,10 @@
     "template": {
         "not_exists": "Template {0} does not exists",
         "default": "New template created on file {0}",
-        "undefined": "Undefined"
+        "undefined": "Undefined",
+
+        "welcome": {
+            "description": "Thank you by choosing us!"
+        }
     }
 }

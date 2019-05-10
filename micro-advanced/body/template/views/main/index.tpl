@@ -8,6 +8,6 @@
 </head>
 <body>
     <h3>Advanced Framework</h3>
-    <p>Thank you by choosing us!</p>
+    <p>{#= $language->getText('template.welcome.description') #}</p>
 </body>
 </html>

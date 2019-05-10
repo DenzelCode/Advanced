@@ -27,6 +27,10 @@
     "template": {
         "not_exists": "Plantilla {0} no existente",
         "default": "Nueva plantilla creada en el archivo {0}",
-        "undefined": "Indefinido"
+        "undefined": "Indefinido",
+
+        "welcome": {
+            "description": "Gracias por elegirnos!"
+        }
     }
 }
