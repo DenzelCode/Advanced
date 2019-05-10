@@ -16,6 +16,7 @@ use advanced\components\LanguageProvider;
 use advanced\data\Database;
 use advanced\accounts\Users;
 use advanced\exceptions\AdvancedException;
+use advanced\session\SessionManager;
 
 /**
 * Bootstrap class
@@ -40,14 +41,14 @@ class Bootstrap{
             'defaultConfig' => new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config')
         ];
 
-        $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        if (!SessionManager::get('language')) SessionManager::set('language', substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), true);
 
-        if (!in_array($lang, [])) $lang = 'en';
+        if (!in_array(SessionManager::get('language'), [])) SessionManager::set('language', 'en', true);
 
-        self::$classes['languageProvider'] = new LanguageProvider($lang);
+        self::$classes['languageProvider'] = new LanguageProvider(SessionManager::get('language'));
         self::$classes['languageProvider']->setPath('advanced');
         
-        self::$classes['languageProviderProject'] = new LanguageProvider($lang);
+        self::$classes['languageProviderProject'] = new LanguageProvider(SessionManager::get('language'));
         self::$classes['languageProviderProject']->setPath('project');
 
         $handler = function ($exception) {
@@ -60,8 +61,8 @@ class Bootstrap{
             die($this->getLanguageProvider(false)->getText('exceptions.exception', null, ($exception instanceof AdvancedException ? $exception->getMsg() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
         };
 
-        // set_exception_handler($handler);
-        // set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
+        set_exception_handler($handler);
+        set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
     }
 
     /**

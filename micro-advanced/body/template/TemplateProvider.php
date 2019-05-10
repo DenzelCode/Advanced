@@ -141,7 +141,10 @@ class TemplateProvider{
         
         self::defaults();
 
-        $params = [];
+        $params = [
+            'bootstrap' => Bootstrap::getInstance(),
+            'language' => Bootstrap::getLanguageProvider() 
+        ];
 
         foreach (self::getParams() as $key => $param) $params[$key] = $param['value'];
 

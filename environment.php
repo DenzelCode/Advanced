@@ -37,7 +37,7 @@ class environment{
         try {
             advanced\http\router\Router::run($request);
         } catch (advanced\exceptions\RouterException $e) {
-            echo "Exception: {$e->getMsg()}";
+            echo "Exception: {$e->getMessage()}";
         }
     }
 
