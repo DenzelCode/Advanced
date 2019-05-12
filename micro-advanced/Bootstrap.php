@@ -89,7 +89,9 @@ class Bootstrap{
     /**
     * @return TemplateProvider
     */
-    public static function getTemplateProvider() : TemplateProvider {
+    public static function getTemplateProvider(bool $project = true) : TemplateProvider {
+        self::$classes['templateProvider']->setPath($project ? 'project' : 'advanced');
+        
         return self::$classes['templateProvider'];
     }
 

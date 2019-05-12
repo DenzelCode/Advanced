@@ -1,1 +1,0 @@
-New template created on file C:\xampp\htdocs\Proyect\master\micro-advanced\body\template\views\main\testing.tpl

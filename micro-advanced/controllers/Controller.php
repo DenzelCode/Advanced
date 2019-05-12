@@ -9,11 +9,16 @@
 namespace advanced\controllers;
 
 use advanced\Bootstrap;
+use advanced\body\template\TemplateProvider;
 
 /**
 * Controller abstract class
 */
 abstract class Controller {
 
-    public abstract function index();
+    public function index() : string {
+        TemplateProvider::setPath('advanced');
+
+        return TemplateProvider::get('main/index');
+    }
 }

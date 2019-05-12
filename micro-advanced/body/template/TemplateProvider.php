@@ -23,7 +23,7 @@ class TemplateProvider{
     public function __construct() {
         self::$instance = $this;
 
-        self::setPath('advanced');
+        self::setPath('project');
     }
 
     /**
