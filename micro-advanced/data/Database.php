@@ -58,6 +58,20 @@ class Database{
 
             foreach ($options as $key => $value) $this->con->setAttribute($key, $value);
         } catch (\PDOException $e) {
+            if ($e->getCode() == 1049) {
+                try {
+                    $temp = new PDO('mysql:host=' . $this->host, $this->username, $this->password);
+
+                    $temp->exec("CREATE DATABASE {$this->database}");
+                } catch (\PDOException $ex) {
+                    throw new DatabaseException($ex->getCode(), 'exceptions.database.connecting', $e->getMessage());
+                }
+
+                $this->run();
+
+                return;
+            }
+
             throw new DatabaseException($e->getCode(), 'exceptions.database.connecting', $e->getMessage());
         }
     }
