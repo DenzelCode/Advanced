@@ -58,7 +58,7 @@ class Database{
 
             foreach ($options as $key => $value) $this->con->setAttribute($key, $value);
         } catch (\PDOException $e) {
-            throw new DatabaseException(0, 'exceptions.database.connecting', $e->getMessage());
+            throw new DatabaseException($e->getCode(), 'exceptions.database.connecting', $e->getMessage());
         }
     }
 
