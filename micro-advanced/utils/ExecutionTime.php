@@ -8,6 +8,8 @@
 
 namespace advanced\utils;
 
+use advanced\Bootstrap;
+
 /**
  * ExecutionTime class
  */
@@ -16,19 +18,15 @@ class ExecutionTime {
     private $startTime;
     private $endTime;
 
-    public function start(){
-        $this->startTime = getrusage();
+    public function start() {
+        $this->startTime = microtime(true);
     }
 
-    public function end(){
-        $this->endTime = getrusage();
+    public function end() {
+        $this->endTime = microtime(true);
     }
 
-    private function runTime($ru, $rus, $index) {
-        return ($ru["ru_$index.tv_sec"]*1000 + intval($ru["ru_$index.tv_usec"]/1000)) - ($rus["ru_$index.tv_sec"]*1000 + intval($rus["ru_$index.tv_usec"]/1000));
-    }    
-
-    public function __toString(){
-        return "This process used {$this->runTime($this->endTime, $this->startTime, "utime")} ms for its computations\nIt spent {$this->runTime($this->endTime, $this->startTime, "stime")} ms in system calls\n";
+    public function __toString() : string {
+        return Bootstrap::getLanguageProvider(false)->getText('execution_time', null, $this->endTime - $this->startTime);
     }
 }
