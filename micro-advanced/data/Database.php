@@ -98,7 +98,7 @@ class Database{
 
                     $columns = join(', ', array_keys($value));
 
-                    if ($query && !$this->setTable($key)->addColumn($value)) throw new DatabaseException(1, 'exceptions.database.add_column', $value, $columns, $key);
+                    if ($query && !$this->setTable($key)->addColumn($value)) throw new DatabaseException(2, 'exceptions.database.add_column', $value, $columns, $key);
                 }
             }
         } catch (\PDOException $e) {
