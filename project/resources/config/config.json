@@ -4,10 +4,19 @@
         "port": 3306,
         "username": "root",
         "password": "",
-        "database": "project"
+        "database": "project",
+        "setup": true
     },
 
     "web": {
-        "name": "Project"
+        "name": "Project",
+        "cdn": "http://localhost/assets"
+    },
+
+    "sign_up": {
+        "min_characters": 4,
+        "max_characters": 32,
+        
+        "user": {}
     }
 }
