@@ -3,7 +3,7 @@
 namespace advanced\session;
 
 use advanced\Bootstrap;
-use advanced\accounts\base\Guest;
+use advanced\accounts\Guest;
 use advanced\accounts\User;
 
 /**
@@ -31,7 +31,7 @@ class Auth {
 
         $user = Bootstrap::getUsers()->getUser(self::get('username'));
 
-        if (!$user instanceof User) return false;
+        if (!$user) return false;
 
         $auth_code = md5($user->getPassword() . Request::getIP());
 
@@ -50,13 +50,13 @@ class Auth {
 
         $user = Bootstrap::getUsers()->getUser(self::get('username'));
 
-        if (!$user instanceof User) return new Guest();
+        if (!$user) return new Guest();
 
         return $user;
     }
 
     public static function getAuthenticated() : bool {
-        return self::getUser() instanceof User;
+        return !self::getUser() instanceof Guest;
     }
 
     public static function set(array $data, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = '/') {

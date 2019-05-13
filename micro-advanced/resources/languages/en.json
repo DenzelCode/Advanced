@@ -20,7 +20,9 @@
             "error": "An error occurred on the database",
             "pdo_required": "Advanced require PDO extension",
             "connecting": "Error connecting to MySQL Server: {0}",
-            "needed": "You must set a Database to the Bootstrap to use this feature. Ex: Bootstrap::setDatabase()"
+            "needed": "You must set a Database to the Bootstrap to use this feature. Ex: Bootstrap::setDatabase()",
+            "create_table": "An error occurred creating the table {0}",
+            "add_column": "An error ocurred creating the column {0} on the columns list {1} of the table {2}"
         }
     },
 

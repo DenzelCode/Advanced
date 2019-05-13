@@ -18,7 +18,7 @@ class Guest extends BaseUser {
     public function __construct() {
         self::$instance = $this;
 
-        $config = Config::getInstance()->get('sign_up');
+        $config = Bootstrap::getConfig()->get('sign_up');
 
         $data = [
             'id' => 0,

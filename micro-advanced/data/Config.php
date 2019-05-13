@@ -21,7 +21,7 @@ class Config {
 
     private static $instance;
 
-    public function __construct(string $file = null, bool $defaults = null) {
+    public function __construct(string $file, array $default = null) {
         // Instance
         self::$instance = $this;
 
@@ -29,7 +29,7 @@ class Config {
 
         $this->file = $file;
 
-        if ($file) $this->getJSON($file);
+        $this->getJSON($default);
     }
 
     public function getInstance() : Config {
@@ -62,10 +62,10 @@ class Config {
         return $values;
     }
 
-    private function getJSON() : void {
+    private function getJSON(array $default = null) : void {
         $file = $this->file . '.json';
 
-        File::check($file, '{}');
+        File::check($file, (! $default ? '{}' : json_encode($default, JSON_PRETTY_PRINT)));
 
         // Start
         ob_start();

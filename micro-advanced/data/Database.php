@@ -10,6 +10,7 @@ namespace advanced\data;
 
 use PDO;
 use advanced\exceptions\DatabaseException;
+use advanced\Bootstrap;
 
 /**
  * Database class
@@ -57,6 +58,49 @@ class Database{
             $this->con = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database};charset=utf8mb4", $this->username, $this->password);
 
             foreach ($options as $key => $value) $this->con->setAttribute($key, $value);
+
+            if (Bootstrap::getConfig()->get('database.setup', true)) {
+                $dbConfig = new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database', [
+                    'import' => [
+                        'users' => [
+                            'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
+                            'username' => 'varchar(125)',
+                            'password' => 'varchar(255)',
+                            'mail' => 'varchar(255)',
+                            'rank' => 'int(11)',
+                            'country' => 'varchar(4)',
+                            'gender' => 'enum(\'M\', \'F\') DEFAULT \'M\'',
+                            'account_created' => 'double(50, 0) DEFAULT 0',
+                            'online' => 'enum(\'0\', \'1\') DEFAULT \'0\'',
+                            'ip_reg' => 'varchar(45) NOT NULL',
+                            'ip_last' => 'varchar(45) NOT NULL',
+                            'connection_id' => 'text',
+                            'birth_date' => 'varchar(55)'
+                        ]
+                    ],
+
+                    'update' => []
+                ]);
+
+                $import = $dbConfig->get('import');
+
+                foreach ($import as $key => $value) {
+                    $query = $this->setTable($key)->select()->execute();
+
+                    if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exceptions.database.create_table', $key);
+                }
+
+                // Columns verification
+                $update = $dbConfig->get('update');
+
+                foreach ($update as $key => $value) {
+                    $query = $this->setTable($key)->select()->execute();
+
+                    $columns = join(', ', array_keys($value));
+
+                    if ($query && !$this->setTable($key)->addColumn($value)) throw new DatabaseException(1, 'exceptions.database.add_column', $value, $columns, $key);
+                }
+            }
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
