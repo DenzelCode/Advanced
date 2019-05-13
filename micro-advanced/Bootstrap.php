@@ -38,12 +38,12 @@ class Bootstrap{
             'templateProvider' => new TemplateProvider(),
             'response' => new Response(),
             'config' => new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'),
-            'defaultConfig' => new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config')
+            'defaultConfig' => ($config = new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'))
         ];
 
         if (!SessionManager::get('language')) SessionManager::set('language', substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), true);
 
-        if (!in_array(SessionManager::get('language'), [])) SessionManager::set('language', 'en', true);
+        if (!in_array(SessionManager::get('language'), $config->get('languages'))) SessionManager::set('language', 'en', true);
 
         self::$classes['languageProvider'] = new LanguageProvider(SessionManager::get('language'));
         self::$classes['languageProvider']->setPath('advanced');

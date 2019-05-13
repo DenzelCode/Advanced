@@ -10,6 +10,7 @@ namespace advanced\accounts;
 
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
+use advanced\accounts\base\User;
 
 /**
  * Users class
@@ -20,10 +21,12 @@ class Users {
 
     private static $instance;
 
+    private static $userObject = 'advanced\\accounts\\User';
+
     public function __construct() {
         self::$instance = $this;
 
-        if (!Bootstrap::getDatabase()) throw new UserException(0, 'exceptions.database.needed');
+        if (!Bootstrap::getDatabase()) throw new self::$userObjectException(0, 'exceptions.database.needed');
     }
 
     /**
@@ -33,11 +36,19 @@ class Users {
         return self::$instance;
     }
 
+    public static function getUserObject() : string {
+        return self::$userObject;
+    }
+
+    public static function setUserObject(string $object) : void {
+        self::$userObject = $object;
+    }
+
     /**
      * @return User
      */
     public function createUser(array $data, array $authData = []) {
-        $user = new User($data, $authData);
+        $user = new self::$userObject($data, $authData);
 
         return $user;
     }

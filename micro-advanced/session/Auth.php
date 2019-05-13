@@ -29,7 +29,7 @@ class Auth {
     public static function check() : bool {
         if (!self::get('user_id') && !self::get('username') && !self::get('auth_code')) return false;
 
-        $user = self::getAdvanced()->getUsers()->getUser(self::get('username'));
+        $user = Bootstrap::getUsers()->getUser(self::get('username'));
 
         if (!$user instanceof User) return false;
 
@@ -45,10 +45,10 @@ class Auth {
     /**
     * @return User|null
     */
-    public static function getUser() : advanced\accounts\base\User {
+    public static function getUser() : ?advanced\accounts\base\User {
         if (!self::check()) return new Guest();
 
-        $user = self::getAdvanced()->getUsers()->getUser(self::get('username'));
+        $user = Bootstrap::getUsers()->getUser(self::get('username'));
 
         if (!$user instanceof User) return new Guest();
 

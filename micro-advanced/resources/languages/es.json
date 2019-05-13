@@ -32,5 +32,30 @@
         "welcome": {
             "description": "Gracias por elegirnos!"
         }
+    },
+
+    "time": {
+        "ago": {
+            "just_now": "Hace un momento",
+            "ago": "",
+            
+            "singular": {
+                "month": "mes",
+                "week": "semana",
+                "day": "dia",
+                "hour": "hora",
+                "minute": "minuto",
+                "second": "segundo"
+            },
+
+            "plural": {
+                "month": "meses",
+                "week": "semanas",
+                "day": "días",
+                "hour": "horas",
+                "minute": "minutos",
+                "second": "segundos"
+            }
+        }
     }
 }

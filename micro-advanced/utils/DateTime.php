@@ -9,6 +9,7 @@
 namespace advanced\utils;
 
 use DateTimeZone;
+use advanced\Bootstrap;
 
 /**
  * DateTime class
@@ -32,11 +33,11 @@ class DateTime extends \DateTime {
     public function getAgo() : string {
         $time = (new DateTime())->getTimestamp() - $this->getTimestamp();
 
-        if ($time < 1) return 'Just now.';
+        $lang = Bootstrap::getLanguageProvider(false)->get('time.ago');
+
+        if ($time < 1) return $lang['just_now'];
 
         $string = [365 * 24 * 60 * 60 => 'year', 30 * 24 * 60 * 60 => 'month', 24 * 60 * 60 => 'day', 60 * 60 => 'hour', 60 => 'minute', 1 => 'second'];
-
-        $string_plural = ['year' => 'years', 'month'  => 'months', 'day' => 'days', 'hour' => 'hours', 'minute' => 'minutes', 'second' => 'seconds'];
 
         foreach ($string as $seconds => $str) {
             $d = $time / $seconds;
@@ -44,7 +45,7 @@ class DateTime extends \DateTime {
             if ($d >= 1) {
                 $r = round($d);
 
-                return $r . ' ' . ($r > 1 ? $string_plural[$str] : $str) . ' ago';
+                return $r . ' ' . ($r > 1 ? $lang['plural'][$str] : $lang['singular'][$str]) . ' ' . $lang['ago'];
             }
         }
     }
