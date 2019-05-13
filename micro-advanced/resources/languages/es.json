@@ -38,7 +38,7 @@
         "ago": {
             "just_now": "Hace un momento",
             "ago": "",
-            
+
             "singular": {
                 "month": "mes",
                 "week": "semana",
@@ -57,5 +57,7 @@
                 "second": "segundos"
             }
         }
-    }
+    },
+
+    "execution_time": "Este proceso utilizó {0} ms para completarse\nGastó {1} ms en llamadas del sistema\n"
 }

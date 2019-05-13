@@ -57,5 +57,7 @@
                 "second": "seconds"
             }
         }
-    }
+    },
+
+    "execution_time": "This process used {0} ms for its computations\nIt spent {1} ms in system calls\n"
 }
