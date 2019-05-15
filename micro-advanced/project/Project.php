@@ -15,12 +15,20 @@ use advanced\Bootstrap;
 */
 abstract class Project {
 
+    private static $instance;
+
     private static $bootstrap;
 
     public abstract function init() : void;
 
     public function __construct() {
+        self::$instance = $this;
+        
         self::$bootstrap = Bootstrap::getInstance();
+    }
+
+    public static function getInstance() : Project {
+        return self::$instance;
     }
 
     public static function getBootstrap() : Bootstrap {

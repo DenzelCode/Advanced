@@ -11,6 +11,7 @@ namespace advanced\body\template;
 use advanced\Bootstrap;
 use advanced\http\router\RequestProvider;
 use advanced\utils\File;
+use project\Project;
 
 class TemplateProvider{
       
@@ -132,12 +133,12 @@ class TemplateProvider{
     /**
      * @return string
      */
-    public static function get(string $template, bool $cache = true) : string {
+    public static function get(string $template, bool $cache = true, bool $create = true) : string {
         $templatePath = self::getPath() . 'views' . DIRECTORY_SEPARATOR . $template .  '.tpl';
 
         $templateCache = self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php';
 
-        File::check($templatePath, Bootstrap::getLanguageProvider(false)->getText('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
+        if ($create) File::check($templatePath, Bootstrap::getLanguageProvider(false)->getText('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
         
         self::defaults();
 
@@ -145,6 +146,8 @@ class TemplateProvider{
             'bootstrap' => Bootstrap::getInstance(),
             'language' => Bootstrap::getLanguageProvider() 
         ];
+
+        if (file_exists(PROJECT . 'Project.php')) $params['project'] = Project::getInstance();
 
         foreach (self::getParams() as $key => $param) $params[$key] = $param['value'];
 
