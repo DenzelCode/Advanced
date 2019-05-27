@@ -1,0 +1,4 @@
+
+/node/node_modules/*
+
+/master/project/resources/config.json
