@@ -19,24 +19,10 @@ use advanced\project\Project;
 class mainController extends Controller {
 
     public function index(string $method = "*") : string {
-        return TemplateProvider::get('main/index');
+        return TemplateProvider::getByArray([ 'templates/header', 'templates/footer' ]);
     }
 
-    public function testing(string $method = "*") : string {
-        return TemplateProvider::get('main/testing');
-    }
-
-    public function home(string $method = "get|post") : string {
-        return TemplateProvider::get('main/home');
-    }
-
-    public function error404(string $method = "get|post") : string {
-        return "Error 404";
-    }
-
-    public function profile(string $method = "get|post", string $username) {
-        return $_GET['data'] . ": " . $username;
+    public function error404(string $method = "*") : string {
+        return TemplateProvider::getByArray(['templates/header', 'templates/footer']);
     }
 }
-
-

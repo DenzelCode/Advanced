@@ -4,12 +4,12 @@
         "port": 3306,
         "username": "root",
         "password": "",
-        "database": "project",
+        "database": "barbermanaging",
         "setup": true
     },
 
     "web": {
-        "name": "Project",
+        "name": "BarberManaging",
         "cdn": "http://localhost/assets"
     },
 

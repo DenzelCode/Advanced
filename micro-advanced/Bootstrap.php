@@ -99,7 +99,7 @@ class Bootstrap{
     * @return LanguageProvider
     */
     public static function getLanguageProvider(bool $project = true) : LanguageProvider {
-        return self::$classes['languageProvider'];
+        return self::$classes[($project) ? 'languageProviderProject' : 'languageProvider'];
     }
 
     /**

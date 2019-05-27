@@ -1,4 +1,6 @@
 <?php
+use advanced\utils\ExecutionTime;
+
 /**
  * Advanced microFramework
  * -

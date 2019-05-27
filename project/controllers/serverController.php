@@ -11,13 +11,20 @@ namespace project\controllers;
 use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\body\template\TemplateProvider;
+use advanced\project\Project;
 
 /**
-* testController class
+* serverController class
 */
-class testController extends Controller {
+class serverController extends Controller {
 
-    public function index(string $method = "*") : string {
-        return "Method type: {$method}";
+    public function view(string $method = 'get', ...$view) : ?string {
+        if (empty($view)) return null;
+
+        $view = implode('/', $view);
+
+        return TemplateProvider::get($view, true, false);
     }
 }
+
+

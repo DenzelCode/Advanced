@@ -1,0 +1,1 @@
+New template created on file C:\xampp\htdocs\Proyect\master\project\body\template\views\main\footer.tpl

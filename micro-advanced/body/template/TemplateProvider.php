@@ -12,6 +12,7 @@ use advanced\Bootstrap;
 use advanced\http\router\RequestProvider;
 use advanced\utils\File;
 use project\Project;
+use advanced\http\router\Request;
 
 class TemplateProvider{
       
@@ -142,10 +143,9 @@ class TemplateProvider{
         
         self::defaults();
 
-        $params = [
-            'bootstrap' => Bootstrap::getInstance(),
-            'language' => Bootstrap::getLanguageProvider() 
-        ];
+        $templateName = $template;
+
+        $params = [];
 
         if (file_exists(PROJECT . 'Project.php')) $params['project'] = Project::getInstance();
 
@@ -155,7 +155,7 @@ class TemplateProvider{
 
         switch (true) {
             case !file_exists($templatePath):
-                return Bootstrap::getLanguageProvider(false)->getText('template.not_exists', $template);
+                return Bootstrap::getLanguageProvider(false)->getText('template.not_exists', null, $templateName);
             default:
                 $write_cache = true;
 
@@ -197,7 +197,13 @@ class TemplateProvider{
 
     public static function defaults(bool $force = false) {
         $params = [
-            'title' => Bootstrap::getLanguageProvider(false)->getText('template.undefined')
+            'title' => Bootstrap::getLanguageProvider(false)->getText('template.undefined'),
+            'bootstrap' => Bootstrap::getInstance(),
+            'language' => Bootstrap::getLanguageProvider(),
+            'advancedLanguage' => Bootstrap::getLanguageProvider(false),
+            'template' => TemplateProvider::getInstance(),
+            'config' => Bootstrap::getConfig(),
+            'request' => Request::getInstance()
         ];
 
         if (!$force) foreach ($params as $key => $value) if (!self::paramExists($key)) self::set([ $key => $value ]);
