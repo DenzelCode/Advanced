@@ -19,10 +19,10 @@ use advanced\project\Project;
 class mainController extends Controller {
 
     public function index(string $method = "*") : string {
-        return TemplateProvider::getByArray([ 'templates/header', 'templates/footer' ]);
+        return parent::index($method);
     }
 
     public function error404(string $method = "*") : string {
-        return TemplateProvider::getByArray(['templates/header', 'templates/footer']);
+        return "Error 404";
     }
 }
