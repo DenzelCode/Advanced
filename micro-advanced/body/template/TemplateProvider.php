@@ -199,7 +199,13 @@ class TemplateProvider{
         $params = [
             'title' => Bootstrap::getLanguageProvider(false)->getText('template.undefined'),
             'bootstrap' => Bootstrap::getInstance(),
-            'language' => Bootstrap::getLanguageProvider(),
+            'language' => new class {
+                public function getText(string $key, string $default = null, ...$params) {
+                    $lang = Bootstrap::getLanguageProvider()->getText($key, $key, $params);
+
+                    return $lang;
+                }
+            },
             'advancedLanguage' => Bootstrap::getLanguageProvider(false),
             'template' => TemplateProvider::getInstance(),
             'config' => Bootstrap::getConfig(),
