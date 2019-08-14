@@ -200,8 +200,8 @@ class TemplateProvider{
             'title' => Bootstrap::getLanguageProvider(false)->getText('template.undefined'),
             'bootstrap' => Bootstrap::getInstance(),
             'language' => new class {
-                public function getText(string $key, string $default = null, ...$params) {
-                    $lang = Bootstrap::getLanguageProvider()->getText($key, $key, $params);
+                public function getText(string $key, $default = false, ...$params) {
+                    $lang = Bootstrap::getLanguageProvider()->getText($key, ($default == false ? $key : $default), $params);
 
                     return $lang;
                 }
