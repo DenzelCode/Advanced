@@ -19,28 +19,19 @@ use advanced\body\template\TemplateProvider;
 */
 class Project extends BaseProject {
 
-    private static $database;
-    private static $config;
-
     public function init() : void {
-        self::$config = Bootstrap::getConfig();
+        self::setConfig(Bootstrap::getConfig());
 
-        TemplateProvider::set(self::getConfig()->get('web'));
+        TemplateProvider::setParameters(self::getConfig()->get('web'));
 
         try {
-            self::$database = new Database(self::$config->get('database.host'), self::$config->get('database.port'), self::$config->get('database.username'), self::$config->get('database.password'), self::$config->get('database.database'));
+            $database = new Database(self::$config->get('database.host'), self::$config->get('database.port'), self::$config->get('database.username'), self::$config->get('database.password'), self::$config->get('database.database'));
 
-            Bootstrap::setDatabase(self::$database);
-        } catch (DatabaseException $ex) {
-            die($ex->getMessage());
+            self::setDatabase($database);
+        } catch (DatabaseException $e) {
+            die($e->getMessage());
         }
-    }
 
-    public static function getDatabase() : ?Database {
-        return self::$database;
-    }
-
-    public static function getConfig() : ?Config {
-        return self::$config;
+        self::initRouter();
     }
 }

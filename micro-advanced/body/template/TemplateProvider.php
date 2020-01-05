@@ -38,20 +38,26 @@ class TemplateProvider{
     /**
      * @return void
      */
-    public static function set(array $params, array $data = ['prefix' => true]) : void {
+    public static function setParameter(string $key, $value, bool $prefix = true) : void {
+        self::$params[$key]['value'] = $value;
+        self::$params[$key]['prefix'] = $prefix;
+    }
+
+    /**
+     * @return void
+     */
+    public static function setParameters(array $params, bool $prefix = true) : void {
         foreach ($params as $key => $value) {
             self::$params[$key]['value'] = $value;
-            
-            if (empty($data['prefix']) && $data['prefix'] != false) $data['prefix'] = true;
 
-            self::$params[$key]['prefix'] = $data['prefix'];
+            self::$params[$key]['prefix'] = $prefix;
         }
     }
 
     /**
      * @return void
      */
-    public static function unset(array $params) : void {
+    public static function unsetParams(array $params) : void {
         foreach ($params as $key) unset(self::$params[$key]);
     }
 
@@ -65,7 +71,7 @@ class TemplateProvider{
     /**
      * @return array
      */
-    public static function getParams() : array {
+    public static function getParameters() : array {
         return self::$params;
     }
 
@@ -73,7 +79,7 @@ class TemplateProvider{
      * @return string
      */
     public static function filter(string $data) : string {
-        foreach (self::getParams() as $key => $param) if (is_string($param['value']) && !$param['prefix']) $data = str_replace($key, $param['value'], $data); else if (is_string($param['value']) && $param['prefix']) $data = str_replace('{@' . $key . '}', $param['value'], $data);
+        foreach (self::getParameters() as $key => $param) if (is_string($param['value']) && !$param['prefix']) $data = str_replace($key, $param['value'], $data); else if (is_string($param['value']) && $param['prefix']) $data = str_replace('{@' . $key . '}', $param['value'], $data);
 
         return $data;
     }
@@ -139,9 +145,9 @@ class TemplateProvider{
 
         $templateCache = self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php';
 
-        if ($create) File::check($templatePath, Bootstrap::getLanguageProvider(false)->getText('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
+        if ($create) File::check($templatePath, Bootstrap::getLanguage(false)->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
         
-        self::defaults();
+        self::setDefaultParams();
 
         $templateName = $template;
 
@@ -149,13 +155,13 @@ class TemplateProvider{
 
         if (file_exists(PROJECT . 'Project.php')) $params['project'] = Project::getInstance();
 
-        foreach (self::getParams() as $key => $param) $params[$key] = $param['value'];
+        foreach (self::getParameters() as $key => $param) $params[$key] = $param['value'];
 
         extract($params);
 
         switch (true) {
             case !file_exists($templatePath):
-                return Bootstrap::getLanguageProvider(false)->getText('template.not_exists', null, $templateName);
+                return Bootstrap::getLanguage(false)->get('template.not_exists', null, $templateName);
             default:
                 $write_cache = true;
 
@@ -192,22 +198,22 @@ class TemplateProvider{
     }
 
     public static function paramExists(string $param) : bool {
-        return in_array($param, array_keys(self::getParams()));
+        return in_array($param, array_keys(self::getParameters()));
     }
 
-    public static function defaults(bool $force = false) {
+    public static function setDefaultParams(bool $force = false) {
         $params = [
-            'title' => Bootstrap::getLanguageProvider(false)->getText('template.undefined'),
+            'title' => Bootstrap::getLanguage(false)->get('template.undefined'),
             'bootstrap' => Bootstrap::getInstance(),
-            'language' => Bootstrap::getLanguageProvider(),
-            'advancedLanguage' => Bootstrap::getLanguageProvider(false),
+            'language' => Bootstrap::getLanguage(),
+            'advancedLanguage' => Bootstrap::getLanguage(false),
             'template' => TemplateProvider::getInstance(),
             'config' => Bootstrap::getConfig(),
             'request' => Request::getInstance()
         ];
 
-        if (!$force) foreach ($params as $key => $value) if (!self::paramExists($key)) self::set([ $key => $value ]);
-
-        if ($force) foreach ($params as $key => $value) self::set([ $key => $value ]);
+        foreach ($params as $key => $value) {
+            if (!$force && !self::paramExists($key) || $force) self::setParameter($key, $value);
+        }
     }
 }

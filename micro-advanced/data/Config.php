@@ -21,6 +21,8 @@ class Config {
 
     private static $instance;
 
+    private static $files = [];
+
     public function __construct(string $file, array $default = null) {
         // Instance
         self::$instance = $this;
@@ -29,7 +31,7 @@ class Config {
 
         $this->file = $file;
 
-        $this->getJSON($default);
+        if (empty(self::$files[$this->file])) $this->getJSON($default); else $this->data = self::$files[$this->file];
     }
 
     public function getInstance() : Config {
@@ -38,10 +40,14 @@ class Config {
 
     public function set(string $name, $value) {
         $this->data[$name] = $value;
+
+        self::$files[$this->file][$name] = $value;
     }
 
     public function save() {
         File::write($this->file . '.json', json_encode($this->data, JSON_PRETTY_PRINT));
+
+        self::$files[$this->file] = $this->data;
     }
 
     public function get(string $name, $default = null) {
@@ -77,6 +83,8 @@ class Config {
         ob_end_clean();
 
         $this->data = json_decode($data, true);
+
+        self::$files[$this->file] = $this->data;
     }
 
     public function delete(string $name) {

@@ -33,7 +33,7 @@ class DateTime extends \DateTime {
     public function getAgo() : string {
         $time = (new DateTime())->getTimestamp() - $this->getTimestamp();
 
-        $lang = Bootstrap::getLanguageProvider(false)->get('time.ago');
+        $lang = Bootstrap::getLanguage(false)->get('time.ago');
 
         if ($time < 1) return $lang['just_now'];
 

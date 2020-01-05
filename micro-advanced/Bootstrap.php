@@ -12,7 +12,7 @@ use advanced\data\Config;
 use advanced\http\Response;
 use advanced\http\Router\Request;
 use advanced\body\template\TemplateProvider;
-use advanced\components\LanguageProvider;
+use advanced\components\Language;
 use advanced\data\Database;
 use advanced\accounts\Users;
 use advanced\exceptions\AdvancedException;
@@ -28,13 +28,13 @@ class Bootstrap{
     private static $classes = [];
 
     private $data = [];
-
+    
     public function __construct() {
         // Classes
         self::$instance = $this;
 
         self::$classes = [
-            'request' => Request::getInstance(),
+            'request' => new Request($_SERVER['REQUEST_URI']),
             'templateProvider' => new TemplateProvider(),
             'response' => new Response(),
             'config' => new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'),
@@ -45,11 +45,11 @@ class Bootstrap{
 
         if (!in_array(SessionManager::get('language'), $config->get('languages'))) SessionManager::set('language', 'en', true);
 
-        self::$classes['languageProvider'] = new LanguageProvider(SessionManager::get('language'));
-        self::$classes['languageProvider']->setPath('advanced');
+        self::$classes['language'] = new Language(SessionManager::get('language'));
+        self::$classes['language']->setPath('advanced');
         
-        self::$classes['languageProviderProject'] = new LanguageProvider(SessionManager::get('language'));
-        self::$classes['languageProviderProject']->setPath('project');
+        self::$classes['languageProject'] = new Language(SessionManager::get('language'));
+        self::$classes['languageProject']->setPath('project');
 
         $handler = function ($exception) {
             if (!$exception instanceof \Exception) {
@@ -58,11 +58,11 @@ class Bootstrap{
                 return;
             }
 
-            die($this->getLanguageProvider(false)->getText('exceptions.exception', null, ($exception instanceof AdvancedException ? $exception->getMsg() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
+            die($this->getLanguage(false)->get('exceptions.exception', null, ($exception instanceof AdvancedException ? $exception->getMsg() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
         };
 
-        set_exception_handler($handler);
-        set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
+        // set_exception_handler($handler);
+        // set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
     }
 
     /**
@@ -98,8 +98,8 @@ class Bootstrap{
     /**
     * @return LanguageProvider
     */
-    public static function getLanguageProvider(bool $project = true) : LanguageProvider {
-        return self::$classes[($project) ? 'languageProviderProject' : 'languageProvider'];
+    public static function getLanguage(bool $project = true) : Language {
+        return self::$classes[($project) ? 'languageProject' : 'language'];
     }
 
     /**
@@ -112,15 +112,15 @@ class Bootstrap{
     /**
      * @return Database
      */
-    public static function getDatabase(): ?Database {
-        return self::$classes['database'];
+    public static function setDatabase(Database $database) : void {
+        self::$classes['database'] = $database;
     }
 
     /**
      * @return Database
      */
-    public static function setDatabase(Database $database) : void {
-        self::$classes['database'] = $database;
+    public static function getDatabase(): ?Database {
+        return (!self::$classes['database'] ? null : self::$classes['database']);
     }
 
     /**

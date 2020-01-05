@@ -44,12 +44,16 @@ class File{
 
         $directories = explode(DIRECTORY_SEPARATOR, $directory);
 
+        if (empty($directories)) return;
+
         $str = "";
 
-        foreach ($directories as $dir) {
-            $str .= (empty($str) ? $dir : DIRECTORY_SEPARATOR . $dir);
+        foreach ($directories as $key => $dir) {
+            if (empty($dir)) continue;
 
-            if (!file_exists($str)) mkdir($str, 777);
+            $str .= (empty($str) && \strpos($dir, ":") ? $dir : DIRECTORY_SEPARATOR . $dir);
+
+            if (!file_exists($str)) mkdir($str, 0777);
         }
     }
 }

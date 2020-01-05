@@ -98,7 +98,7 @@ class Database{
                     'update' => []
                 ]);
 
-                $import = $dbConfig->get('import');
+                $import = $dbConfig->get('import', []);
 
                 foreach ($import as $key => $value) {
                     $query = $this->setTable($key)->select()->execute();
@@ -107,7 +107,7 @@ class Database{
                 }
 
                 // Columns verification
-                $update = $dbConfig->get('update');
+                $update = $dbConfig->get('update', []);
 
                 foreach ($update as $key => $value) {
                     $query = $this->setTable($key)->select()->execute();

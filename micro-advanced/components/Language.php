@@ -10,7 +10,7 @@ namespace advanced\components;
 
 use advanced\data\Config;
 
-class LanguageProvider{
+class Language{
 
     private static $instance;
 
@@ -27,13 +27,6 @@ class LanguageProvider{
 
         self::updateConfig($language);
     }   
-
-    /**
-    * @return Bootstrap
-    */
-    public static function getBootstrap() : Bootstrap {
-        return Bootstrap::getInstance();
-    }
 
     public function setPath(string $path) : void {
         $different = $path != $this->path;
@@ -53,7 +46,7 @@ class LanguageProvider{
         $this->config = new Config($file);
     }
 
-    public function getText(string $key, string $default = null, ...$params) {
+    public function get(string $key, string $default = null, ...$params) {
         $value = $this->config->get($key, $default);
 
         return is_string($value) ? self::filter($value, $params) : $value;

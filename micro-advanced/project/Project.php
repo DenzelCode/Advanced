@@ -9,15 +9,26 @@
 namespace advanced\project;
 
 use advanced\Bootstrap;
+use advanced\data\Config;
+use advanced\data\Database;
+use advanced\exceptions\RouterException;
+use advanced\http\router\Request;
+use advanced\http\router\Router;
 
 /**
 * Project class
 */
 abstract class Project {
 
-    private static $instance;
+    protected static $instance;
 
-    private static $bootstrap;
+    protected static $bootstrap;
+
+    protected static $database;
+
+    protected static $config;
+
+    protected static $router;
 
     public abstract function init() : void;
 
@@ -25,6 +36,8 @@ abstract class Project {
         self::$instance = $this;
         
         self::$bootstrap = Bootstrap::getInstance();
+
+        self::$config = new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config');
     }
 
     public static function getInstance() : Project {
@@ -37,5 +50,31 @@ abstract class Project {
 
     public static function getConfigPath() : string {
         return PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+    }
+
+    public static function getDatabase() : ?Database {
+        return self::$database;
+    }
+
+    public static function setDatabase(?Database $database) {
+        self::$database = $database;
+
+        Bootstrap::setDatabase($database);
+    }
+
+    public static function getConfig() : ?Config {
+        return self::$config;
+    }
+
+    public static function setConfig(?Config $config) {
+        self::$config = $config;
+    }
+
+    public static function initRouter() : void {
+        try {
+            Router::run(Bootstrap::getRequest());
+        } catch (RouterException $e) {
+            echo $e->getMessage();
+        }
     }
 }
