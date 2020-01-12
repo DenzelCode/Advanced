@@ -21,12 +21,14 @@ class Users {
 
     private static $instance;
 
-    private static $userObject = 'advanced\\accounts\\User';
+    private static $userObject = '\\advanced\\accounts\\User';
+    
+    private static $guestObject = '\\advanced\\accounts\\Guest';
 
     public function __construct() {
         self::$instance = $this;
 
-        if (!Bootstrap::getDatabase()) throw new self::$userObjectException(0, 'exceptions.database.needed');
+        if (!Bootstrap::getDatabase()) throw new UserException(0, 'exceptions.database.needed');
     }
 
     /**
@@ -44,10 +46,18 @@ class Users {
         self::$userObject = $object;
     }
 
+    public static function getGuestObject() : string {
+        return self::$guestObject;
+    }
+
+    public static function setGuestObject(string $object) : void {
+        self::$guestObject = $object;
+    }
+
     /**
      * @return User
      */
-    public function createUser(array $data, array $authData = []) {
+    public function createUser(array $data, array $authData = []) : User {
         $user = new self::$userObject($data, $authData);
 
         return $user;

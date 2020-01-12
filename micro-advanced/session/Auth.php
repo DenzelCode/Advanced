@@ -5,13 +5,24 @@ namespace advanced\session;
 use advanced\Bootstrap;
 use advanced\accounts\Guest;
 use advanced\accounts\User;
+use advanced\accounts\base\User as BaseUser;
+use advanced\accounts\Users;
+use advanced\http\router\Request;
 
 /**
 * Auth class
 */
 class Auth {
 
-    private static $data = [];
+    private static $instance;
+
+    public function __construct() {
+        self::$instance = $this;
+    }
+
+    public static function getInstance() : Auth {
+        return self::$instance;
+    }
 
     public static function attempt(array $data, User $user) : bool {
         if (!password_verify($data['password'], $user->getPassword()) || substr($user->getPassword(), 0, 1) != '$' && $user->getPassword() != $data['password'] || strtolower($data['username']) != strtolower($user->getName())) return false;
@@ -45,17 +56,19 @@ class Auth {
     /**
     * @return User|null
     */
-    public static function getUser() : ?advanced\accounts\base\User {
-        if (!self::check()) return new Guest();
+    public static function getUser() : ?BaseUser {
+        $guest = Users::getGuestObject();
 
+        if (!self::check()) return new $guest();
+        
         $user = Bootstrap::getUsers()->getUser(self::get('username'));
 
-        if (!$user) return new Guest();
+        if (!$user) return new $guest();
 
         return $user;
     }
 
-    public static function getAuthenticated() : bool {
+    public static function isAuthenticated() : bool {
         return !self::getUser() instanceof Guest;
     }
 

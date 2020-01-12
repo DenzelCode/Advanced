@@ -24,19 +24,19 @@ abstract class AdvancedException extends \Exception {
         $this->code = $code;
         $this->message_code = $message;
         $this->parameters = $parameters;
-        $this->message = $this->getMsg();
+        $this->message = $this->getTranslatedMessage();
     }
 
     public function getParameters() : ?array {
         return $this->parameters;
     }
 
-    public function getMsg() : string {
+    public function getTranslatedMessage() : string {
         $arguments = [$this->message_code, null];
 
         foreach ($this->getParameters() as $parameter) $arguments[] = $parameter;
 
-        $return = @call_user_func_array([ Bootstrap::getLanguage(false), 'get' ], $arguments);
+        $return = @call_user_func_array([ Bootstrap::getMainLanguage(), 'get' ], $arguments);
 
         return ($return ? $return : $this->message_code);
     }

@@ -1,6 +1,7 @@
 {
     "general": {
-        "guest": "Huésped"
+        "guest": "Huésped",
+        "description": "Haciendo tu vida en PHP mas fácil"
     },
 
     "exceptions": {
@@ -17,7 +18,7 @@
         },
 
         "database": {
-            "error": "Ha ocurrido un error en la base de datos",
+            "error": "Ha ocurrido un error en la base de datos: {0}",
             "pdo_required": "Advanced requiere la extension PDO",
             "connecting": "Error conectando a el servidor MySQL: {0}",
             "needed": "Debes configurar un Database en el Bootstrap para poder usar esta característica. Ej: Bootstrap::setDatabase()",

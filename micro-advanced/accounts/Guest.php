@@ -8,28 +8,27 @@
 
 namespace advanced\accounts;
 
+use advanced\accounts\base\User;
 use advanced\Bootstrap;
+use advanced\http\router\Request;
+use advanced\session\Auth;
 
 /**
  * Guest class
  */
-class Guest extends BaseUser {
+class Guest extends User {
 
     public function __construct() {
-        self::$instance = $this;
-
         $config = Bootstrap::getConfig()->get('sign_up');
 
         $data = [
             'id' => 0,
-            'username' => Bootstrap::getInstance()->getLanguageProvider()->getText('general.guest'),
+            'username' => Bootstrap::getMainLanguage()->get('general.guest'),
             'rank' => 1,
-            'prefer' => (Auth::get('prefer') ? Auth::get('prefer') : 0),
             'gender' => (Auth::get('gender') ? Auth::get('gender') : "M"),
             'ip_last' => Request::getIp(),
             'ip_reg' => Request::getIp(),
-            'connection_id' => (Auth::get('connection_id') ? Auth::get('connection_id') : 0),
-            'display_name' => Boostrap::getInstance()->getLanguageProvider()->getText('general.guest')
+            'display_name' => Bootstrap::getMainLanguage()->get('general.guest')
         ];
 
         foreach ($config['user'] as $key => $value) $data[$key] = $value;
@@ -37,10 +36,7 @@ class Guest extends BaseUser {
         $this->set($data);
     }
 
-    /**
-     * @return bool
-     */
-    public function set(array $data) : bool {
+    public function set(array $data) : void {
         $keys = ['username', 'id', 'password'];
 
         foreach ($data as $key => $value) {
@@ -48,8 +44,29 @@ class Guest extends BaseUser {
 
             $this->data[$key] = $value;
         }
+    }
 
+    /**
+     * @return bool
+     */
+    protected function create() : bool {
         return true;
+    }
+
+    public function delete() : bool {
+        return false;
+    }
+
+    public function exists() : bool {
+        return false;
+    }
+
+    public function getAll() : array {
+        return $this->data;
+    }
+
+    public function authenticate(bool $cookie = false, array $data = []) : bool {
+        return false;
     }
 }
 

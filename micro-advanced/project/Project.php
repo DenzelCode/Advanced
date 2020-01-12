@@ -8,6 +8,7 @@
 
 namespace advanced\project;
 
+use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\data\Config;
 use advanced\data\Database;

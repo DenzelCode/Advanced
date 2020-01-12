@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <title>{@title} - {@name}</title>
 </head>
 <body>
-    <h3>Advanced Framework</h3>
-    <p>{#= $advancedLanguage->get('template.welcome.description') #}</p>
+    <h1>Error 404</h1>
+    <a href="/"><?=  $language->get("page.general.back") ?></a>
 </body>
 </html>

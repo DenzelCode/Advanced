@@ -11,6 +11,7 @@ namespace advanced\data;
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\Bootstrap;
+use PDOStatement;
 
 /**
  * Database class
@@ -24,6 +25,8 @@ class Database{
     private $table = false;
 
     private $host, $port, $username, $password;
+
+    private $lastStatement;
 
     public function __construct(string $host = '127.0.0.1', int $port = 3306, string $username = 'root', string $password = '', string $database = '') {
         self::$instance = $this;
@@ -140,16 +143,20 @@ class Database{
         return $this->con;
     }
 
-    public function setTable($table) : Database {
+    public function setTable(string $table) : Database {
         $this->table = $table;
 
         return $this;
     }
 
-    public function getTable() {
+    public function getTable() : ?string {
         return $this->table;
     }
 
+    public function getLastStatement() : PDOStatement {
+        return $this->lastStatement;
+    }
+ 
     public function select(array $data = ['*'], string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
@@ -176,6 +183,8 @@ class Database{
         if ($options) $query .= ' ' . $options;
 
         $prepare = $this->getPDO()->prepare($query);
+
+        $this->lastStatement = $prepare;
 
         $execute = $prepare->execute($execute);
 
@@ -215,6 +224,8 @@ class Database{
 
         $add = $this->getPDO()->prepare($query);
 
+        $this->lastStatement = $add;
+
         $add = $add->execute($execute);
 
         return $add;
@@ -245,6 +256,8 @@ class Database{
 
         $update = $this->getPDO()->prepare($query);
 
+        $this->lastStatement = $update;
+
         $update = $update->execute($exc);
 
         return $update;
@@ -258,6 +271,8 @@ class Database{
         if ($options) $query .= ' ' . $options;
 
         $delete = $this->getPDO()->prepare($query);
+
+        $this->lastStatement = $delete;
 
         $delete = $delete->execute($execute);
 
@@ -287,6 +302,8 @@ class Database{
 
         $create = $this->getPDO()->prepare($query);
 
+        $this->lastStatement = $create;
+
         $create = $create->execute($execute);
 
         return $create;
@@ -301,6 +318,8 @@ class Database{
 
         $truncate = $this->getPDO()->prepare($query);
 
+        $this->lastStatement = $truncate;
+
         $truncate = $truncate->execute($execute);
 
         return $truncate;
@@ -314,6 +333,8 @@ class Database{
         if ($options) $query .= ' ' . $options;
 
         $drop = $this->getPDO()->prepare($query);
+
+        $this->lastStatement = $drop;
 
         $drop = $drop->execute($execute);
 
@@ -349,6 +370,8 @@ class Database{
 
         $add = $this->getPDO()->prepare($query);
 
+        $this->lastStatement = $add;
+
         $add = $add->execute($exc);
 
         return $add;
@@ -378,6 +401,8 @@ class Database{
         if ($options) $query .= ' ' . $options;
 
         $drop = $this->getPDO()->prepare($query);
+
+        $this->lastStatement = $drop;
 
         $drop = $drop->execute($execute);
 

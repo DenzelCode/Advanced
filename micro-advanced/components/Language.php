@@ -41,7 +41,7 @@ class Language{
     }
 
     private function updateConfig(string $file) : void {
-        $file = self::getPath() . $file;
+        $file = $this->getPath() . $file;
 
         $this->config = new Config($file);
     }

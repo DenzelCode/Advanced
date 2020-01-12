@@ -17,8 +17,14 @@ use advanced\body\template\TemplateProvider;
 abstract class Controller {
 
     public function index() : string {
+        TemplateProvider::setParameter("title", Bootstrap::getMainLanguage()->get("general.description"));
+
         TemplateProvider::setPath('advanced');
 
-        return TemplateProvider::get('main/index');
+        $template = TemplateProvider::get('main/index');
+
+        TemplateProvider::setPath('project');
+
+        return $template;
     }
 }

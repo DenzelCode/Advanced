@@ -13,6 +13,7 @@ use advanced\http\router\RequestProvider;
 use advanced\utils\File;
 use project\Project;
 use advanced\http\router\Request;
+use advanced\session\Auth;
 
 class TemplateProvider{
       
@@ -145,9 +146,9 @@ class TemplateProvider{
 
         $templateCache = self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php';
 
-        if ($create) File::check($templatePath, Bootstrap::getLanguage(false)->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
+        if ($create) File::check($templatePath, Bootstrap::getMainLanguage()->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
         
-        self::setDefaultParams();
+        self::setDefaultParameters();
 
         $templateName = $template;
 
@@ -161,7 +162,7 @@ class TemplateProvider{
 
         switch (true) {
             case !file_exists($templatePath):
-                return Bootstrap::getLanguage(false)->get('template.not_exists', null, $templateName);
+                return Bootstrap::getMainLanguage()->get('template.not_exists', null, $templateName);
             default:
                 $write_cache = true;
 
@@ -180,7 +181,7 @@ class TemplateProvider{
 
                     if (!is_dir(dirname($templateCache))) mkdir(dirname($templateCache), 777, true);
 
-                    file_put_contents($templateCache, $data);
+                    File::write($templateCache, $data);
                 }
 
                 // Start
@@ -201,18 +202,25 @@ class TemplateProvider{
         return in_array($param, array_keys(self::getParameters()));
     }
 
-    public static function setDefaultParams(bool $force = false) {
+    public static function getDefaultParameters() : array {
         $params = [
-            'title' => Bootstrap::getLanguage(false)->get('template.undefined'),
+            'title' => Bootstrap::getMainLanguage()->get('template.undefined'),
             'bootstrap' => Bootstrap::getInstance(),
             'language' => Bootstrap::getLanguage(),
-            'advancedLanguage' => Bootstrap::getLanguage(false),
-            'template' => TemplateProvider::getInstance(),
+            'advancedLanguage' => Bootstrap::getMainLanguage(),
+            'template' => self::getInstance(),
+            'isAuthenticated' => Auth::isAuthenticated(),
+            'auth' => Auth::getInstance(),
+            'authUser' => Auth::getUser(),
             'config' => Bootstrap::getConfig(),
             'request' => Request::getInstance()
         ];
 
-        foreach ($params as $key => $value) {
+        return $params;
+    }
+
+    public static function setDefaultParameters(bool $force = false) {
+        foreach (self::getDefaultParameters() as $key => $value) {
             if (!$force && !self::paramExists($key) || $force) self::setParameter($key, $value);
         }
     }
