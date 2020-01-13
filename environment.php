@@ -1,4 +1,6 @@
 <?php
+
+use advanced\Bootstrap;
 use advanced\utils\ExecutionTime;
 
 /**
@@ -25,6 +27,10 @@ class environment{
         define('PROJECT', dirname($dir) . DIRECTORY_SEPARATOR);
 
         self::autoload();
+
+        $version = '7.2.0';
+
+        if (!(version_compare(PHP_VERSION, $version) >= 0)) die(Bootstrap::getMainLanguage()->get("exceptions.version", null, PHP_VERSION, $version));
 
         advanced\session\SessionManager::init();
 

@@ -18,5 +18,6 @@
         </select>
         <button type="submit" name="go"><?=  $language->get("page.register.register") ?></button>
     </form>
+    <a href="/"><?=  $language->get("page.general.back") ?></a>
 </body>
 </html>

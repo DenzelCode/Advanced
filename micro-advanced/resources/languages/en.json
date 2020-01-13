@@ -1,11 +1,12 @@
 {
     "general": {
         "guest": "Guest",
-        "description": "Making your PHP life easier"
+        "description": "Create more by doing less"
     },
 
     "exceptions": {
         "exception": "Error: {0} file {1} on line {2}",
+        "version": "Incompatible PHP version ({0}), Advanced requires at least PHP {1}",
 
         "user": {
             "characters": "Username must have from {0} to {1} characters",
@@ -33,7 +34,7 @@
         "undefined": "Undefined",
 
         "welcome": {
-            "description": "Advanced Micro Framework - making your PHP life easier"
+            "description": "Advanced Micro Framework - Create more by doing less"
         }
     },
 

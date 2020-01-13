@@ -6,7 +6,7 @@ Advanced Micro Framework is a framework that can make your life in PHP easier, A
 
 ## Authors
 * Denzel Code (Advanced main developer)
-* Soull Darknezz (Some folder structures and code)
+* Soull Darknezz (Some folder structures, logo design, and code)
 
 ## Requirements
 * PHP 7.2.0
