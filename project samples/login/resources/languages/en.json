@@ -2,7 +2,7 @@
     "title": {
         "login": "Login", 
         "register": "Register",
-        "index": "Making your PHP life easier",
+        "index": "Create more by doing less",
         "logged": "You are signed in as {0}",
         "parameters_examples": "Templates parameters examples",
         "404": "Error 404"

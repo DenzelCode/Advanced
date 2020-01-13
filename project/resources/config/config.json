@@ -1,22 +1,6 @@
 {
-    "database": {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "username": "root",
-        "password": "",
-        "database": "advanced",
-        "setup": true
-    },
-
     "web": {
         "name": "Advanced Framework",
         "cdn": "http://localhost/assets"
-    },
-
-    "sign_up": {
-        "min_characters": 4,
-        "max_characters": 32,
-        
-        "user": {}
     }
 }
