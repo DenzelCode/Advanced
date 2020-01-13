@@ -7,6 +7,7 @@
     <title>{@title} - {@name}</title>
 </head>
 <body>
+    <img src="{@cdn}/images/advanced.png" alt="{@name}">
     <h3>Advanced Framework</h3>
     <p><?=  $advancedLanguage->get('template.welcome.description') ?></p>
 </body>
