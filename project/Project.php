@@ -22,9 +22,12 @@ class Project extends BaseProject {
     public function init() : void {
         self::setConfig(Bootstrap::getConfig());
 
+        // Set all elements on the web section of the config into all templates parameters
+        // Example: {@name}, {@cdn}, etc.
         TemplateProvider::setParameters(self::getConfig()->get('web'));
 
         try {
+            // Initialize database
             $database = new Database(self::$config->get('database.host'), self::$config->get('database.port'), self::$config->get('database.username'), self::$config->get('database.password'), self::$config->get('database.database'));
 
             self::setDatabase($database);
@@ -32,6 +35,7 @@ class Project extends BaseProject {
             die($e->getMessage());
         }
 
+        // Init router
         self::initRouter();
     }
 }

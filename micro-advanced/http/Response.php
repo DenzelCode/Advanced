@@ -9,6 +9,7 @@
 namespace advanced\http;
 
 class Response{
+    
     private static $json = false;
         
     public function write($data) {

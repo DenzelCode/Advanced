@@ -106,7 +106,7 @@ class Database{
                 foreach ($import as $key => $value) {
                     $query = $this->setTable($key)->select()->execute();
 
-                    if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exceptions.database.create_table', $key);
+                    if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exceptions.database.create_table', $key, $this->getLastStatement()->errorInfo()[2]);
                 }
 
                 // Columns verification
@@ -117,7 +117,7 @@ class Database{
 
                     $columns = join(', ', array_keys($value));
 
-                    if ($query && !$this->setTable($key)->addColumn($value)) throw new DatabaseException(2, 'exceptions.database.add_column', $value, $columns, $key);
+                    if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exceptions.database.add_column', $key, $this->getLastStatement()->errorInfo()[2]);
                 }
             }
         } catch (\PDOException $e) {
@@ -341,7 +341,7 @@ class Database{
         return $drop;
     }
 
-    public function addColumn(array $data, string $options = null, array $execute = []) {
+    public function addColumns(array $data, string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
         $query = 'ALTER TABLE ' . $this->getTable();
@@ -377,7 +377,7 @@ class Database{
         return $add;
     }
 
-    public function dropColumn(array $data, string $options = null, array $execute = []) {
+    public function dropColumns(array $data, string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
         $query = 'ALTER TABLE ' . $this->getTable();
