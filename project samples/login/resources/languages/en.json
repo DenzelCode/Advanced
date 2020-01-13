@@ -1,0 +1,74 @@
+{
+    "title": {
+        "login": "Login", 
+        "register": "Register",
+        "index": "Making your PHP life easier",
+        "logged": "You are signed in as {0}",
+        "parameters_examples": "Templates parameters examples",
+        "404": "Error 404"
+    },
+
+    "page": {
+        "general": {
+            "back": "Back to home"
+        },
+
+        "index": {
+            "login": "Login",
+            "register": "Register",
+            "logout": "Logout",
+            "new_template": "New template",
+            "logged": "You are signed in as {0}",
+            "parameters_examples": "Templates parameters examples"
+        },
+
+        "login": {
+            "username": "Username",
+            "password": "Password",
+            "remember_me": "Remember me",
+            "login": "Login"
+        },
+
+        "register": {
+            "username": "Username",
+            "password": "Password",
+            "mail": "Mail",
+            "gender": "Gender",
+            "genders": {
+                "male": "Male",
+                "female": "Female"
+            },
+            "register": "Register"
+        }
+    },
+
+    "form": {
+        "general": {
+            "empty": "Do not leave spaces on blank"
+        },
+
+        "login": {
+            "logged": "You are already logged in",
+            "empty": "Do not leave blank spaces",
+            "not_exists": "Username doesn't exists",
+            "invalid_password": "Invalid password",
+            "banned": "You have been banned",
+            "success": "Successfully login"
+        },
+
+        "register": {
+            "logged": "You are already logged in",
+            "empty": "Do not leave blank spaces",
+            "mail_exists": "Email already in use",
+            "exists": "Username already in use",
+            "invalid_password": "Invalid password",
+            "banned": "You have been banned",
+            "password_chars": "Password must have characters from 6 to 60",
+            "password_numbers": "Password must contain at least one number",
+            "user_chars": "Username must have characters from 4 to 25",
+            "invalid_user": "Invalid username, try deleting characters or removing special characters",
+            "invalid_mail": "Invalid email address",
+            "success": "Successfully registered"
+        }
+    }
+}
