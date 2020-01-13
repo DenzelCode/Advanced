@@ -1,8 +1,10 @@
 ![Advanced](https://github.com/DenzelCode/Advanced/blob/master/project/public/assets/images/advanced.png?raw=true)
 
 ## What's Advanced?
+Advanced Micro Framework - Create more by doing less
 
 Advanced Micro Framework is a framework that can make your life in PHP easier, Advanced provides you routers with controllers, responses, secure authentication and register, MySQL query generator, templates system, languages system and more, try Advanced out and you'll see that you will not want to leave it.
+[Get started](https://github.com/DenzelCode/Advanced/wiki/Get-started)
 
 ## Authors
 * Denzel Code (Advanced main developer)

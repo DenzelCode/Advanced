@@ -19,12 +19,9 @@ use advanced\session\Auth;
 */
 class mainController extends Controller {
 
-    // URL: /index and main page
     public function index(string $method = "*") : string {
-        // Set parameter title on the template we can access to it in the template as {@title} or {#= $title #}
         TemplateProvider::setParameter("title", Bootstrap::getLanguage()->get("title.index"));
     
-        // Show the main template of the framework and the template of the index that we created
         return parent::index($method) . TemplateProvider::get("main/index");
     }
 
