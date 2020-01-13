@@ -1,4 +1,4 @@
-![Master logo](http://i.imgur.com/DajNToP.png)
+![Advanced](https://github.com/DenzelCode/Advanced/blob/master/project/public/assets/images/advanced.png?raw=true)
 
 ## What's Advanced?
 
