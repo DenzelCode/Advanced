@@ -22,6 +22,12 @@ class Response{
         return $data;
     }
 
+    public static function setCode(int $code) : Response {
+        http_response_code($code);
+
+        return new Response();
+    }
+
     public static function setHeader($header) {
         header("Content-Type: {$header}");
     }

@@ -11,6 +11,8 @@ namespace advanced\accounts;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
 use advanced\accounts\base\User;
+use advanced\data\Config;
+use advanced\data\Database;
 
 /**
  * Users class
@@ -29,6 +31,46 @@ class Users {
         self::$instance = $this;
 
         if (!Bootstrap::getDatabase()) throw new UserException(0, 'exceptions.database.needed');
+
+        if (Bootstrap::getConfig()->get('database.setup', true)) {
+            Bootstrap::getDatabase()->setup(new Config(Database::getConfigPath()), [
+                'import' => [
+                    'users' => [
+                        'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
+                        'username' => 'varchar(125)',
+                        'firstname' => 'varchar(255)',
+                        'lastname' => 'varchar(255)',
+                        'password' => 'varchar(255)',
+                        'mail' => 'varchar(255)',
+                        'rank' => 'int(11)',
+                        'country' => 'varchar(4)',
+                        'gender' => 'enum(\'M\', \'F\') DEFAULT \'M\'',
+                        'account_created' => 'double(50, 0) DEFAULT 0',
+                        'last_used' => 'double(50, 0) DEFAULT 0',
+                        'last_online' => 'double(50, 0) DEFAULT 0',
+                        'last_password' => 'double(50, 0) DEFAULT 0',
+                        'online' => 'enum(\'0\', \'1\') DEFAULT \'0\'',
+                        'ip_reg' => 'varchar(45) NOT NULL',
+                        'ip_last' => 'varchar(45) NOT NULL',
+                        'language' => 'varchar(255) DEFAULT \'en\'',
+                        'connection_id' => 'text',
+                        'birth_date' => 'varchar(55)',
+                        'facebook_id' => 'text',
+                        'facebook_token' => 'text',
+                        'facebook_account' => 'boolean DEFAULT false'
+                    ],
+    
+                    'ranks' => [
+                        'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
+                        'name' => 'text',
+                        'description' => 'text',
+                        'timestamp' => 'double(50, 0) DEFAULT 0'
+                    ]
+                ],
+    
+                'update' => []
+            ]);
+        }
     }
 
     /**

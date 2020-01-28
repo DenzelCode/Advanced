@@ -28,6 +28,8 @@ class Database{
 
     private $lastStatement;
 
+    private static $configPath = PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database';
+
     public function __construct(string $host = '127.0.0.1', int $port = 3306, string $username = 'root', string $password = '', string $database = '') {
         self::$instance = $this;
 
@@ -50,6 +52,14 @@ class Database{
         return self::$instance;
     }
 
+    public static function getConfigPath() : string {
+        return self::$configPath;
+    }
+
+    public static function setConfigPath(string $configPath) : void {
+        self::$configPath = $configPath;
+    }
+
     public function run() {
         try {
             $options = [
@@ -61,65 +71,6 @@ class Database{
             $this->con = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database};charset=utf8mb4", $this->username, $this->password);
 
             foreach ($options as $key => $value) $this->con->setAttribute($key, $value);
-
-            if (Bootstrap::getConfig()->get('database.setup', true)) {
-                $dbConfig = new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database', [
-                    'import' => [
-                        'users' => [
-                            'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
-                            'username' => 'varchar(125)',
-                            'firstname' => 'varchar(255)',
-                            'lastname' => 'varchar(255)',
-                            'password' => 'varchar(255)',
-                            'mail' => 'varchar(255)',
-                            'rank' => 'int(11)',
-                            'country' => 'varchar(4)',
-                            'gender' => 'enum(\'M\', \'F\') DEFAULT \'M\'',
-                            'account_created' => 'double(50, 0) DEFAULT 0',
-                            'last_used' => 'double(50, 0) DEFAULT 0',
-                            'last_online' => 'double(50, 0) DEFAULT 0',
-                            'last_password' => 'double(50, 0) DEFAULT 0',
-                            'online' => 'enum(\'0\', \'1\') DEFAULT \'0\'',
-                            'ip_reg' => 'varchar(45) NOT NULL',
-                            'ip_last' => 'varchar(45) NOT NULL',
-                            'language' => 'varchar(255) DEFAULT \'en\'',
-                            'connection_id' => 'text',
-                            'birth_date' => 'varchar(55)',
-                            'facebook_id' => 'text',
-                            'facebook_token' => 'text',
-                            'facebook_account' => 'boolean DEFAULT false'
-                        ],
-
-                        'ranks' => [
-                            'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
-                            'name' => 'text',
-                            'description' => 'text',
-                            'timestamp' => 'double(50, 0) DEFAULT 0'
-                        ]
-                    ],
-
-                    'update' => []
-                ]);
-
-                $import = $dbConfig->get('import', []);
-
-                foreach ($import as $key => $value) {
-                    $query = $this->setTable($key)->select()->execute();
-
-                    if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exceptions.database.create_table', $key, $this->getLastStatement()->errorInfo()[2]);
-                }
-
-                // Columns verification
-                $update = $dbConfig->get('update', []);
-
-                foreach ($update as $key => $value) {
-                    $query = $this->setTable($key)->select()->execute();
-
-                    $columns = join(', ', array_keys($value));
-
-                    if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exceptions.database.add_column', $key, $this->getLastStatement()->errorInfo()[2]);
-                }
-            }
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
@@ -407,5 +358,33 @@ class Database{
         $drop = $drop->execute($execute);
 
         return $drop;
+    }
+
+    public function import(array $import) : void {
+        foreach ($import as $key => $value) {
+            $query = $this->setTable($key)->select()->execute();
+
+            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exceptions.database.create_table', $key, $this->getLastStatement()->errorInfo()[2]);
+        }
+    }
+
+    public function updateImport(array $update) : void {
+        foreach ($update as $key => $value) {
+            $query = $this->setTable($key)->select()->execute();
+
+            $columns = join(', ', array_keys($value));
+
+            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exceptions.database.add_column', $key, $this->getLastStatement()->errorInfo()[2]);
+        }
+    }
+
+    public function setup(Config $config, array $default) : void {
+        $import = $config->get('import', []);
+
+        Bootstrap::getDatabase()->import($import);
+
+        $update = $config->get('update', []);
+
+        Bootstrap::getDatabase()->updateImport($update);
     }
 }
