@@ -14,8 +14,6 @@ use advanced\project\Project as BaseProject;
 class Project extends BaseProject {
 
     public function init() : void {
-        TemplateProvider::setParameters(self::getConfig()->get('web'));
-
         self::initRouter();
     }
 }
