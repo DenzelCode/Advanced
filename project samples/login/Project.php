@@ -20,8 +20,6 @@ use advanced\body\template\TemplateProvider;
 class Project extends BaseProject {
 
     public function init() : void {
-        self::setConfig(Bootstrap::getConfig());
-
         // Set all elements on the web section of the config into all templates parameters
         // Example: {@name}, {@cdn}, etc.
         TemplateProvider::setParameters(self::getConfig()->get('web'));
