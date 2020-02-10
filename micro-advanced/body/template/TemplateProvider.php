@@ -85,6 +85,26 @@ class TemplateProvider{
         return $data;
     }
 
+    public static function getRootTemplate(string $template) : string {
+        TemplateProvider::setPath('advanced');
+
+        $template = TemplateProvider::get($template);
+
+        TemplateProvider::setPath('project');
+
+        return $template;
+    }
+
+    public static function getRootTemplates(array $templates) : string {
+        TemplateProvider::setPath('advanced');
+
+        $template = TemplateProvider::getByArray($templates);
+
+        TemplateProvider::setPath('project');
+
+        return $template;
+    }
+
     /**
      * @return string
      */

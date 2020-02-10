@@ -10,7 +10,7 @@ use advanced\controllers\Controller;
 class mainController extends Controller {
 
     public function index(string $method = "*") : string {
-        return "First Advanced project";
+        return parent::index($method);
     }
 
     public function testing(string $method = "get", string $argument = "default value") : string {
