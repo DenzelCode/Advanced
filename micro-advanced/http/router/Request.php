@@ -88,7 +88,7 @@ class Request{
     /**
     * @return string|null
     */
-    public static function getMethod() : string {
+    public static function getMethod() : ?string {
         return self::$method;
     }
 
@@ -118,12 +118,19 @@ class Request{
     /**
     * @return string|null
     */
-    public static function getRequestMethod() : string {
+    public static function getRequestMethod() : ?string {
         return self::$requestMethod;
     }
 
     public static function setRequestMethod(string $method = null) {
         return self::$requestMethod = $method;
+    }
+
+    /**
+    * @return string
+    */
+    public static function getFullURL() : string {
+        return self::getSecure() . self::getURL();
     }
 
     public static function getIp() {
