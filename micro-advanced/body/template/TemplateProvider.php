@@ -65,8 +65,8 @@ class TemplateProvider{
     /**
      * @return string|null
      */
-    public static function getParam(string $param) : ?string {
-        if (self::paramExists($param)) return self::$params[$param]; else return null;
+    public static function getParameter(string $param) : ?string {
+        if (self::parameterExists($param)) return self::$params[$param]; else return null;
     }
 
     /**
@@ -218,7 +218,7 @@ class TemplateProvider{
         }
     }
 
-    public static function paramExists(string $param) : bool {
+    public static function parameterExists(string $param) : bool {
         return in_array($param, array_keys(self::getParameters()));
     }
 
@@ -240,7 +240,7 @@ class TemplateProvider{
 
     public static function setDefaultParameters(bool $force = false) {
         foreach (self::getDefaultParameters() as $key => $value) {
-            if (!$force && !self::paramExists($key) || $force) self::setParameter($key, $value);
+            if (!$force && !self::parameterExists($key) || $force) self::setParameter($key, $value);
         }
     }
 }
