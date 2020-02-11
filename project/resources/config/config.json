@@ -1,6 +1,6 @@
 {
     "web": {
         "name": "Advanced Framework",
-        "cdn": "http://localhost/assets"
+        "cdn": "{@url}/assets"
     }
 }

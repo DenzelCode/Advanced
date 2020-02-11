@@ -223,20 +223,18 @@ class TemplateProvider{
     }
 
     public static function getDefaultParameters() : array {
-        $params = [
-            'title' => Bootstrap::getMainLanguage()->get('template.undefined'),
-            'bootstrap' => Bootstrap::getInstance(),
-            'language' => Bootstrap::getLanguage(),
-            'advancedLanguage' => Bootstrap::getMainLanguage(),
-            'template' => self::getInstance(),
-            'isAuthenticated' => Auth::isAuthenticated(),
-            'auth' => Auth::getInstance(),
-            'authUser' => Auth::getUser(),
-            'config' => Bootstrap::getConfig(),
-            'request' => Request::getInstance()
+        return [
+            "title" => Bootstrap::getMainLanguage()->get('template.undefined'),
+            "bootstrap" => Bootstrap::getInstance(),
+            "language" => Bootstrap::getLanguage(),
+            "advancedLanguage" => Bootstrap::getMainLanguage(),
+            "template" => self::getInstance(),
+            "isAuthenticated" => Auth::isAuthenticated(),
+            "auth" => Auth::getInstance(),
+            "authUser" => Auth::getUser(),
+            "config" => Bootstrap::getConfig(),
+            "request" => Request::getInstance()
         ];
-
-        return $params;
     }
 
     public static function setDefaultParameters(bool $force = false) {

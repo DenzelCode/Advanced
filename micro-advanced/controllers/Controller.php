@@ -19,7 +19,8 @@ abstract class Controller {
     public function index() : string {
         TemplateProvider::setParameters([
             "title" => Bootstrap::getMainLanguage()->get("general.description"),
-            "cdn" => Bootstrap::getConfig()->get('web.cdn')
+            "name" => Bootstrap::getConfig()->get('web.name'),
+            "cdn" => str_replace("{@url}", Bootstrap::getConfig()->get('web.url'), Bootstrap::getConfig()->get('web.cdn'))
         ]);
 
         return TemplateProvider::getRootTemplate('main/index');
