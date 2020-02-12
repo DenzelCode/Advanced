@@ -8,6 +8,8 @@ Advanced Micro Framework is a framework that can make your life in PHP easier, A
 
 ## Installation
 ```
+mkdir new-folder
+cd new-folder
 composer create-project denzelcode/advanced .
 ```
 ## Requirements
