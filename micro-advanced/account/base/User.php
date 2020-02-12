@@ -57,49 +57,49 @@ abstract class User {
      * @return int
      */
     public function getId() : int {
-        return (int) $this->get('id');
+        return (int) $this->data['id'];
     }
 
     /**
      * @return string
      */
     public function getName() : string {
-        return (string) $this->get('username');
+        return (string) $this->data['username'];
     }
 
     /**
      * @return string
      */
     public function getDisplayName() : string {
-        return (string) $this->get('display_name');
+        return (string) $this->data['display_name'];
     }
 
     /**
      * @return string
      */
     public function getGender() : string {
-        return (string) $this->get('gender');
+        return (string) $this->data['gender'];
     }
 
     /**
      * @return string
      */
     public function getMail() : string {
-        return (string) $this->get('mail');
+        return (string) $this->data['mail'];
     }
 
     /**
      * @return string
      */
     public function getPassword() : string {
-        return (string) $this->get('password');
+        return (string) $this->data['password'];
     }
 
     /**
      * @return int
      */
     public function getAccountCreated() : int {
-        return (int) $this->get('account_created');
+        return (int) $this->data['account_created'];
     }
 
     /**

@@ -11,7 +11,7 @@ use advanced\account\base\User as BaseUser;
 use advanced\Bootstrap;
 use advanced\data\Database;
 use advanced\exceptions\UserException;
-use advanced\session\Auth;
+use advanced\account\Auth;
 
 /**
  * User class
