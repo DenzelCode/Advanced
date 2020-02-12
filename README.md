@@ -19,14 +19,15 @@ composer create-project denzelcode/advanced .
 ## Requirements
 * PHP 7.2.0
 * Apache Server
-- Xampp [Windows](https://www.apachefriends.org/xampp-files/7.4.2/xampp-windows-x64-7.4.2-0-VC15-installer.exe) | [Linux](https://www.apachefriends.org/xampp-files/7.4.2/xampp-linux-x64-7.4.2-0-installer.run) | [OS X](https://www.apachefriends.org/xampp-files/7.4.2/xampp-osx-7.4.2-0-vm.dmg), **IIS** or **Hosting**
+
+Xampp [Windows](https://www.apachefriends.org/xampp-files/7.4.2/xampp-windows-x64-7.4.2-0-VC15-installer.exe) | [Linux](https://www.apachefriends.org/xampp-files/7.4.2/xampp-linux-x64-7.4.2-0-installer.run) | [OS X](https://www.apachefriends.org/xampp-files/7.4.2/xampp-osx-7.4.2-0-vm.dmg), **IIS** or **Hosting**
 
 ## Authors
 * Denzel Code (Advanced main developer)
 * Soull Darknezz (Some folder structures, logo design, and code)
 
 ## Documentation
-[Click here to go to the documentation](/wiki)
+[Click here to go to the documentation](https://github.com/DenzelCode/Advanced/wiki)
 
 ## Licensing information
 This project is licensed under LGPL-3.0. Please see the [LICENSE](/LICENSE) file for details.
