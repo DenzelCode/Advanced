@@ -1,0 +1,19 @@
+{
+    "name": "denzelcode/advanced",
+    "description": "Advanced Micro Framework - Create more by doing less",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denzel Giraldo",
+            "email": "denzelgiraldocode@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "advanced\\": "micro-advanced/",
+            "project\\": "project/"
+        }
+    },
+    "require": {}
+}
