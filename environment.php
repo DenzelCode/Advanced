@@ -18,7 +18,9 @@ class environment{
      * @return  require, autoload.php
      */
     public function autoload() : void{
-        require 'autoload.php';
+        require "autoload.php";
+
+        require "vendor/autoload.php";
     }
 
     public function init(string $dir) : void{
@@ -28,7 +30,7 @@ class environment{
 
         self::autoload();
 
-        $version = '7.2.0';
+        $version = "7.2.0";
 
         if (!(version_compare(PHP_VERSION, $version) >= 0)) die(Bootstrap::getMainLanguage()->get("exceptions.version", null, PHP_VERSION, $version));
         
