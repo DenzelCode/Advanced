@@ -1,13 +1,11 @@
 <?php
 
-namespace advanced\session;
+namespace advanced\account;
 
 use advanced\Bootstrap;
-use advanced\accounts\Guest;
-use advanced\accounts\User;
-use advanced\accounts\base\User as BaseUser;
-use advanced\accounts\Users;
+use advanced\account\base\User as BaseUser;
 use advanced\http\router\Request;
+use advanced\session\SessionManager;
 
 /**
 * Auth class

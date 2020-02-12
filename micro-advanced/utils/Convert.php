@@ -13,7 +13,7 @@ namespace advanced\utils;
 */
 class Convert {
 
-	public static function numToString($number) : string {
+	public static function numToString(object $number) : string {
 		if ($number >= 1000000000000) {
 			$num = substr($number, 1, -11);
 			$sec = strlen($num) - 1;

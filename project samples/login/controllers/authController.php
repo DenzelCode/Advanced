@@ -8,8 +8,8 @@
 
 namespace project\controllers;
 
-use advanced\accounts\User;
-use advanced\accounts\Users;
+use advanced\account\User;
+use advanced\account\Users;
 use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\exceptions\UserException;

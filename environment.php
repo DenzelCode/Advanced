@@ -31,8 +31,10 @@ class environment{
         $version = '7.2.0';
 
         if (!(version_compare(PHP_VERSION, $version) >= 0)) die(Bootstrap::getMainLanguage()->get("exceptions.version", null, PHP_VERSION, $version));
-
+        
         advanced\session\SessionManager::init();
+
+        (new Bootstrap());
 
         if (file_exists(PROJECT . 'Project.php')) {
             $project = new project\Project();

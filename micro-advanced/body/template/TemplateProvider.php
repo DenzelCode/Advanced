@@ -9,13 +9,16 @@
 namespace advanced\body\template;
 
 use advanced\Bootstrap;
+use advanced\file\File;
 use advanced\http\router\RequestProvider;
-use advanced\utils\File;
 use project\Project;
 use advanced\http\router\Request;
-use advanced\session\Auth;
+use advanced\account\Auth;
 
 class TemplateProvider{
+
+    public const PATH_ADVANCED = "advanced";
+    public const PATH_PROJECT = "project";
       
     private static $params = [];
 
@@ -26,7 +29,9 @@ class TemplateProvider{
     public function __construct() {
         self::$instance = $this;
 
-        self::setPath('project');
+        self::setPath(self::PATH_PROJECT);
+
+        self::setDefaultParameters();
     }
 
     /**
@@ -41,6 +46,7 @@ class TemplateProvider{
      */
     public static function setParameter(string $key, $value, bool $prefix = true) : void {
         self::$params[$key]['value'] = $value;
+
         self::$params[$key]['prefix'] = $prefix;
     }
 
@@ -155,66 +161,45 @@ class TemplateProvider{
      * @return string
      */
     public static function getPath() : string {
-        return (self::$path == 'advanced' ? ADVANCED : PROJECT) . 'body' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR;
+        return (self::$path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . 'body' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR;
     }
 
     /**
      * @return string
      */
     public static function get(string $template, bool $cache = true, bool $create = true) : string {
-        $templatePath = self::getPath() . 'views' . DIRECTORY_SEPARATOR . $template .  '.tpl';
+        $templatePath = new File(self::getPath() . 'views' . DIRECTORY_SEPARATOR . $template .  '.tpl');
 
-        $templateCache = self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php';
-
-        if ($create) File::check($templatePath, Bootstrap::getMainLanguage()->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath))));
+        $templateCache = new File(self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php');
         
-        self::setDefaultParameters();
+        if ($create) $templatePath->create(Bootstrap::getMainLanguage()->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath->getName()))));
 
         $templateName = $template;
 
-        $params = [];
+        $parameters = [];
 
-        if (file_exists(PROJECT . 'Project.php')) $params['project'] = Project::getInstance();
+        if (file_exists(PROJECT . 'Project.php')) $parameters['project'] = Project::getInstance();
 
-        foreach (self::getParameters() as $key => $param) $params[$key] = $param['value'];
+        foreach (self::getParameters() as $key => $parameter) $parameters[$key] = $parameter['value'];
 
-        extract($params);
-
-        switch (true) {
-            case !file_exists($templatePath):
-                return Bootstrap::getMainLanguage()->get('template.not_exists', null, $templateName);
-            default:
-                $write_cache = true;
-
-                if (is_file($templateCache)) {
-                    $mtime_cache = filemtime($templateCache);
-
-                    $mtime_view = filemtime($templatePath);
-
-                    if ($mtime_view <= $mtime_cache) $write_cache = false;
-                }
+        switch ($templatePath->exists()) {
+            case true:
+                $write_cache = (!(is_file($templateCache) && filemtime($templateCache) <= filemtime($templatePath)));
 
                 if ($write_cache && $cache) {
-                    $data = file_get_contents($templatePath);
+                    $data = $templatePath->read();
 
                     $data = self::filterTemplate($data);
 
-                    if (!is_dir(dirname($templateCache))) mkdir(dirname($templateCache), 777, true);
-
-                    File::write($templateCache, $data);
+                    $templateCache->write($data);
                 }
 
-                // Start
-                ob_start();
-                // Include
-                if ($cache) include($templateCache); else include($templatePath);
-                echo "\n";
-                // Content
-                $data = ob_get_contents();
-                // Clean
-                ob_end_clean();
-                // Return
+                $data = ($cache ? $templateCache : $templatePath)->read($parameters) . "\n";
+
                 return self::filter($data);
+
+            default:
+                return Bootstrap::getMainLanguage()->get('template.not_exists', null, $templateName);
         }
     }
 

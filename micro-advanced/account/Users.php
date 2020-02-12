@@ -6,11 +6,11 @@
  * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  */
 
-namespace advanced\accounts;
+namespace advanced\account;
 
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
-use advanced\accounts\base\User;
+use advanced\account\base\User;
 use advanced\data\Config;
 use advanced\data\Database;
 
@@ -23,9 +23,9 @@ class Users {
 
     private static $instance;
 
-    private static $userObject = '\\advanced\\accounts\\User';
+    private static $userObject = '\\advanced\\account\\User';
     
-    private static $guestObject = '\\advanced\\accounts\\Guest';
+    private static $guestObject = '\\advanced\\account\\Guest';
 
     public function __construct() {
         self::$instance = $this;

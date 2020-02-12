@@ -14,9 +14,9 @@ use advanced\http\Router\Request;
 use advanced\body\template\TemplateProvider;
 use advanced\components\Language;
 use advanced\data\Database;
-use advanced\accounts\Users;
+use advanced\account\Users;
 use advanced\exceptions\AdvancedException;
-use advanced\session\Auth;
+use advanced\account\Auth;
 use advanced\session\SessionManager;
 
 /**
@@ -33,24 +33,24 @@ class Bootstrap{
         self::$instance = $this;
 
         self::$classes = [
-            'request' => new Request($_SERVER['REQUEST_URI']),
-            'auth' => new Auth(),
-            'templateProvider' => new TemplateProvider(),
-            'response' => new Response(),
-            'config' => new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'),
-            'defaultConfig' => ($config = new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'))
+            "request" => new Request($_SERVER['REQUEST_URI']),
+            "auth" => new Auth(),
+            "response" => new Response(),
+            "config" => new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'),
+            "defaultConfig" => ($config = new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'))
         ];
 
         if (!SessionManager::get('language')) SessionManager::set('language', substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), true);
 
         if (!in_array(SessionManager::get('language'), $config->get('languages'))) SessionManager::set('language', 'en', true);
 
-        self::$classes['languageMain'] = new Language(SessionManager::get('language'));
-        self::$classes['languageMain']->setPath('advanced');
+        self::$classes['languageMain'] = new Language(SessionManager::get('language'), Language::PATH_ADVANCED);
         
-        self::$classes['language'] = new Language(SessionManager::get('language'));
-        self::$classes['language']->setPath('project');
+        self::$classes['language'] = new Language(SessionManager::get('language'), Language::PATH_PROJECT);
 
+        self::$classes['templateProvider'] = new TemplateProvider();
+
+        /*
         $handler = function ($exception) {
             if (!$exception instanceof \Exception) {
                 die($exception);
@@ -61,8 +61,9 @@ class Bootstrap{
             die($this->getMainLanguage()->get('exceptions.exception', null, ($exception instanceof AdvancedException ? $exception->getTranslatedMessage() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
         };
 
-        // set_exception_handler($handler);
-        // set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
+        set_exception_handler($handler);
+        set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
+        */
     }
 
     /**
@@ -163,5 +164,3 @@ class Bootstrap{
         return self::$classes[$name];
     }
 }
-
-new Bootstrap();

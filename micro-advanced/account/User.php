@@ -5,9 +5,9 @@
  * @copyright Copyright (c) 2019 Advanced microFramework
  * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  */
-namespace advanced\accounts;
+namespace advanced\account;
 
-use advanced\accounts\base\User as BaseUser;
+use advanced\account\base\User as BaseUser;
 use advanced\Bootstrap;
 use advanced\data\Database;
 use advanced\exceptions\UserException;

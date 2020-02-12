@@ -6,12 +6,11 @@
  * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  */
 
-namespace advanced\accounts;
+namespace advanced\account;
 
-use advanced\accounts\base\User;
+use advanced\account\base\User;
 use advanced\Bootstrap;
 use advanced\http\router\Request;
-use advanced\session\Auth;
 
 /**
  * Guest class
@@ -31,7 +30,7 @@ class Guest extends User {
             'display_name' => Bootstrap::getMainLanguage()->get('general.guest')
         ];
 
-        foreach ($config['user'] as $key => $value) $data[$key] = $value;
+        foreach ((!empty($config['user']) ? $config['user'] : []) as $key => $value) $data[$key] = $value;
 
         $this->set($data);
     }

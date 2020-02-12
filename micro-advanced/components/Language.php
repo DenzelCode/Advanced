@@ -12,7 +12,8 @@ use advanced\data\Config;
 
 class Language{
 
-    private static $instance;
+    public const PATH_ADVANCED = "advanced";
+    public const PATH_PROJECT = "project";
 
     private $language;
 
@@ -20,10 +21,10 @@ class Language{
 
     private $config;
 
-    public function __construct(string $language) {
+    public function __construct(string $language, string $path = self::PATH_PROJECT) {
         $this->language = $language;
 
-        self::$instance = $this;
+        $this->path = $path;
 
         self::updateConfig($language);
     }   
@@ -37,7 +38,7 @@ class Language{
     }
 
     public function getPath() : string {
-        return ($this->path == 'advanced' ? ADVANCED : PROJECT) . 'resources' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR;
+        return ($this->path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . 'resources' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR;
     }
 
     private function updateConfig(string $file) : void {

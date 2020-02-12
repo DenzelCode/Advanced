@@ -8,7 +8,7 @@
 
 namespace advanced\data;
 
-use advanced\utils\File;
+use advanced\file\File;
 
 /**
 * Config class
@@ -29,9 +29,9 @@ class Config {
 
         $this->data = [];
 
-        $this->file = $file;
+        $this->file = new File($file . '.json');
 
-        if (empty(self::$files[$this->file])) $this->getJSON($default); else $this->data = self::$files[$this->file];
+        if (empty(self::$files[$this->file->getPath()])) $this->getJSON($default); else $this->data = self::$files[$this->file->getPath()];
     }
 
     public function getInstance() : Config {
@@ -45,7 +45,7 @@ class Config {
     }
 
     public function save() {
-        File::write($this->file . '.json', json_encode($this->data, JSON_PRETTY_PRINT));
+        $this->file->write(json_encode($this->data, JSON_PRETTY_PRINT));
 
         self::$files[$this->file] = $this->data;
     }
@@ -69,22 +69,13 @@ class Config {
     }
 
     private function getJSON(array $default = null) : void {
-        $file = $this->file . '.json';
+        $file = $this->file->getPath();
 
-        File::check($file, (! $default ? '{}' : json_encode($default, JSON_PRETTY_PRINT)));
+        $this->file->create(!$default ? '{}' : json_encode($default, JSON_PRETTY_PRINT));
 
-        // Start
-        ob_start();
-        // Include
-        include($file);
-        // Content
-        $data = ob_get_contents();
-        // Clean
-        ob_end_clean();
+        $this->data = json_decode($this->file->read(), true);
 
-        $this->data = json_decode($data, true);
-
-        self::$files[$this->file] = $this->data;
+        self::$files[$this->file->getPath()] = $this->data;
     }
 
     public function delete(string $name) {

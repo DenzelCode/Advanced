@@ -6,9 +6,9 @@
  * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  */
 
-namespace advanced\accounts\base;
+namespace advanced\account\base;
 
-use advanced\accounts\Guest;
+use advanced\account\Guest;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
 
