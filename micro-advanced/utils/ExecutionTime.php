@@ -27,6 +27,6 @@ class ExecutionTime {
     }
 
     public function __toString() : string {
-        return Bootstrap::getLanguageProvider(false)->getText('execution_time', null, $this->endTime - $this->startTime);
+        return Bootstrap::getMainLanguage()->get('execution_time', null, $this->endTime - $this->startTime);
     }
 }
