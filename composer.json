@@ -13,7 +13,14 @@
         "psr-4": {
             "advanced\\": "micro-advanced/",
             "project\\": "project/"
-        }
+        },
+
+        "classmap": [
+            "src/"
+        ]
     },
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
 }
