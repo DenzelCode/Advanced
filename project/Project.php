@@ -8,7 +8,6 @@
 
 namespace project;
 
-use advanced\body\template\TemplateProvider;
 use advanced\project\Project as BaseProject;
 
 class Project extends BaseProject {

@@ -9,6 +9,7 @@
 namespace advanced\http\router;
 
 use advanced\exceptions\RouterException;
+use advanced\http\Response;
 
 class Router{
 
@@ -24,6 +25,7 @@ class Router{
         if (!method_exists($request->getObjectName($preffix), $request->getMethod())) {
             $request->setController('main');
             $request->setMethod('error404');
+            Response::setCode(404);
         }
 
         $parameters = (new \ReflectionMethod($request->getObjectName($preffix), $request->getMethod()))->getParameters();
@@ -38,7 +40,10 @@ class Router{
         if ($parameter && $parameter->getName() == 'method' && $parameter->getDefaultValue() != '*' && $parameter->getDefaultValue() != 'general' && $parameter->getDefaultValue() != 'all' && $parameter->getDefaultValue() != 'any' && !in_array($request->getRequestMethod(), explode('|', strtolower($parameter->getDefaultValue())))) {
             $request->setController('main');
             $request->setMethod('error404');
+            Response::setCode(404);
         }
+
+        Response::setCode(Response::HTTP_OK);
         
         $execute = $request->getArguments();
 
