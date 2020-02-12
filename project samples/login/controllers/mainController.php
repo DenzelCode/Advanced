@@ -12,7 +12,7 @@ use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\http\Response;
-use advanced\session\Auth;
+use advanced\account\Auth;
 
 /**
 * mainController class

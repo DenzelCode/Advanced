@@ -16,7 +16,7 @@ use advanced\exceptions\UserException;
 use advanced\http\Post;
 use advanced\http\Response;
 use advanced\http\router\Request;
-use advanced\session\Auth;
+use advanced\account\Auth;
 
 /**
 * authController class
