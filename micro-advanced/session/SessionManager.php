@@ -45,9 +45,5 @@ class SessionManager{
     public static function destroy() : void {
         session_destroy();
     }
-
-    public static function hash(string $password) : string {
-        return password_hash($password, PASSWORD_DEFAULT);
-    }
 }
 

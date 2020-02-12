@@ -67,14 +67,14 @@ class User extends BaseUser {
     * @return bool
     */
     public function authenticate(bool $cookie = false, array $data = []) : bool {
-        foreach ($data as $key => $value) $this->setAuthData($key, $value);
+        foreach ($data as $key => $value) $this->authData[$key] = $value;
 
         if ($this->exists()) {
-            if (empty($this->getAuthDataArray())) return false;
+            if (empty($this->authData)) return false;
 
-            $this->setAuthData('cookie', $cookie);
+            $this->authData['cookie'] = $cookie;
 
-            $auth = Auth::attempt($this->getAuthDataArray(), $this);
+            $auth = Auth::attempt($this->authData, $this);
 
             return $auth;
         }
