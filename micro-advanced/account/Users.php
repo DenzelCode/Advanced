@@ -143,9 +143,7 @@ class Users {
         // User
         $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE username = ?", [$name]);
 
-        $data = $query->fetch();
-
-        if ($data) {
+        if (($data = $query->fetch())) {
             $this->users[$data['id']] = $this->createUser($data, $authData);
 
             $return = $this->users[$data['id']];
@@ -165,9 +163,7 @@ class Users {
         // User
         $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE id = ?", [$id]);
 
-        $data = $query->fetch();
-
-        if ($data) {
+        if (($data = $query->fetch())) {
             $this->users[$data['id']] = $this->createUser($data);
 
             $return = $this->users[$data['id']];
@@ -187,9 +183,7 @@ class Users {
         // User
         $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE mail = ?", [$mail]);
 
-        $data = $query->fetch();
-
-        if ($data) {
+        if (($data = $query->fetch())) {
             $this->users[$data['id']] = $this->createUser($data);
 
             $return = $this->users[$data['id']];
@@ -209,9 +203,7 @@ class Users {
         // User
         $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE connection_id = ?", [$id]);
 
-        $data = $query->fetch();
-
-        if ($data) {
+        if (($data = $query->fetch())) {
             $this->users[$data['id']] = $this->createUser($data);
 
             $return = $this->users[$data['id']];

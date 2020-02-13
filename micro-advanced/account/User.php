@@ -14,11 +14,11 @@
  * @link https://github.com/DenzelCode/Advanced
  * 
  */
+
 namespace advanced\account;
 
 use advanced\account\base\User as BaseUser;
 use advanced\Bootstrap;
-use advanced\data\Database;
 use advanced\exceptions\UserException;
 use advanced\account\Auth;
 

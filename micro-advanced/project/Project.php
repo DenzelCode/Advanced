@@ -42,6 +42,8 @@ abstract class Project {
 
     public abstract function init() : void;
 
+    public abstract function getName() : string;
+
     public function __construct() {
         self::$instance = $this;
         

@@ -50,14 +50,12 @@ class authController extends Controller {
 
         $response['type'] = 'error';
 
-        $uObject = Users::getUserObject();
-
         // Check if there is an account already logged in in the browser
         if (Auth::isAuthenticated()) {
             $response['message'] = Bootstrap::getLanguage()->get("form.login.logged");
         } else if (empty($pop['username']) || empty($pop['password'])) {
             $response['message'] = Bootstrap::getLanguage()->get("form.general.empty");
-        } else if (!$user instanceof $uObject) {
+        } else if ($user == null) {
             // Check if the user does not exists
             $response['message'] = Bootstrap::getLanguage()->get("form.login.not_exists");
         } else {
@@ -118,11 +116,11 @@ class authController extends Controller {
             $response['message'] = Bootstrap::getLanguage()->get("form.register.logged");
         } else if (empty($pop['username']) || empty($pop['password']) || empty($pop['mail']) || !$pop['gender']) {
             $response['message'] = Bootstrap::getLanguage()->get("form.general.empty");
-        } else if ($user instanceof User) {
+        } else if ($user != null) {
             $response['message'] = Bootstrap::getLanguage()->get("form.register.exists");
 
             $response['type'] = 'username';
-        } else if ($mailUser instanceof User) {
+        } else if ($mailUser != null) {
             // Check if an user with the mail provided already exists
             $response['message'] = Bootstrap::getLanguage()->get("form.register.mail_exists");
 

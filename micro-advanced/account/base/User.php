@@ -79,8 +79,22 @@ abstract class User {
     /**
      * @return string
      */
-    public function getDisplayName() : string {
-        return (string) $this->data['display_name'];
+    public function getFirstName() : string {
+        return (string) $this->data['firstname'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName() : string {
+        return (string) $this->data['lastname'];
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName() : string {
+        return $this->getFirstName() . $this->getLastName();
     }
 
     /**

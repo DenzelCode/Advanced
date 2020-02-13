@@ -1,8 +1,4 @@
 <?php
-
-use advanced\Bootstrap;
-use advanced\utils\ExecutionTime;
-
 /**
  * 
  * Advanced microFramework
@@ -19,6 +15,8 @@ use advanced\utils\ExecutionTime;
  * 
  */
 
+use advanced\Bootstrap;
+use advanced\utils\ExecutionTime;
 
 class environment{
 

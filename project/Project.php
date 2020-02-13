@@ -24,4 +24,8 @@ class Project extends BaseProject {
     public function init() : void {
         self::initRouter();
     }
+
+    public function getName(): string {
+        return "First Project";
+    }
 }

@@ -31,7 +31,7 @@ class Project extends BaseProject {
     public function init() : void {
         // Set all elements on the web section of the config into all templates parameters
         // Example: {@name}, {@cdn}, etc.
-        TemplateProvider::setParameters(self::getConfig()->get('web'));
+        TemplateProvider::setParameters(self::$config->get('web'));
 
         try {
             // Initialize database
@@ -44,5 +44,9 @@ class Project extends BaseProject {
 
         // Init router
         self::initRouter();
+    }
+
+    public function getName(): string {
+        return "Auth";
     }
 }
