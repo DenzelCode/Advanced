@@ -39,7 +39,7 @@ class Database{
 
     private static $configPath = PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database';
 
-    public function __construct(string $host = '127.0.0.1', int $port = 3306, string $username = 'root', string $password = '', string $database = '') {
+    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "") {
         self::$instance = $this;
 
         $this->host = $host;
@@ -48,11 +48,17 @@ class Database{
         $this->password = $password;
         $this->database = $database;
 
-        if (!extension_loaded('pdo')) {
+        if (!extension_loaded("pdo")) {
             throw new DatabaseException(0, 'exceptions.database.pdo_required');
 
             return;
-        } 
+        }
+
+        (new Config(self::$configPath, [
+            "import" => [],
+
+            "update" => []
+        ]));
         
         $this->run();
     }

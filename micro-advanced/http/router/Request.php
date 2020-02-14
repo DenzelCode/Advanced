@@ -106,11 +106,11 @@ class Request{
     }
 
     public static function getSecure() : string {
-        return (!empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://');
+        return (string) (!empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://');
     }
 
     public static function getURL() : string {
-        return $_SERVER['HTTP_HOST'];
+        return (string) $_SERVER['HTTP_HOST'];
     }
 
     /**

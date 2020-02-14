@@ -32,11 +32,11 @@ class Config {
 
     private static $files = [];
 
-    public function __construct(string $file, array $default = null) {
+    public function __construct(string $file, array $default = []) {
         // Instance
         self::$instance = $this;
 
-        $this->data = [];
+        $this->data = $default;
 
         $this->file = new File($file . '.json');
 
@@ -47,16 +47,32 @@ class Config {
         return self::$instance;
     }
 
-    public function set(string $name, $value) {
-        $this->data[$name] = $value;
+    public function set(string $name, $value): void {
+        if (strpos($name, '.') === false && !empty($this->data[$name])) {
+            $this->data[$name] = $value;
 
-        self::$files[$this->file][$name] = $value;
+            self::$files[$this->file->getPath()][$name] = $value;
+
+            return;
+        }
+
+        $values = &$this->data;
+
+        foreach (($properties = explode(".", $name)) as $key => $segment) {
+            if ((!isset($values[$key]) || !is_array($values[$key])) && $key != count($properties) - 1) $values[$segment] = [];
+
+            $values = &$values[$segment];
+        }
+
+        $values = $value;
+
+        self::$files[$this->file->getPath()] = $this->data;
     }
 
     public function save() {
         $this->file->write(json_encode($this->data, JSON_PRETTY_PRINT));
 
-        self::$files[$this->file] = $this->data;
+        self::$files[$this->file->getPath()] = $this->data;
     }
 
     public function get(string $name, $default = null) {
@@ -77,6 +93,30 @@ class Config {
         return $values;
     }
 
+    public function has(string $name) : bool {
+        return ($this->get($name) !== null);
+    }
+    
+    public function delete(string $name): void {
+        if (strpos($name, '.') === false && !empty($this->data[$name])) {
+            unset($this->data[$name], self::$files[$this->file->getPath()][$name]);
+
+            return;
+        }
+
+        $values = &$this->data;
+
+        foreach (($properties = explode(".", $name)) as $key => $segment) {
+            if ((!isset($values[$key]) || !is_array($values[$key])) && $key != count($properties) - 1) $values[$segment] = [];
+
+            $values = &$values[$segment];
+        }
+
+        unset($values);
+
+        self::$files[$this->file->getPath()] = $this->data;
+    }
+
     private function getJSON(array $default = null) : void {
         $file = $this->file->getPath();
 
@@ -85,9 +125,5 @@ class Config {
         $this->data = json_decode($this->file->read(), true);
 
         self::$files[$this->file->getPath()] = $this->data;
-    }
-
-    public function delete(string $name) {
-        unset($this->data[$name]);
     }
 }

@@ -116,11 +116,11 @@ class authController extends Controller {
             $response['message'] = Bootstrap::getLanguage()->get("form.register.logged");
         } else if (empty($pop['username']) || empty($pop['password']) || empty($pop['mail']) || !$pop['gender']) {
             $response['message'] = Bootstrap::getLanguage()->get("form.general.empty");
-        } else if ($user != null) {
+        } else if ($user !== null) {
             $response['message'] = Bootstrap::getLanguage()->get("form.register.exists");
 
             $response['type'] = 'username';
-        } else if ($mailUser != null) {
+        } else if ($mailUser !== null) {
             // Check if an user with the mail provided already exists
             $response['message'] = Bootstrap::getLanguage()->get("form.register.mail_exists");
 

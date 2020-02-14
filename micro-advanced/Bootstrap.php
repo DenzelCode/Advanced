@@ -19,12 +19,11 @@ namespace advanced;
 
 use advanced\data\Config;
 use advanced\http\Response;
-use advanced\http\Router\Request;
+use advanced\http\router\Request;
 use advanced\body\template\TemplateProvider;
 use advanced\components\Language;
 use advanced\data\Database;
 use advanced\account\Users;
-use advanced\exceptions\AdvancedException;
 use advanced\account\Auth;
 use advanced\session\SessionManager;
 

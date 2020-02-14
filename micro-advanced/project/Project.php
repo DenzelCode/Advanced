@@ -40,6 +40,8 @@ abstract class Project {
 
     protected static $router;
 
+    protected static $configPath = PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config';
+
     public abstract function init() : void;
 
     public abstract function getName() : string;
@@ -49,7 +51,7 @@ abstract class Project {
         
         self::$bootstrap = Bootstrap::getInstance();
 
-        self::$config = new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config');
+        self::$config = new Config(self::$configPath);
     }
 
     public static function getInstance() : Project {
@@ -61,7 +63,7 @@ abstract class Project {
     }
 
     public static function getConfigPath() : string {
-        return PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR;
+        return self::$configPath;
     }
 
     public static function getDatabase() : ?Database {

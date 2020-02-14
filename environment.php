@@ -19,7 +19,7 @@ use advanced\Bootstrap;
 use advanced\utils\ExecutionTime;
 
 class environment{
-
+    
     /**
      * Autoload function
      * @return  require, autoload.php
@@ -30,10 +30,10 @@ class environment{
         require "vendor/autoload.php";
     }
 
-    public function init(string $dir) : void{
+    public static function init(string $dir) : void{
         define('MAIN', __DIR__ . DIRECTORY_SEPARATOR);
-        
         define('PROJECT', dirname($dir) . DIRECTORY_SEPARATOR);
+        define('ADVANCED', MAIN . 'micro-advanced' . DIRECTORY_SEPARATOR);
 
         self::autoload();
 

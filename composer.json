@@ -19,6 +19,9 @@
             "src/"
         ]
     },
+    "autoload-dev": {
+        "psr-4": { "tests\\unit\\": "tests/unit/" }
+    },
     "require": {},
     "require-dev": {
         "phpunit/phpunit": "^9"

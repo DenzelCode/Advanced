@@ -15,11 +15,13 @@
  * 
  */
 
-define('ADVANCED', __DIR__ . DIRECTORY_SEPARATOR . 'micro-advanced' . DIRECTORY_SEPARATOR);
-
 spl_autoload_register(function ($class) {
 	$path = __DIR__ . (explode('\\', $class)[0] == 'advanced' ? '/micro-advanced/' : DIRECTORY_SEPARATOR) . str_replace('\\', '/', str_replace('advanced', '', $class)) . '.php';
 	
+	if (strpos($class, "test")) {
+		fwrite(STDERR, print_r($class, TRUE));
+	}
+
 	try {
 		if(!file_exists($path)){
 			throw new Exception("File {$class} does not exists.");
