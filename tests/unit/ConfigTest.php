@@ -1,20 +1,13 @@
 <?php
 
-namespace tests\unit;
+namespace tests\feature;
 
 use advanced\data\Config;
 use advanced\data\Database;
 use advanced\project\Project;
-use environment;
-use PHPUnit\Framework\TestCase;
+use tests\TestCase;
 
 class ConfigTest extends TestCase {
-
-    public function __construct() {
-        parent::__construct();
-
-        environment::init(__DIR__);
-    }
     
     public function testSetGetConfiguration() : void {
         $config = new Config(Database::getConfigPath(), [
