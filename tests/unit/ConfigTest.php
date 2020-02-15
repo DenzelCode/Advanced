@@ -16,7 +16,7 @@ class ConfigTest extends TestCase {
         environment::init(__DIR__);
     }
     
-    public function testSetConfiguration() {
+    public function testSetGetConfiguration() : void {
         $config = new Config(Database::getConfigPath(), [
             "import" => [],
 
@@ -36,7 +36,7 @@ class ConfigTest extends TestCase {
         $this->assertEquals($table, $config->get("import.tests"));
     }
 
-    public function testDeleteConfiguration() {
+    public function testDeleteGetConfiguration() : void {
         $config = new Config(Project::getConfigPath());
 
         $config->set("test.delete", true);
@@ -46,6 +46,16 @@ class ConfigTest extends TestCase {
         $config->delete("test.delete");
 
         $this->assertEmpty($config->get("test.delete"));
+    }
+
+    public function testHasConfiguration() : void {
+        $config = new Config(Project::getConfigPath());
+
+        $config->set('test.has', true);
+
+        $config->save();
+
+        $this->assertTrue($config->get('test.has'));
     }
 }
 

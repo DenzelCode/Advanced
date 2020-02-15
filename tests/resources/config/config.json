@@ -1,5 +1,5 @@
 {
     "test": {
-        "delete": true
+        "has": true
     }
 }

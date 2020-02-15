@@ -25,6 +25,7 @@ use advanced\components\Language;
 use advanced\data\Database;
 use advanced\account\Users;
 use advanced\account\Auth;
+use advanced\project\Project;
 use advanced\session\SessionManager;
 
 /**
@@ -44,7 +45,7 @@ class Bootstrap{
             "request" => new Request($_SERVER['REQUEST_URI']),
             "auth" => new Auth(),
             "response" => new Response(),
-            "config" => new Config(PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'),
+            "config" => new Config(Project::getConfigPath()),
             "defaultConfig" => ($config = new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'))
         ];
 
