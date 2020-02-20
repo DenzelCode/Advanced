@@ -31,6 +31,10 @@
             "not_exist":"El archivo {0} no existe",
             "open": "Ha ocurrido un error abriendo el archivo {0}",
             "write": "Ha ocurrido un error modificando el archivo {0}"
+        },
+
+        "mailer": {
+            "error": "Ha ocurrido un error enviando el correo electrónico: {0}"
         }
     },
 

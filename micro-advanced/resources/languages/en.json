@@ -31,6 +31,10 @@
             "not_exist": "File {0} does not exists",
             "open": "An error occurred opening the file {0}",
             "write": "An error occurred writing the file {0}"
+        },
+        
+        "mailer": {
+            "error": "An error occurred sending the mail: {0}"
         }
     },
 
