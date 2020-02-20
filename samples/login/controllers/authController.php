@@ -35,6 +35,8 @@ class authController extends Controller {
         // Login
         $response = [];
 
+        $response["type"] = "error";
+
         $pop = Post::get([
             "username" => null,
             "password" => null,
@@ -46,16 +48,16 @@ class authController extends Controller {
         // Get user by mail
         if (!$user) $user = Bootstrap::getUsers()->getUserByMail((string) $pop["username"], $pop);
 
-        $response["type"] = "error";
+        $language = Bootstrap::getLanguage();
 
         // Check if there is an account already logged in in the browser
         if (Auth::isAuthenticated()) {
-            $response["message"] = Bootstrap::getLanguage()->get("form.login.logged");
+            $response["message"] = $language->get("form.login.logged");
         } else if (empty($pop["username"]) || empty($pop["password"])) {
-            $response["message"] = Bootstrap::getLanguage()->get("form.general.empty");
+            $response["message"] = $language->get("form.general.empty");
         } else if ($user == null) {
             // Check if the user does not exists
-            $response["message"] = Bootstrap::getLanguage()->get("form.login.not_exists");
+            $response["message"] = $language->get("form.login.not_exists");
         } else {
             $pop["username"] = $user->getName();
 
@@ -71,10 +73,10 @@ class authController extends Controller {
                     "last_used" => time()
                 ]);
 
-                $response["message"] = Bootstrap::getLanguage()->get("form.login.success");
+                $response["message"] = $language->get("form.login.success");
 
                 $response["type"] = "success";
-            } else $response["message"] = Bootstrap::getLanguage()->get("form.login.invalid_password");
+            } else $response["message"] = $language->get("form.login.invalid_password");
         }
 
         return Response::setJSON(true)->write($response);
@@ -84,6 +86,8 @@ class authController extends Controller {
     public function register(string $method = "post") : string {
         // Register
         $response = [];
+
+        $response["type"] = "error";
 
         $pop = Post::get([
             "username" => null,
@@ -105,24 +109,24 @@ class authController extends Controller {
 
         if (empty($usersByIp)) $usersByIp = [];
 
-        $response["type"] = "error";
+        $language = Bootstrap::getLanguage();
 
         // Check if there is an account already logged in in the browser
         if (Auth::isAuthenticated()) {
-            $response["message"] = Bootstrap::getLanguage()->get("form.register.logged");
+            $response["message"] = $language->get("form.register.logged");
         } else if (empty($pop["username"]) || empty($pop["password"]) || empty($pop["mail"]) || !$pop["gender"]) {
-            $response["message"] = Bootstrap::getLanguage()->get("form.general.empty");
+            $response["message"] = $language->get("form.general.empty");
         } else if ($user !== null) {
-            $response["message"] = Bootstrap::getLanguage()->get("form.register.exists");
+            $response["message"] = $language->get("form.register.exists");
 
             $response["type"] = "username";
         } else if ($mailUser !== null) {
             // Check if an user with the mail provided already exists
-            $response["message"] = Bootstrap::getLanguage()->get("form.register.mail_exists");
+            $response["message"] = $language->get("form.register.mail_exists");
 
             $response["type"] = "mail";
         } else if (strlen($pop["password"]) < 6 || strlen($pop["password"]) > 60) {
-            $response["message"] = Bootstrap::getLanguage()->get("form.register.password_chars");
+            $response["message"] = $language->get("form.register.password_chars");
 
             $response["type"] = "password";
         } else {
@@ -155,7 +159,7 @@ class authController extends Controller {
                 if ($auth) {
                     $response["type"] = "success";
 
-                    $response["message"] = Bootstrap::getLanguage()->get("form.register.success");
+                    $response["message"] = $language->get("form.register.success");
                 } else $response["message"] = "Auth error";
             } catch (UserException $e) {
                 $response["message"] = $e->getMessage();
