@@ -149,7 +149,7 @@ class Request{
 
         if (filter_var($userIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) $userIP = hexdec(substr($userIP, 0, 2)). "." . hexdec(substr($userIP, 2, 2)). "." . hexdec(substr($userIP, 5, 2)). "." . hexdec(substr($userIP, 7, 2));
 
-        // if ($userIP == '::1' || $userIP = '0.1.0.0') $userIP = '127.0.0.1';
+        if ($userIP == '::1' || $userIP = '0.1.0.0' || empty($userIP)) $userIP = '127.0.0.1';
 
         return $userIP;
     }

@@ -27,7 +27,7 @@ class environment{
     public function autoload() : void{
         require "autoload.php";
 
-        require "vendor/autoload.php";
+        @include "vendor/autoload.php";
     }
 
     public static function init(string $dir) : void{
@@ -39,7 +39,7 @@ class environment{
 
         $version = "7.2.0";
 
-        if (!(version_compare(PHP_VERSION, $version) >= 0)) die(Bootstrap::getMainLanguage()->get("exceptions.version", null, PHP_VERSION, $version));
+        if (!(version_compare(PHP_VERSION, $version) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, $version));
         
         advanced\session\SessionManager::init();
 

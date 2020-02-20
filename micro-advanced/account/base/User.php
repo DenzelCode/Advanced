@@ -19,7 +19,7 @@ namespace advanced\account\base;
 
 use advanced\account\Guest;
 use advanced\Bootstrap;
-use advanced\exceptions\UserException;
+use Exception;
 
 /**
  * User abstract class
@@ -30,7 +30,7 @@ abstract class User {
 
     protected $authData = [];
 
-    public function getDataArray() : array {
+    public function getData() : array {
         return $this->data;
     }
 
@@ -131,15 +131,13 @@ abstract class User {
     public static function isValidName(string $name) : bool {
         $config = Bootstrap::getConfig();
 
-        $userCheck = preg_match('/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9=?!@:.-]{' . $config->get('sign_up')['min_characters'] . ',' . $config->get('sign_up')['max_characters'] . '}$/', $name);
+        if (!$config->has("sign_up")) $config->set("sign_up.min_characters", 4)->set("sign_up.max_characters", 32)->save();
 
-        $isMail = filter_var($name, FILTER_VALIDATE_EMAIL);
+        $userCheck = preg_match('/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9=?!@:.-]{' . $config->get("sign_up.min_characters", 4) . ',' . $config->get("sign_up.max_characters", 32) . '}$/', $name);
 
-        $invalidNames = ['Guest', 'guest', $config->get('web')['name'], (new Guest())->getName()];
+        $invalidNames = ['guest', strtolower((new Guest())->getName())];
 
-        if (!$userCheck || $isMail || in_array($name, $invalidNames)) return false;
-
-        return true;
+        return $userCheck && !in_array(strtolower($name), $invalidNames) && !self::isValidMail($name);
     }
 
     public static function isValidDisplayName(string $name) : bool {
@@ -190,6 +188,6 @@ abstract class User {
     /**
      * @return array
      */
-    abstract protected function getAll() : array;
+    abstract protected function getAll() : ?array;
 }
 

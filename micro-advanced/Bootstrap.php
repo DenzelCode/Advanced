@@ -17,7 +17,7 @@
 
 namespace advanced;
 
-use advanced\data\Config;
+use advanced\config\Config;
 use advanced\http\Response;
 use advanced\http\router\Request;
 use advanced\body\template\TemplateProvider;
@@ -42,22 +42,22 @@ class Bootstrap{
         self::$instance = $this;
 
         self::$classes = [
-            "request" => new Request($_SERVER['REQUEST_URI']),
+            "request" => new Request($_SERVER["REQUEST_URI"]),
             "auth" => new Auth(),
             "response" => new Response(),
             "config" => new Config(Project::getConfigPath()),
-            "defaultConfig" => ($config = new Config(ADVANCED . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config'))
+            "mainConfig" => ($config = new Config(ADVANCED . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config"))
         ];
 
-        if (!SessionManager::get('language')) SessionManager::set('language', substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2), true);
+        if (!SessionManager::get("language")) SessionManager::set("language", substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2), true);
 
-        if (!in_array(SessionManager::get('language'), $config->get('languages'))) SessionManager::set('language', 'en', true);
+        if (!in_array(SessionManager::get("language"), $config->get("languages"))) SessionManager::set("language", "en", true);
 
-        self::$classes['languageMain'] = new Language(SessionManager::get('language'), Language::PATH_ADVANCED);
+        self::$classes["mainLanguage"] = new Language(SessionManager::get("language"), Language::PATH_ADVANCED);
         
-        self::$classes['language'] = new Language(SessionManager::get('language'), Language::PATH_PROJECT);
+        self::$classes["language"] = new Language(SessionManager::get("language"), Language::PATH_PROJECT);
 
-        self::$classes['templateProvider'] = new TemplateProvider();
+        self::$classes["templateProvider"] = new TemplateProvider();
 
         /*
         $handler = function ($exception) {
@@ -67,7 +67,7 @@ class Bootstrap{
                 return;
             }
 
-            die($this->getMainLanguage()->get('exceptions.exception', null, ($exception instanceof AdvancedException ? $exception->getTranslatedMessage() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
+            die($this->getMainLanguage()->get("exception.exception", null, ($exception instanceof AdvancedException ? $exception->getTranslatedMessage() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
         };
 
         set_exception_handler($handler);
@@ -86,83 +86,90 @@ class Bootstrap{
     * @return Request
     */
     public static function getRequest() : Request {
-        return self::$classes['request'];
+        return self::$classes["request"];
     }
 
     /**
     * @return Config
     */
     public static function getConfig() : Config {
-        return self::$classes['config'];
+        return self::$classes["config"];
+    }
+
+    /**
+    * @return Config
+    */
+    public static function getMainConfig() : Config {
+        return self::$classes["mainConfig"];
     }
 
     /**
     * @return TemplateProvider
     */
     public static function getTemplateProvider() : TemplateProvider {
-        self::$classes['templateProvider']->setPath('project');
+        self::$classes["templateProvider"]->setPath("project");
         
-        return self::$classes['templateProvider'];
+        return self::$classes["templateProvider"];
     }
 
     /**
     * @return TemplateProvider
     */
     public static function getMainTemplateProvider() : TemplateProvider {
-        self::$classes['templateProvider']->setPath('advanced');
+        self::$classes["templateProvider"]->setPath("advanced");
         
-        return self::$classes['templateProvider'];
+        return self::$classes["templateProvider"];
     }
 
     /**
     * @return LanguageProvider
     */
     public static function getLanguage() : Language {
-        return self::$classes['language'];
+        return self::$classes["language"];
     }
 
     /**
     * @return LanguageProvider
     */
     public static function getMainLanguage() : Language {
-        return self::$classes['languageMain'];
+        return self::$classes["mainLanguage"];
     }
 
     /**
     * @return Response
     */
     public static function getResponse() : Response {
-        return self::$classes['response'];
+        return self::$classes["response"];
     }
 
     /**
     * @return Auth
     */
     public static function getAuth() : Auth {
-        return self::$classes['auth'];
+        return self::$classes["auth"];
     }
 
     /**
      * @return Database
      */
     public static function setDatabase(Database $database) : void {
-        self::$classes['database'] = $database;
+        self::$classes["database"] = $database;
     }
 
     /**
      * @return Database
      */
     public static function getDatabase(): ?Database {
-        return (!self::$classes['database'] ? null : self::$classes['database']);
+        return self::$classes["database"] ?? null;
     }
 
     /**
      * @return Users
      */
     public static function getUsers() : Users {
-        if (!self::$classes['users']) self::$classes['users'] = new Users();
+        if (!self::$classes["users"]) self::$classes["users"] = new Users();
         
-        return self::$classes['users'];
+        return self::$classes["users"];
     }
 
     public static function setClass(string $name, $object) : void {

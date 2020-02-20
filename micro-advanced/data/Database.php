@@ -20,6 +20,7 @@ namespace advanced\data;
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\Bootstrap;
+use advanced\config\Config;
 use PDOStatement;
 
 /**
@@ -49,7 +50,7 @@ class Database{
         $this->database = $database;
 
         if (!extension_loaded("pdo")) {
-            throw new DatabaseException(0, 'exceptions.database.pdo_required');
+            throw new DatabaseException(0, 'exception.database.pdo_required');
 
             return;
         }
@@ -93,7 +94,7 @@ class Database{
 
                     $temp->exec("CREATE DATABASE {$this->database}");
                 } catch (\PDOException $ex) {
-                    throw new DatabaseException($ex->getCode(), 'exceptions.database.connecting', $e->getMessage());
+                    throw new DatabaseException($ex->getCode(), 'exception.database.connecting', $e->getMessage());
                 }
 
                 $this->run();
@@ -101,7 +102,7 @@ class Database{
                 return;
             }
 
-            throw new DatabaseException($e->getCode(), 'exceptions.database.connecting', $e->getMessage());
+            throw new DatabaseException($e->getCode(), 'exception.database.connecting', $e->getMessage());
         }
     }
 
@@ -379,7 +380,7 @@ class Database{
         foreach ($import as $key => $value) {
             $query = $this->setTable($key)->select()->execute();
 
-            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exceptions.database.create_table', $key, $this->getLastStatement()->errorInfo()[2]);
+            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exception.database.create_table', $key, $this->getLastStatement()->errorInfo()[2]);
         }
     }
 
@@ -389,11 +390,11 @@ class Database{
 
             $columns = join(', ', array_keys($value));
 
-            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exceptions.database.add_column', $key, $this->getLastStatement()->errorInfo()[2]);
+            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exception.database.add_column', $key, $this->getLastStatement()->errorInfo()[2]);
         }
     }
 
-    public function setup(Config $config, array $default) : void {
+    public function setup(Config $config) : void {
         $import = $config->get('import', []);
 
         Bootstrap::getDatabase()->import($import);

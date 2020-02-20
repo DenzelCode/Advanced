@@ -20,7 +20,7 @@ namespace advanced\account;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
 use advanced\account\base\User;
-use advanced\data\Config;
+use advanced\config\Config;
 use advanced\data\Database;
 
 /**
@@ -32,54 +32,16 @@ class Users {
 
     private static $instance;
 
-    private static $userObject = '\\advanced\\account\\User';
+    private static $userObject = "\\advanced\\account\\User";
     
-    private static $guestObject = '\\advanced\\account\\Guest';
+    private static $guestObject = "\\advanced\\account\\Guest";
 
     public function __construct() {
         self::$instance = $this;
 
-        if (!Bootstrap::getDatabase()) throw new UserException(0, 'exceptions.database.needed');
+        if (!Bootstrap::getDatabase()) throw new UserException(0, "exception.database.needed");
 
-        if (Bootstrap::getConfig()->get('database.setup', true)) {
-            Bootstrap::getDatabase()->setup(new Config(Database::getConfigPath()), [
-                'import' => [
-                    'users' => [
-                        'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
-                        'username' => 'varchar(125)',
-                        'firstname' => 'varchar(255)',
-                        'lastname' => 'varchar(255)',
-                        'password' => 'varchar(255)',
-                        'mail' => 'varchar(255)',
-                        'rank' => 'int(11)',
-                        'country' => 'varchar(4)',
-                        'gender' => 'enum(\'M\', \'F\') DEFAULT \'M\'',
-                        'account_created' => 'double(50, 0) DEFAULT 0',
-                        'last_used' => 'double(50, 0) DEFAULT 0',
-                        'last_online' => 'double(50, 0) DEFAULT 0',
-                        'last_password' => 'double(50, 0) DEFAULT 0',
-                        'online' => 'enum(\'0\', \'1\') DEFAULT \'0\'',
-                        'ip_reg' => 'varchar(45) NOT NULL',
-                        'ip_last' => 'varchar(45) NOT NULL',
-                        'language' => 'varchar(255) DEFAULT \'en\'',
-                        'connection_id' => 'text',
-                        'birth_date' => 'varchar(55)',
-                        'facebook_id' => 'text',
-                        'facebook_token' => 'text',
-                        'facebook_account' => 'boolean DEFAULT false'
-                    ],
-    
-                    'ranks' => [
-                        'id' => 'int(11) PRIMARY KEY AUTO_INCREMENT',
-                        'name' => 'text',
-                        'description' => 'text',
-                        'timestamp' => 'double(50, 0) DEFAULT 0'
-                    ]
-                ],
-    
-                'update' => []
-            ]);
-        }
+        $this->setupTable();
     }
 
     /**
@@ -121,11 +83,11 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "LIMIT {$limit}" : "");
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], ($limit > 0) ? "LIMIT {$limit}" : "");
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -141,12 +103,12 @@ class Users {
         $this->users = [];
 
         // User
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE username = ?", [$name]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE username = ?", [$name]);
 
         if (($data = $query->fetch())) {
-            $this->users[$data['id']] = $this->createUser($data, $authData);
+            $this->users[$data["id"]] = $this->createUser($data, $authData);
 
-            $return = $this->users[$data['id']];
+            $return = $this->users[$data["id"]];
         }
 
         return $return;
@@ -161,12 +123,12 @@ class Users {
         $this->users = [];
 
         // User
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE id = ?", [$id]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE id = ?", [$id]);
 
         if (($data = $query->fetch())) {
-            $this->users[$data['id']] = $this->createUser($data);
+            $this->users[$data["id"]] = $this->createUser($data, $authData);
 
-            $return = $this->users[$data['id']];
+            $return = $this->users[$data["id"]];
         }
 
         return $return;
@@ -181,78 +143,22 @@ class Users {
         $this->users = [];
 
         // User
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE mail = ?", [$mail]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE mail = ?", [$mail]);
 
         if (($data = $query->fetch())) {
-            $this->users[$data['id']] = $this->createUser($data);
+            $this->users[$data["id"]] = $this->createUser($data, $authData);
 
-            $return = $this->users[$data['id']];
+            $return = $this->users[$data["id"]];
         }
 
         return $return;
-    }
-
-    /**
-     * @return User|null
-     */
-    public function getUserByConnectionId(string $id, array $authData = []) : ? User {
-        $return = null;
-
-        $this->users = [];
-
-        // User
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE connection_id = ?", [$id]);
-
-        if (($data = $query->fetch())) {
-            $this->users[$data['id']] = $this->createUser($data);
-
-            $return = $this->users[$data['id']];
-        }
-
-        return $return;
-    }
-
-    /**
-     * @return User[]|null
-     */
-    public function getOnlineUsers(int $limit = 1) : ? array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE online != '0' LIMIT {$limit}" : "WHERE online != '0'");
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
-
-        return $users;
-    }
-
-    /**
-     * @return User[]|null
-     */
-    public function getOfflineUsers(int $limit = 1) : ? array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE online = '0' LIMIT {$limit}" : "WHERE online = '0'");
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
-
-        return $users;
     }
 
     /**
      * @return User[]|null
      */
     public function getLastUsers(int $limit = 1) : ? array {
-        return $this->getTopUsers('id', $limit);
+        return $this->getTopUsers("id", $limit);
     }
 
     /**
@@ -263,17 +169,17 @@ class Users {
 
         // Users
         if ($rank == null) {
-            $rank = Bootstrap::getConfig()->get('hk')['min_rank'];
+            $rank = Bootstrap::getConfig()->get("hk")["min_rank"];
 
-            $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE rank >= ? ORDER BY rank DESC LIMIT {$limit}" : "WHERE rank >= ? ORDER BY rank DESC", [$rank]);
+            $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE rank >= ? ORDER BY rank DESC" . ($limit > 0 ? " LIMIT {$limit}" : ""), [$rank]);
         } else {
-            $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE rank = ? LIMIT {$limit}" : "WHERE rank = ?", [$rank]);
+            $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE rank = ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), [$rank]);
         }
 
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) if ($occult && $user['staff_occult']) continue; else $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) if ($occult && $user["staff_occult"]) continue; else $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -287,11 +193,11 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "ORDER BY RAND() LIMIT {$limit}" : "ORDER BY RAND()");
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "ORDER BY RAND()" . ($limit > 0 ? " LIMIT {$limit}" : ""));
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -305,11 +211,11 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE ip_last LIKE ? OR ip_reg LIKE ? OR ip_current LIKE ? OR ip_register LIKE ? LIMIT {$limit}" : "WHERE ip_last LIKE ? OR ip_reg LIKE ? OR ip_current LIKE ? OR ip_register LIKE ?", ["%{$ip}%", "%{$ip}%", "%{$ip}%", "%{$ip}%"]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE ip_last LIKE ? OR ip_reg LIKE ? OR ip_current LIKE ? OR ip_register LIKE ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$ip}%", "%{$ip}%", "%{$ip}%", "%{$ip}%"]);
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -323,11 +229,11 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE username LIKE ? AND id >= ? LIMIT {$limit}" : "WHERE username LIKE ? AND id >= ?", ["%{$name}%", $from]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE username LIKE ? AND id >= ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$name}%", $from]);
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -341,11 +247,11 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE username LIKE ? AND id >= ? OR display_name LIKE ? AND id >= ? LIMIT {$limit}" : "WHERE username LIKE ? OR display_name LIKE ? AND id >= ?", ["%{$name}%", $from, "%{$name}%", $from]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE username LIKE ? OR display_name LIKE ? AND id >= ?"  . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$name}%", $from, "%{$name}%", $from]);
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -359,11 +265,11 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "WHERE display_name LIKE ? AND id >= ? LIMIT {$limit}" : "WHERE display_name LIKE ? AND id >= ?", ["%{$name}%", $from]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE display_name LIKE ? AND id >= ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$name}%", $from]);
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
@@ -377,15 +283,59 @@ class Users {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], ($limit > 0) ? "ORDER BY {$column} DESC LIMIT {$limit}" : "ORDER BY {$column} DESC");
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "ORDER BY {$column} DESC" . ($limit > 0 ? " LIMIT {$limit}" : ""));
 
         $data = $query->fetchAll();
 
-        foreach ($data as $user) $users[$user['id']] = $this->createUser($user);
+        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         if (empty($users)) $users = null;
 
         return $users;
+    }
+
+    public static function setupTable() : void {
+        Bootstrap::getConfig()->setIfNotExists("database.setup", true)->saveIfModified();
+
+        if (Bootstrap::getConfig()->get("database.setup", true)) {
+            $config = new Config(Database::getConfigPath());
+
+            $config->setIfNotExists("import.users", [
+                "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
+                "username" => "varchar(125)",
+                "firstname" => "varchar(255)",
+                "lastname" => "varchar(255)",
+                "password" => "varchar(255)",
+                "mail" => "varchar(255)",
+                "rank" => "int(11)",
+                "country" => "varchar(4)",
+                "gender" => "enum('M', 'F') DEFAULT 'M'",
+                "account_created" => "double(50, 0) DEFAULT 0",
+                "last_used" => "double(50, 0) DEFAULT 0",
+                "last_online" => "double(50, 0) DEFAULT 0",
+                "last_password" => "double(50, 0) DEFAULT 0",
+                "online" => "enum('0, '1') DEFAULT '0'",
+                "ip_reg" => "varchar(45) NOT NULL",
+                "ip_last" => "varchar(45) NOT NULL",
+                "language" => "varchar(255) DEFAULT 'en'",
+                "connection_id" => "text",
+                "birth_date" => "varchar(55)",
+                "facebook_id" => "text",
+                "facebook_token" => "text",
+                "facebook_account" => "boolean DEFAULT false"
+            ]);
+
+            $config->setIfNotExists("import.ranks", [
+                "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
+                "name" => "text",
+                "description" => "text",
+                "timestamp" => "double(50, 0) DEFAULT 0"
+            ]);
+
+            $config->saveIfModified();
+
+            Bootstrap::getDatabase()->setup($config);
+        }
     }
 }
 

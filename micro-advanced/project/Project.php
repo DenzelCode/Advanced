@@ -19,7 +19,7 @@ namespace advanced\project;
 
 use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
-use advanced\data\Config;
+use advanced\config\Config;
 use advanced\data\Database;
 use advanced\exceptions\RouterException;
 use advanced\http\router\Request;

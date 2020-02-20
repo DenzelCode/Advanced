@@ -27,7 +27,11 @@ use advanced\http\router\Request;
 class Guest extends User {
 
     public function __construct() {
-        $config = Bootstrap::getConfig()->get('sign_up');
+        $config = Bootstrap::getConfig();
+
+        if (!$config->has("sign_up.user")) $config->set("sign_up.user", [])->save();
+
+        $signup = $config->get('sign_up');
 
         $data = [
             'id' => 0,
@@ -39,7 +43,7 @@ class Guest extends User {
             'display_name' => Bootstrap::getMainLanguage()->get('general.guest')
         ];
 
-        foreach ((!empty($config['user']) ? $config['user'] : []) as $key => $value) $data[$key] = $value;
+        foreach ((!empty($signup['user']) ? $signup['user'] : []) as $key => $value) $data[$key] = $value;
 
         $this->set($data);
     }

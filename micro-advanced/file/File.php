@@ -17,7 +17,8 @@
 
 namespace advanced\file;
 
-use advanced\Bootstrap;
+use advanced\exceptions\FileException;
+use Exception;
 
 class File implements IFile{
 
@@ -44,7 +45,11 @@ class File implements IFile{
 
     public function write(string $content) : void {
         $handle = fopen($this->path, 'w');
-        fwrite($handle, $content);
+
+        if (!$handle) throw new FileException(1, "exception.file.open", $this->path);
+
+        if (!fwrite($handle, $content)) throw new FileException(1, "exception.file.write", $this->path);
+
         fclose($handle);
     }
 
@@ -53,14 +58,14 @@ class File implements IFile{
 
         $this->directory->create($permission);
 
-        if (!$this->exists()) {
-            $handle = fopen($this->path, $this->mode);
-            $data = $default;
-            fwrite($handle, $data);
-            fclose($handle);
+        $handle = fopen($this->path, $this->mode);
+        $data = $default;
+        $fwrite = fwrite($handle, $data);
 
-            $this->setPermission($permission);
-        }
+        if (!$fwrite) throw new Exception("test");
+        fclose($handle);
+
+        $this->setPermission($permission);
     }
 
     public function setName(string $name): void {

@@ -18,6 +18,8 @@
 namespace project\controllers;
 
 use advanced\controllers\Controller;
+use advanced\config\Config;
+use advanced\data\Database;
 
 /**
 * mainController class

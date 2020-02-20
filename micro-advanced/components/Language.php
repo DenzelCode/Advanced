@@ -17,7 +17,8 @@
 
 namespace advanced\components;
 
-use advanced\data\Config;
+use advanced\config\Config;
+use Exception;
 
 class Language{
 
@@ -30,13 +31,13 @@ class Language{
 
     private $config;
 
-    public function __construct(string $language, string $path = self::PATH_PROJECT) {
+    public function __construct(string $language, string $path = self::PATH_ADVANCED) {
         $this->language = $language;
 
         $this->path = $path;
 
         self::updateConfig($language);
-    }   
+    }
 
     public function setPath(string $path) : void {
         $different = $path != $this->path;

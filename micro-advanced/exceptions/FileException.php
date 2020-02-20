@@ -15,17 +15,11 @@
  * 
  */
 
-namespace tests;
+ namespace advanced\exceptions;
 
-use PHPUnit\Framework\TestCase as FrameworkTestCase;
-use environment;
-
-abstract class TestCase extends FrameworkTestCase {
-
-    public function __construct() {
-        parent::__construct();
-
-        environment::init(__DIR__ . DIRECTORY_SEPARATOR . "unit");
-    }
+/**
+ * FileException class
+ */	
+class FileException extends AdvancedException {
+    
 }
-

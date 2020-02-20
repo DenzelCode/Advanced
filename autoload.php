@@ -15,20 +15,17 @@
  * 
  */
 
+use advanced\exceptions\FileException;
+
 spl_autoload_register(function ($class) {
 	$path = __DIR__ . (explode('\\', $class)[0] == 'advanced' ? '/micro-advanced/' : DIRECTORY_SEPARATOR) . str_replace('\\', '/', str_replace('advanced', '', $class)) . '.php';
-	
-	if (strpos($class, "test")) {
-		fwrite(STDERR, print_r($class, TRUE));
-	}
 
 	try {
-		if(!file_exists($path)){
-			throw new Exception("File {$class} does not exists.");
-		}else{
+		if(!file_exists($path))
+			throw new FileException(0, "exception.file.not_exist", $class);
+		else
 			require($path);
-		}
 	} catch (Exception $e) {
-		echo $e->getMessage();
+		print($e->getMessage());
 	}
 });

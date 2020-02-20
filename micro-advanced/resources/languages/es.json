@@ -4,7 +4,7 @@
         "description": "Haciendo tu vida en PHP mas fácil"
     },
 
-    "exceptions": {
+    "exception": {
         "exception": "Error: {0} en el archivo {1} en la linea {2}",
         "version": "Version de PHP incompatible ({0}), Advanced requiere PHP {1} o mayor",
         
@@ -25,6 +25,12 @@
             "needed": "Debes configurar un Database en el Bootstrap para poder usar esta característica. Ej: Project::setDatabase(new Database($host, $port, $username, $password, $database))",
             "create_table": "Ha ocurrido un error creando la tabla {0}: {1}",
             "add_column": "Ha ocurrido un error agregando una columna a la tabla {0}: {1}"
+        },
+
+        "file": {
+            "not_exist":"El archivo {0} no existe",
+            "open": "Ha ocurrido un error abriendo el archivo {0}",
+            "write": "Ha ocurrido un error modificando el archivo {0}"
         }
     },
 

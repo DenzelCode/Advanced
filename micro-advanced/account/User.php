@@ -21,6 +21,7 @@ use advanced\account\base\User as BaseUser;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
 use advanced\account\Auth;
+use Exception;
 
 /**
  * User class
@@ -32,44 +33,29 @@ class User extends BaseUser {
 
         $this->authData = $authData;
 
+        Users::setupTable();
+
         if (!$this->exists()) {
-            $config = Bootstrap::getConfig();
+            $config = Bootstrap::getMainConfig();
 
-            $userChars = strlen($this->getName());
+            $min = $config->get("sign_up.min_characters", 4);
 
-            $min = $config->get('sign_up.min_characters');
+            $max = $config->get("sign_up.max_characters", 32);
 
-            $max = $config->get('sign_up.max_characters');
-
-            if ($userChars < $min || $userChars > $max) {
-                throw new UserException(0, 'user.characters', $min, $max);
+            if (strlen($this->getName()) < $min || strlen($this->getName()) > $max) {
+                throw new UserException(0, "exception.user.characters", $min, $max);
             } if (!self::isValidName($this->getName())) {
-                throw new UserException(1, 'user.invalid_name');
+                throw new UserException(1, "exception.user.invalid_name");
             } else if (!empty($this->getMail()) && !self::isValidMail($this->getMail())) {
-                throw new UserException(1, 'user.invalid_email');
-            } else {
-                $create = $this->create();
-
-                if (!$create) throw new UserException(1, 'exceptions.database.error', Bootstrap::getDatabase()->getLastStatement()->errorInfo()[2]);
-            }
+                throw new UserException(2, "exception.user.invalid_email");
+            } else if (!$this->create()) throw new UserException(3, "exception.database.error", Bootstrap::getDatabase()->getLastStatement()->errorInfo()[2]);
         }
 
         $name = strtolower($this->getName());
 
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE id = ? AND username = ?", [$this->getId(), $name]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], (!empty($this->getName()) && !empty($this->getId()) == 0 ? "WHERE id = ? AND username = ?" : (!empty($this->getName()) ? "WHERE username = ?" : "WHERE id = ?")), (!empty($this->getName()) && !empty($this->getId()) == 0 ? [$this->getId(), $name] : (!empty($this->getName()) ? [$name] : [$this->getId()])));
 
-        switch (true) {
-            case $this->getName() != "" && $this->getId() == 0:
-                $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE username = ?", [$name]);
-                break;
-            case $this->getName() == "" && $this->getId() != 0:
-                $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE id = ?", [$this->getId()]);
-                break;
-        }
-
-        $data = array_merge($this->getDataArray(), $query->fetch());
-
-        if (!empty($data)) $this->setDataArray($data);
+        if (!empty(($fetch = $query->fetch()))) $this->data = $fetch;
     }
 
     /**
@@ -81,7 +67,7 @@ class User extends BaseUser {
         if ($this->exists()) {
             if (empty($this->authData)) return false;
 
-            $this->authData['cookie'] = $cookie;
+            $this->authData["cookie"] = $cookie;
 
             $auth = Auth::attempt($this->authData, $this);
 
@@ -92,44 +78,44 @@ class User extends BaseUser {
     }
     
     public function set(array $data) : void {
-        Bootstrap::getDatabase()->setTable('users')->update($data, "WHERE id = ?", [$this->getId()]);
+        Bootstrap::getDatabase()->setTable("users")->update($data, "WHERE id = ?", [$this->getId()]);
 
-        foreach ($data as $key => $value) $this->setData($key, $value);
+        foreach ($data as $key => $value) $this->data[$key] = $value;
     }
     /**
      * @return array
      */
-    public function getAll() : array {
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['*'], "WHERE id = ? AND username = ?", [$this->getId(), $this->getName()]);
+    public function getAll() : ?array {
+        return $this->data ?? null;
+    }
 
-        $this->setDataArray($query->fetch());
-
-        if (!empty($this->getDataArray())) return $this->getDataArray(); else return false;
+    public function updateData() : void {
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE id = ? AND username = ?", [$this->getId(), $this->getName()]);
+        
+        $this->data = $query->fetch();
     }
 
     /**
      * @return bool
      */
     protected function create() : bool {
-        $insert = Bootstrap::getDatabase()->setTable('users')->insert($this->getDataArray());
-
-        return $insert;
+        return Bootstrap::getDatabase()->setTable("users")->insert($this->data);
     }
 
     public function delete() : bool {
         if (!$this->exists()) return false;
 
-        return Bootstrap::getDatabase()->setTable('users')->delete("WHERE id = ?", [$this->getId()]);
+        return Bootstrap::getDatabase()->setTable("users")->delete("WHERE id = ?", [$this->getId()]);
     }
 
     public function exists() : bool {
         $name = strtolower($this->getName());
 
-        $query = Bootstrap::getDatabase()->setTable('users')->select(['username'], "WHERE username = ?", [$name]);
+        $query = Bootstrap::getDatabase()->setTable("users")->select(["username"], "WHERE username = ?", [$name]);
 
         $exist = $query->fetchAll();
 
-        return (count($exist) ? true : false);
-    } 
+        return (bool) count($exist);
+    }
 }
 

@@ -4,7 +4,7 @@
         "description": "Create more by doing less"
     },
 
-    "exceptions": {
+    "exception": {
         "exception": "Error: {0} file {1} on line {2}",
         "version": "Incompatible PHP version ({0}), Advanced requires at least PHP {1}",
 
@@ -25,6 +25,12 @@
             "needed": "You must set a Database to the Bootstrap to use this feature. Ex: Project::setDatabase(new Database($host, $port, $username, $password, $database))",
             "create_table": "An error occurred creating the table {0}: {1}",
             "add_column": "An error ocurred addding a column for the table {0}: {1}"
+        },
+
+        "file": {
+            "not_exist": "File {0} does not exists",
+            "open": "An error occurred opening the file {0}",
+            "write": "An error occurred writing the file {0}"
         }
     },
 

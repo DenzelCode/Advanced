@@ -47,6 +47,6 @@ abstract class AdvancedException extends \Exception {
 
         $return = @call_user_func_array([ Bootstrap::getMainLanguage(), 'get' ], $arguments);
 
-        return ($return ? $return : $this->message_code);
+        return $return ?? $this->message_code;
     }
 }

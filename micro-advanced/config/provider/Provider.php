@@ -15,17 +15,13 @@
  * 
  */
 
-namespace tests;
+namespace advanced\config\provider;
 
-use PHPUnit\Framework\TestCase as FrameworkTestCase;
-use environment;
-
-abstract class TestCase extends FrameworkTestCase {
-
-    public function __construct() {
-        parent::__construct();
-
-        environment::init(__DIR__ . DIRECTORY_SEPARATOR . "unit");
-    }
+interface Provider {
+    
+    public function getName() : string;
+    public function getExtension() : string;
+    public function encode(array $data) : string;
+    public function decode(string $data) : array;
+    public function prettyPrint(array $data) : string;
 }
-
