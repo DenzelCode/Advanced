@@ -392,8 +392,6 @@ class Database{
         foreach ($update as $key => $value) {
             $query = $this->setTable($key)->select()->execute();
 
-            $columns = join(', ', array_keys($value));
-
             if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exception.database.add_column', $key, $this->getLastError());
         }
     }
