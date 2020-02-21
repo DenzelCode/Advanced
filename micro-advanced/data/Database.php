@@ -401,10 +401,10 @@ class Database{
     public function setup(Config $config) : void {
         $import = $config->get('import', []);
 
-        Bootstrap::getDatabase()->import($import);
+        $this->import($import);
 
         $update = $config->get('update', []);
 
-        Bootstrap::getDatabase()->updateImport($update);
+        $this->updateImport($update);
     }
 }
