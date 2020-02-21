@@ -59,11 +59,11 @@ class ConfigTest extends TestCase {
     public function testHasConfiguration() : void {
         $config = new Config(Project::getConfigPath());
 
-        $config->set('test.has', true);
+        $config->set("test.has", true);
 
         $config->save();
 
-        $this->assertTrue($config->get('test.has'));
+        $this->assertTrue($config->get("test.has"));
     }
 }
 

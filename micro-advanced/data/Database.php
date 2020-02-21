@@ -123,6 +123,10 @@ class Database{
     public function getLastStatement() : PDOStatement {
         return $this->lastStatement;
     }
+
+    public function getLastError() : string {
+        return $this->getLastStatement()->errorInfo()[2];
+    }
  
     public function select(array $data = ['*'], string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
@@ -380,7 +384,7 @@ class Database{
         foreach ($import as $key => $value) {
             $query = $this->setTable($key)->select()->execute();
 
-            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exception.database.create_table', $key, $this->getLastStatement()->errorInfo()[2]);
+            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exception.database.create_table', $key, $this->getLastError());
         }
     }
 
@@ -390,7 +394,7 @@ class Database{
 
             $columns = join(', ', array_keys($value));
 
-            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exception.database.add_column', $key, $this->getLastStatement()->errorInfo()[2]);
+            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exception.database.add_column', $key, $this->getLastError());
         }
     }
 
