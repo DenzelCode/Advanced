@@ -21,6 +21,8 @@ use advanced\account\base\User as BaseUser;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
 use advanced\account\Auth;
+use advanced\mailer\Mailer;
+use advanced\mailer\Receipient;
 use Exception;
 
 /**
@@ -56,6 +58,10 @@ class User extends BaseUser {
         $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], (!empty($this->getName()) && !empty($this->getId()) == 0 ? "WHERE id = ? AND username = ?" : (!empty($this->getName()) ? "WHERE username = ?" : "WHERE id = ?")), (!empty($this->getName()) && !empty($this->getId()) == 0 ? [$this->getId(), $name] : (!empty($this->getName()) ? [$name] : [$this->getId()])));
 
         if (!empty(($fetch = $query->fetch()))) $this->data = $fetch;
+    }
+
+    public function sendMail(string $server, string $subject, string $body) : void {
+        Mailer::sendMail($server, $subject, $body, new Receipient($this->getName(), $this->getMail()));
     }
 
     /**

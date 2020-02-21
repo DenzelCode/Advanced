@@ -23,18 +23,22 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer {
 
-    public static function sendMail(string $server, string $subject, string $body, $recipients) : void {
+    public static function sendMail(string $server, string $subject, string $body, $recipients) : bool {
         $config = new Config(PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mailer");
 
-        $config->setIfNotExists("server.{$server}", [
-            "name" => "Testing",
-            "host" => "host",
-            "port" => 587,
-            "secure" => "tls",
-            "username" => "mail@example.com",
-            "password" => "password",
-            "address" => "mail@example.com"
-        ])->saveIfModified();
+        if (!$config->has("server.{$server}")) {
+            $config->set("server.{$server}", [
+                "name" => "Testing",
+                "host" => "host",
+                "port" => 587,
+                "secure" => "tls",
+                "username" => "mail@example.com",
+                "password" => "password",
+                "address" => "mail@example.com"
+            ])->saveIfModified();
+
+            return false;
+        }
         
         $mail = new PHPMailer();
         $mail->isSMTP();
@@ -59,5 +63,7 @@ class Mailer {
         $mail->Subject = $subject;
 
         if (!$mail->send()) throw new MailerException(0, "exception.mailer.error", $mail->ErrorInfo);
+        
+        return true;
     }
 }
