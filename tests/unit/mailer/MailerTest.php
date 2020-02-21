@@ -1,4 +1,4 @@
-<?php  
+<?php
 /**
  * 
  * Advanced microFramework
@@ -15,23 +15,18 @@
  * 
  */
 
-namespace advanced\mailer;
+namespace tests\unit\data;
 
-class Receipient {
+use advanced\body\template\TemplateProvider;
+use advanced\mailer\Mailer;
+use advanced\mailer\Receipient;
+use tests\TestCase;
 
-    private $name;
-    private $mail;
-
-    public function __construct(string $name, string $mail) {
-        $this->name = $name;
-        $this->mail = $mail;
-    }
-
-    public function getName() : string {
-        return $this->name;
-    }
-
-    public function getMail() : string {
-        return $this->mail;
+class MailerTest extends TestCase {
+    
+    public function testSendMail() : void {
+        $send = Mailer::sendMail("default", "Testing", TemplateProvider::get("mail/test"), new Receipient("Denzel Code", "denzelcodedev@gmail.com"));
+        
+        $this->assertTrue($send);
     }
 }

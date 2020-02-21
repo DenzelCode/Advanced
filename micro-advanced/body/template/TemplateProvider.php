@@ -181,9 +181,7 @@ class TemplateProvider{
 
         $templateCache = new File(self::getPath() . 'cache' . DIRECTORY_SEPARATOR . $template .  '.php');
         
-        if ($create) $templatePath->create(Bootstrap::getMainLanguage()->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath->getName()))));
-
-        $templateName = $template;
+        if ($create) $templatePath->create(Bootstrap::getMainLanguage()->get('template.default', null, str_replace('/', DIRECTORY_SEPARATOR, str_replace('\\', DIRECTORY_SEPARATOR, $templatePath->getPath()))));
 
         $parameters = [];
 
@@ -193,14 +191,14 @@ class TemplateProvider{
 
         switch ($templatePath->exists()) {
             case true:
-                $write_cache = (!(is_file($templateCache) && filemtime($templateCache) <= filemtime($templatePath)));
+                $write_cache = (!(is_file($templateCache->getPath()) && filemtime($templateCache->getPath()) <= filemtime($templatePath->getPath())));
 
                 if ($write_cache && $cache) {
                     $data = $templatePath->read();
 
                     $data = self::filterTemplate($data);
 
-                    $templateCache->write($data);
+                    ($templateCache->exists() ? $templateCache->write($data) : $templateCache->create($data));
                 }
 
                 $data = ($cache ? $templateCache : $templatePath)->read($parameters) . "\n";
@@ -208,7 +206,7 @@ class TemplateProvider{
                 return self::filter($data);
 
             default:
-                return Bootstrap::getMainLanguage()->get('template.not_exists', null, $templateName);
+                return Bootstrap::getMainLanguage()->get('template.not_exists', null, $template);
         }
     }
 

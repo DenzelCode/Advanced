@@ -59,10 +59,10 @@ class File implements IFile{
         $this->directory->create($permission);
 
         $handle = fopen($this->path, $this->mode);
-        $data = $default;
-        $fwrite = fwrite($handle, $data);
+        $fwrite = fwrite($handle, (string) $default);
 
-        if (!$fwrite) throw new Exception("test");
+        if (!$fwrite) throw new FileException(1, "exception.file.write", $this->path);
+
         fclose($handle);
 
         $this->setPermission($permission);

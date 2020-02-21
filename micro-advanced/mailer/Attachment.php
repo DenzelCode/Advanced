@@ -17,21 +17,21 @@
 
 namespace advanced\mailer;
 
-class Receipient {
+class Attachment {
 
+    private $path;
     private $name;
-    private $mail;
 
-    public function __construct(string $name, string $mail) {
+    public function __construct(string $path, string $name) {
+        $this->path = $path;
         $this->name = $name;
-        $this->mail = $mail;
+    }
+
+    public function getPath() : string {
+        return $this->path;
     }
 
     public function getName() : string {
         return $this->name;
-    }
-
-    public function getMail() : string {
-        return $this->mail;
     }
 }

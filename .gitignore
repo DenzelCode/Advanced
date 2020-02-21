@@ -3,3 +3,4 @@
 
 # /project/*
 /vendor/
+/tests/resources/config/mailer.json

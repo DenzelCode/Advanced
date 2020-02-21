@@ -23,7 +23,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer {
 
-    public static function sendMail(string $server, string $subject, string $body, $recipients) : bool {
+    public static function sendMail(string $server, string $subject, string $body, $recipients, $attachments = null) : bool {
         $config = new Config(PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mailer");
 
         if (!$config->has("server.{$server}")) {
@@ -54,13 +54,19 @@ class Mailer {
         $mail->FromName = $config->get("server.{$server}.name");
         $mail->addReplyTo($config->get("server.{$server}.address"), $config->get("server.{$server}.name"));
 
-        if ($recipients instanceof Receipient) $mail->addAddress($recipients->getMail(), $recipients->getName()); else if (is_array($recipients)) {
-            foreach ($recipients as $receipient) $mail->addAddress($receipient->getMail(), $receipient->getName());
-        }
-            
         $mail->isHTML(true);
         $mail->msgHTML($body);
         $mail->Subject = $subject;
+
+        if ($recipients instanceof Receipient) 
+            $mail->addAddress($recipients->getMail(), $recipients->getName()); 
+        else if (is_array($recipients))
+            foreach ($recipients as $receipient) $mail->addAddress($receipient->getMail(), $receipient->getName());
+
+        if ($attachments instanceof Attachment) 
+            $mail->addAttachment($attachments->getPath(), $attachments->getName()); 
+        else if (is_array($attachments))
+            foreach ($attachments as $attachment) $mail->addAttachment($attachment->getPath(), $attachment->getName());
 
         if (!$mail->send()) throw new MailerException(0, "exception.mailer.error", $mail->ErrorInfo);
         
