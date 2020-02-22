@@ -19,6 +19,7 @@ namespace advanced\project;
 
 use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
+use advanced\components\Language;
 use advanced\config\Config;
 use advanced\data\Database;
 use advanced\exceptions\RouterException;
@@ -76,6 +77,10 @@ abstract class Project {
 
     public static function getConfigPath() : string {
         return self::$configPath;
+    }
+
+    public static function getLanguage() : Language {
+        return Bootstrap::getLanguage();
     }
 
     public static function getDatabase() : ?Database {
