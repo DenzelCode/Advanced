@@ -22,6 +22,7 @@ use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\http\Response;
 use advanced\account\Auth;
+use advanced\http\router\Request;
 
 /**
 * mainController class
@@ -29,7 +30,7 @@ use advanced\account\Auth;
 class mainController extends Controller {
 
     // URL: /index and main page
-    public function index(string $method = "*") : string {
+    public function index(string $method = Request::ALL) : string {
         // Set parameter title on the template we can access to it in the template as {@title} or {#= $title #}
         TemplateProvider::setParameter("title", Bootstrap::getLanguage()->get("title.index"));
     
@@ -59,7 +60,7 @@ class mainController extends Controller {
     }
 
     // URL: /login returning the login template
-    public function logged(string $method = "*") : string {
+    public function logged(string $method = Request::ALL) : string {
         // If it's not authenticated, send into /login
         if (!Auth::isAuthenticated()) Response::redirect("/login");
 
@@ -70,7 +71,7 @@ class mainController extends Controller {
     }
 
     // URL: /logout
-    public function logout(string $method = "*") : void {
+    public function logout(string $method = Request::ALL) : void {
         // If it's not authenticated, send into /login
         if (!Auth::isAuthenticated()) Response::redirect("/login");
 
@@ -81,14 +82,14 @@ class mainController extends Controller {
     }
 
     // URL: parameters_examples
-    public function parameters_examples(string $method = "get") : string {
+    public function parameters_examples(string $method = Request::GET) : string {
         TemplateProvider::setParameter("title", Bootstrap::getLanguage()->get("title.parameters_examples"));
 
         return TemplateProvider::get("main/parameters_examples");
     }
 
     // URL: /new_template returning the newtemplate template
-    public function new_template(string $method = "get|post") : string {
+    public function new_template(string $method = Request::ALL) : string {
         // If the template doesn't exists the framework creates the file automatically
         return TemplateProvider::get("main/new_template");
     }
@@ -97,12 +98,12 @@ class mainController extends Controller {
      * Some examples of URL methods with the framework.
      */
     // URL: /testing Method: GET
-    public function testing(string $method = "get") : string {
+    public function testing(string $method = Request::GET) : string {
         return "Testing method: {$method}";
     }
     
     // URL: /testingPost Method: POST
-    public function testingPost(string $method = "post") : string {
+    public function testingPost(string $method = Request::POST) : string {
         return "Testing method: {$method}";
     }
 
@@ -112,22 +113,22 @@ class mainController extends Controller {
     }
 
     // URL: /testingGeneral Method: General
-    public function testingGeneral(string $method = "*") : string {
+    public function testingGeneral(string $method = Request::GENERAL) : string {
         return "Testing method: {$method}";
     }
 
     // URL: /testingAny Method: General
-    public function testingAny(string $method = "any") : string {
+    public function testingAny(string $method = Request::ANY) : string {
         return "Testing method: {$method}";
     }
 
     // URL: /testingAll Method: General
-    public function testingAll(string $method = "all") : string {
+    public function testingAll(string $method = Request::ALL) : string {
         return "Testing method: {$method}";
     }
 
     // Url: /error404, this is going to be run by default when an URL doesn't exists or if you access /error404 url.
-    public function error404(string $method = "*") : string {
+    public function error404(string $method = Request::ALL) : string {
         TemplateProvider::setParameter("title", Bootstrap::getLanguage()->get("title.404"));
 
         return TemplateProvider::get("main/error404");

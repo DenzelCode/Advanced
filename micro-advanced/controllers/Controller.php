@@ -26,7 +26,7 @@ use advanced\http\router\Request;
 */
 abstract class Controller {
 
-    public function index(string $method = Request::GENERAL) : string {
+    public function index(string $method = Request::ALL) : string {
         TemplateProvider::setParameters([
             "title" => Bootstrap::getMainLanguage()->get("general.description"),
             "name" => Bootstrap::getConfig()->get('web.name'),

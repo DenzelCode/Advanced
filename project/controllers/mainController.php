@@ -25,7 +25,7 @@ use advanced\http\router\Request;
 */
 class mainController extends Controller {
 
-    public function index(string $method = Request::GENERAL) : string {
+    public function index(string $method = Request::ALL) : string {
         return parent::index($method);
     }
 
@@ -33,7 +33,7 @@ class mainController extends Controller {
         return "Testing URL: {$argument}";
     }
 
-    public function error404(string $method = Request::GENERAL) : string {
+    public function error404(string $method = Request::ALL) : string {
         return "Error 404";
     }
 }
