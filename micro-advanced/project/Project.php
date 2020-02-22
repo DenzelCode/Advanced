@@ -40,6 +40,10 @@ abstract class Project {
 
     protected static $router;
 
+    protected static $resourcesDirectory = PROJECT . "resources";
+
+    protected static $configDirectory = PROJECT . "resources" . DIRECTORY_SEPARATOR . "config";
+
     protected static $configPath = PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config";
 
     public abstract function init() : void;
@@ -60,6 +64,14 @@ abstract class Project {
 
     public static function getBootstrap() : Bootstrap {
         return self::$bootstrap;
+    }
+
+    public static function getResourcesDirectory() : string {
+        return self::$resourcesDirectory;
+    }
+
+    public static function getConfigDirectory() : string {
+        return self::$configDirectory;
     }
 
     public static function getConfigPath() : string {
