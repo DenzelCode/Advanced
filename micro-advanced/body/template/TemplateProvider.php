@@ -191,7 +191,7 @@ class TemplateProvider{
 
         switch ($templatePath->exists()) {
             case true:
-                $write_cache = (!(is_file($templateCache->getPath()) && filemtime($templateCache->getPath()) <= filemtime($templatePath->getPath())));
+                $write_cache = (is_file($templateCache->getPath()) && filemtime($templateCache->getPath()) <= filemtime($templatePath->getPath()));
 
                 if ($write_cache && $cache) {
                     $data = $templatePath->read();
