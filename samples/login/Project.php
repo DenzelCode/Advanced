@@ -17,9 +17,8 @@
 
 namespace project;
 
-use advanced\Bootstrap;
 use advanced\project\Project as BaseProject;
-use advanced\data\{Database, Config};
+use advanced\data\Database;
 use advanced\exceptions\DatabaseException;
 use advanced\body\template\TemplateProvider;
 
