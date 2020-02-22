@@ -46,7 +46,7 @@ class Router{
         if ($parameter && $parameter->getName() == "method" && !self::checkMethods(explode("|", $parameter->getDefaultValue()))) 
             throw new RouterException(0, "exception.router.method_not_exists", $parameter->getDefaultValue());
 
-        if ($parameter && $parameter->getName() == "method" && strtolower($parameter->getDefaultValue()) != "*" && strtolower($parameter->getDefaultValue()) != "general" && strtolower($parameter->getDefaultValue()) != "all" && strtolower($parameter->getDefaultValue()) != "any" && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) {
+        if ($parameter && $parameter->getName() == "method" && strtolower($parameter->getDefaultValue()) != "*" && strtolower($parameter->getDefaultValue()) != strtolower(Request::GENERAL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ALL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ANY) && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) {
             Response::setCode(404);
             $request->setController("main");
             $request->setMethod("error404");
