@@ -18,23 +18,22 @@
 namespace project\controllers;
 
 use advanced\controllers\Controller;
-use advanced\config\Config;
-use advanced\data\Database;
+use advanced\http\router\Request;
 
 /**
 * mainController class
 */
 class mainController extends Controller {
 
-    public function index(string $method = "*") : string {
+    public function index(string $method = Request::GENERAL) : string {
         return parent::index($method);
     }
 
-    public function testing(string $method = "get", string $argument = "default value") : string {
+    public function testing(string $method = Request::GET, string $argument = "default value") : string {
         return "Testing URL: {$argument}";
     }
 
-    public function error404(string $method = "*") : string {
+    public function error404(string $method = Request::GENERAL) : string {
         return "Error 404";
     }
 }

@@ -21,11 +21,22 @@ use advanced\controllers\Controller;
 
 class Request{
 
-    private static $controller = 'main';
+    public const GET = "GET";
+    public const POST = "POST";
+    public const DELETE = "DELETE";
+    public const PUT = "PUT";
+    public const CONNECT = "CONNECT";
+    public const TRACE = "TRACE";
+    public const HEAD = "HEAD";
+    public const GENERAL = "*";
+    public const ALL = "ALL";
+    public const ANY = "ANY";
 
-    private static $method = 'index';
+    private static $controller = "main";
 
-    private static $requestMethod = 'get';
+    private static $method = "index";
+
+    private static $requestMethod = "get";
 
     private static $arguments = [];
 
@@ -34,22 +45,22 @@ class Request{
     public function __construct(string $url = null) {
         self::$instance = $this;
 
-        $route = explode('/', substr($url, 0, ($str = strrpos($url, '?')) ? $str : strlen($url)));
+        $route = explode("/", substr($url, 0, ($str = strrpos($url, "?")) ? $str : strlen($url)));
 
         array_shift($route);
 
-        self::$controller = (empty($route[0]) ? 'main' : strtolower($route[0]));
+        self::$controller = (empty($route[0]) ? "main" : strtolower($route[0]));
 
-        self::$method = (empty($route[1]) ? 'index' : $route[1]);
+        self::$method = (empty($route[1]) ? "index" : $route[1]);
 
-        if (count($route) && $route[0] == 'index' || count($route) && $route[0] == 'index.php') self::$controller = 'main';
+        if (count($route) && $route[0] == "index" || count($route) && $route[0] == "index.php") self::$controller = "main";
 
         if (!file_exists(($controller = self::getFile(ADVANCED)))) $controller = self::getFile(PROJECT);
 
         $i = 2;
 
         if (!file_exists($controller)) {
-            self::$controller = 'main';
+            self::$controller = "main";
 
             self::$method = $route[0];
 
@@ -106,11 +117,11 @@ class Request{
     }
 
     public static function getSecure() : string {
-        return (string) (!empty($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://');
+        return (string) (!empty($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on") ? "https://" : "http://");
     }
 
     public static function getURL() : string {
-        return (string) $_SERVER['HTTP_HOST'];
+        return (string) $_SERVER["HTTP_HOST"];
     }
 
     /**
@@ -149,7 +160,7 @@ class Request{
 
         if (filter_var($userIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) $userIP = hexdec(substr($userIP, 0, 2)). "." . hexdec(substr($userIP, 2, 2)). "." . hexdec(substr($userIP, 5, 2)). "." . hexdec(substr($userIP, 7, 2));
 
-        if ($userIP == '::1' || $userIP = '0.1.0.0' || empty($userIP)) $userIP = '127.0.0.1';
+        if ($userIP == "::1" || $userIP = "0.1.0.0" || empty($userIP)) $userIP = "127.0.0.1";
 
         return $userIP;
     }

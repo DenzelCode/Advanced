@@ -32,23 +32,23 @@ class Router{
         }
 
         if (!method_exists($request->getObjectName($preffix), $request->getMethod())) {
-            $request->setController('main');
-            $request->setMethod('error404');
             Response::setCode(404);
+            $request->setController("main");
+            $request->setMethod("error404");
         }
 
         $parameters = (new \ReflectionMethod($request->getObjectName($preffix), $request->getMethod()))->getParameters();
 
         $parameter = (empty($parameters[0]) ? null : $parameters[0]);
 
-        $request->setRequestMethod(strtolower($_SERVER['REQUEST_METHOD']));
+        $request->setRequestMethod(strtolower($_SERVER["REQUEST_METHOD"]));
 
-        if ($parameter && $parameter->getName() == 'method' && !self::checkMethods(explode('|', $parameter->getDefaultValue()))) 
+        if ($parameter && $parameter->getName() == "method" && !self::checkMethods(explode("|", $parameter->getDefaultValue()))) 
             throw new RouterException(0, "exception.router.method_not_exists", $parameter->getDefaultValue());
 
-        if ($parameter && $parameter->getName() == 'method' && $parameter->getDefaultValue() != '*' && $parameter->getDefaultValue() != 'general' && $parameter->getDefaultValue() != 'all' && $parameter->getDefaultValue() != 'any' && !in_array($request->getRequestMethod(), explode('|', strtolower($parameter->getDefaultValue())))) {
-            $request->setController('main');
-            $request->setMethod('error404');
+        if ($parameter && $parameter->getName() == "method" && $parameter->getDefaultValue() != "*" && $parameter->getDefaultValue() != "general" && $parameter->getDefaultValue() != "all" && $parameter->getDefaultValue() != "any" && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) {
+            $request->setController("main");
+            $request->setMethod("error404");
             Response::setCode(404);
         }
 
@@ -62,9 +62,9 @@ class Router{
     }
 
     private static function checkMethods(array $methods) : bool {
-        $methods = array_map('strtolower', $methods);
+        $methods = array_map("strtolower", $methods);
 
-        $main = array_map('strtolower', self::$http_methods);
+        $main = array_map("strtolower", self::$http_methods);
 
         foreach ($methods as $method) if (!in_array($method, $main)) return false;
 

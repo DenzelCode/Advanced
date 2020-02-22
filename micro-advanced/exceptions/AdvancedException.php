@@ -45,7 +45,7 @@ abstract class AdvancedException extends \Exception {
 
         foreach ($this->getParameters() as $parameter) $arguments[] = $parameter;
 
-        $return = @call_user_func_array([ Bootstrap::getMainLanguage(), 'get' ], $arguments);
+        $return = @call_user_func_array([ Bootstrap::getMainLanguage(), "get" ], $arguments);
 
         return $return ?? $this->message_code;
     }

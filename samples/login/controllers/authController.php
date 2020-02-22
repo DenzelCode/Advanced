@@ -31,7 +31,7 @@ use advanced\account\Auth;
 class authController extends Controller {
 
     // URL: /auth/login Method: POST
-    public function login(string $method = "post") : string {
+    public function login(string $method = Request::POST) : string {
         // Login
         $response = [];
 
@@ -83,7 +83,7 @@ class authController extends Controller {
     }
 
     // URL: /auth/register Method: POST
-    public function register(string $method = "post") : string {
+    public function register(string $method = Request::POST) : string {
         // Register
         $response = [];
 
