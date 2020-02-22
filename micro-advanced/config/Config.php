@@ -20,7 +20,6 @@ namespace advanced\config;
 use advanced\config\provider\JsonProvider;
 use advanced\config\provider\Provider;
 use advanced\file\File;
-use PHPUnit\Util\Json;
 
 /**
 * Config class
