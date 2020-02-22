@@ -27,7 +27,7 @@ class File implements IFile{
     private $directory;
     private $mode;
 
-    public function __construct(string $file, string $mode = 'w') {
+    public function __construct(string $file, string $mode = "w") {
         $this->path = $file;
         $this->path = str_replace("\\", DIRECTORY_SEPARATOR, $this->path);
         $this->path = str_replace("/", DIRECTORY_SEPARATOR, $this->path);
@@ -44,7 +44,7 @@ class File implements IFile{
     }
 
     public function write(string $content) : void {
-        $handle = fopen($this->path, 'w');
+        $handle = fopen($this->path, "w");
 
         if (!$handle) throw new FileException(1, "exception.file.open", $this->path);
 

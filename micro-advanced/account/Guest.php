@@ -31,25 +31,25 @@ class Guest extends User {
 
         if (!$config->has("sign_up.user")) $config->set("sign_up.user", [])->save();
 
-        $signup = $config->get('sign_up');
+        $signup = $config->get("sign_up");
 
         $data = [
-            'id' => 0,
-            'username' => Bootstrap::getMainLanguage()->get('general.guest'),
-            'rank' => 1,
-            'gender' => (Auth::get('gender') ? Auth::get('gender') : "M"),
-            'ip_last' => Request::getIp(),
-            'ip_reg' => Request::getIp(),
-            'display_name' => Bootstrap::getMainLanguage()->get('general.guest')
+            "id" => 0,
+            "username" => Bootstrap::getMainLanguage()->get("general.guest"),
+            "rank" => 1,
+            "gender" => (Auth::get("gender") ? Auth::get("gender") : "M"),
+            "ip_last" => Request::getIp(),
+            "ip_reg" => Request::getIp(),
+            "display_name" => Bootstrap::getMainLanguage()->get("general.guest")
         ];
 
-        foreach ((!empty($signup['user']) ? $signup['user'] : []) as $key => $value) $data[$key] = $value;
+        foreach ((!empty($signup["user"]) ? $signup["user"] : []) as $key => $value) $data[$key] = $value;
 
         $this->set($data);
     }
 
     public function set(array $data) : void {
-        $keys = ['username', 'id', 'password'];
+        $keys = ["username", "id", "password"];
 
         foreach ($data as $key => $value) {
             if (!in_array($key, array_keys($keys))) Auth::set([ $key => $value ]);

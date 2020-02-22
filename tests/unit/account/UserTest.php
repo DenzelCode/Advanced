@@ -36,14 +36,14 @@ class UserTest extends TestCase {
 
     public function testCreateAccount() : void {
         $user = Bootstrap::getUsers()->createUser([
-            'username' => "dsdsdsds",
-            'password' => Auth::hash("testing"),
-            'mail' => "testing@example.com",
-            'account_created' => time(),
-            'ip_reg' => Request::getIp(),
-            'ip_last' => Request::getIp(),
-            'gender' => "M",
-            'last_used' => time()
+            "username" => "dsdsdsds",
+            "password" => Auth::hash("testing"),
+            "mail" => "testing@example.com",
+            "account_created" => time(),
+            "ip_reg" => Request::getIp(),
+            "ip_last" => Request::getIp(),
+            "gender" => "M",
+            "last_used" => time()
         ]);
 
         $this->assertTrue(true);

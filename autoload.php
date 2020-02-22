@@ -18,7 +18,7 @@
 use advanced\exceptions\FileException;
 
 spl_autoload_register(function ($class) {
-	$path = __DIR__ . (explode('\\', $class)[0] == 'advanced' ? '/micro-advanced/' : DIRECTORY_SEPARATOR) . str_replace('\\', '/', str_replace('advanced', '', $class)) . '.php';
+	$path = __DIR__ . (explode("\\", $class)[0] == "advanced" ? "/micro-advanced/" : DIRECTORY_SEPARATOR) . str_replace("\\", "/", str_replace("advanced", "", $class)) . ".php";
 
 	try {
 		if(!file_exists($path))

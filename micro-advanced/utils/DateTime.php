@@ -25,9 +25,9 @@ use advanced\Bootstrap;
  */
 class DateTime extends \DateTime {
 
-    public $format = 'm-d-Y H:i:s'; // F jS, Y
+    public $format = "m-d-Y H:i:s"; // F jS, Y
 
-    public function __construct(string $time = 'now', DateTimeZone $timezone = null) {
+    public function __construct(string $time = "now", DateTimeZone $timezone = null) {
         parent::__construct($time, $timezone);
     }
 
@@ -42,11 +42,11 @@ class DateTime extends \DateTime {
     public function getAgo() : string {
         $time = (new DateTime())->getTimestamp() - $this->getTimestamp();
 
-        $lang = Bootstrap::getLanguage(false)->get('time.ago');
+        $lang = Bootstrap::getLanguage(false)->get("time.ago");
 
-        if ($time < 1) return $lang['just_now'];
+        if ($time < 1) return $lang["just_now"];
 
-        $string = [365 * 24 * 60 * 60 => 'year', 30 * 24 * 60 * 60 => 'month', 24 * 60 * 60 => 'day', 60 * 60 => 'hour', 60 => 'minute', 1 => 'second'];
+        $string = [365 * 24 * 60 * 60 => "year", 30 * 24 * 60 * 60 => "month", 24 * 60 * 60 => "day", 60 * 60 => "hour", 60 => "minute", 1 => "second"];
 
         foreach ($string as $seconds => $str) {
             $d = $time / $seconds;
@@ -54,7 +54,7 @@ class DateTime extends \DateTime {
             if ($d >= 1) {
                 $r = round($d);
 
-                return $r . ' ' . ($r > 1 ? $lang['plural'][$str] : $lang['singular'][$str]) . ' ' . $lang['ago'];
+                return $r . " " . ($r > 1 ? $lang["plural"][$str] : $lang["singular"][$str]) . " " . $lang["ago"];
             }
         }
     }

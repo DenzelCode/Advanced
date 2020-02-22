@@ -15,6 +15,6 @@
  * 
  */
 
-require '../../environment.php';
+require "../../environment.php";
 
 environment::init(__DIR__);

@@ -40,7 +40,7 @@ abstract class Project {
 
     protected static $router;
 
-    protected static $configPath = PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config';
+    protected static $configPath = PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config";
 
     public abstract function init() : void;
 

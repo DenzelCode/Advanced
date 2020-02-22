@@ -98,11 +98,11 @@ class Config {
 
         if (array_key_exists($key, $this->data)) return $this->data[$key];
 
-        if (strpos($key, '.') === false) return $default;
+        if (strpos($key, ".") === false) return $default;
 
         $values = $this->data;
 
-        foreach (explode('.', $key) as $segment) {
+        foreach (explode(".", $key) as $segment) {
             if (!is_array($values) || !array_key_exists($segment, $values)) return $default;
 
             $values = $values[$segment];

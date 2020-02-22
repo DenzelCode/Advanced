@@ -38,7 +38,7 @@ class Database{
 
     private $lastStatement;
 
-    private static $configPath = PROJECT . 'resources' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'database';
+    private static $configPath = PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "database";
 
     public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "") {
         self::$instance = $this;
@@ -50,7 +50,7 @@ class Database{
         $this->database = $database;
 
         if (!extension_loaded("pdo")) {
-            throw new DatabaseException(0, 'exception.database.pdo_required');
+            throw new DatabaseException(0, "exception.database.pdo_required");
 
             return;
         }
@@ -90,11 +90,11 @@ class Database{
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
-                    $temp = new PDO('mysql:host=' . $this->host, $this->username, $this->password);
+                    $temp = new PDO("mysql:host=" . $this->host, $this->username, $this->password);
 
                     $temp->exec("CREATE DATABASE {$this->database}");
                 } catch (\PDOException $ex) {
-                    throw new DatabaseException($ex->getCode(), 'exception.database.connecting', $e->getMessage());
+                    throw new DatabaseException($ex->getCode(), "exception.database.connecting", $e->getMessage());
                 }
 
                 $this->run();
@@ -102,7 +102,7 @@ class Database{
                 return;
             }
 
-            throw new DatabaseException($e->getCode(), 'exception.database.connecting', $e->getMessage());
+            throw new DatabaseException($e->getCode(), "exception.database.connecting", $e->getMessage());
         }
     }
 
@@ -128,17 +128,17 @@ class Database{
         return $this->getLastStatement()->errorInfo()[2];
     }
  
-    public function select(array $data = ['*'], string $options = null, array $execute = []) {
+    public function select(array $data = ["*"], string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
         if (empty($data)) return false;
 
-        $query = 'SELECT ';
+        $query = "SELECT ";
 
-        if (strtolower($data[0]) === 'distinct') {
+        if (strtolower($data[0]) === "distinct") {
             unset($data[0]);
 
-            $query .= 'DISTINCT ';
+            $query .= "DISTINCT ";
         }
 
         $i = 0;
@@ -149,9 +149,9 @@ class Database{
             $i++;
         }
 
-        $query .= 'FROM ' . $this->getTable();
+        $query .= "FROM " . $this->getTable();
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $prepare = $this->getPDO()->prepare($query);
 
@@ -167,7 +167,7 @@ class Database{
 
         if (empty($data)) return false;
 
-        $query = 'INSERT INTO ' . $this->getTable() . ' (';
+        $query = "INSERT INTO " . $this->getTable() . " (";
 
         $i = 0;
 
@@ -177,7 +177,7 @@ class Database{
             $i++;
         }
 
-        $query .= ') VALUES (';
+        $query .= ") VALUES (";
 
         $i = 0;
 
@@ -191,7 +191,7 @@ class Database{
             $i++;
         }
 
-        $query .= ')';
+        $query .= ")";
 
         $add = $this->getPDO()->prepare($query);
 
@@ -207,7 +207,7 @@ class Database{
 
         if (empty($data)) return false;
 
-        $query = 'UPDATE ' . $this->getTable() . ' ';
+        $query = "UPDATE " . $this->getTable() . " ";
 
         $i = 0;
 
@@ -223,7 +223,7 @@ class Database{
 
         $exc = array_merge($exc, $execute);
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $update = $this->getPDO()->prepare($query);
 
@@ -237,9 +237,9 @@ class Database{
     public function delete(string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
-        $query = 'DELETE FROM ' . $this->getTable();
+        $query = "DELETE FROM " . $this->getTable();
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $delete = $this->getPDO()->prepare($query);
 
@@ -255,7 +255,7 @@ class Database{
 
         if (empty($data)) return false;
 
-        $query = 'CREATE TABLE IF NOT EXISTS ' . $this->getTable() . ' ( ';
+        $query = "CREATE TABLE IF NOT EXISTS " . $this->getTable() . " ( ";
 
         $i = 0;
 
@@ -269,7 +269,7 @@ class Database{
             $i++;
         }
 
-        $query .= ')';
+        $query .= ")";
 
         $create = $this->getPDO()->prepare($query);
 
@@ -283,9 +283,9 @@ class Database{
     public function truncate(string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
-        $query = 'TRUNCATE TABLE ' . $this->getTable();
+        $query = "TRUNCATE TABLE " . $this->getTable();
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $truncate = $this->getPDO()->prepare($query);
 
@@ -299,9 +299,9 @@ class Database{
     public function drop(string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
-        $query = 'DROP TABLE ' . $this->getTable();
+        $query = "DROP TABLE " . $this->getTable();
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $drop = $this->getPDO()->prepare($query);
 
@@ -315,7 +315,7 @@ class Database{
     public function addColumns(array $data, string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
-        $query = 'ALTER TABLE ' . $this->getTable();
+        $query = "ALTER TABLE " . $this->getTable();
 
         $i = 0;
 
@@ -335,7 +335,7 @@ class Database{
             $i++;
         }
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $exc = array_merge($exc, $execute);
 
@@ -351,7 +351,7 @@ class Database{
     public function dropColumns(array $data, string $options = null, array $execute = []) {
         if (!$this->getTable()) return false;
 
-        $query = 'ALTER TABLE ' . $this->getTable();
+        $query = "ALTER TABLE " . $this->getTable();
 
         $i = 0;
 
@@ -369,7 +369,7 @@ class Database{
             $i++;
         }
 
-        if ($options) $query .= ' ' . $options;
+        if ($options) $query .= " " . $options;
 
         $drop = $this->getPDO()->prepare($query);
 
@@ -384,7 +384,7 @@ class Database{
         foreach ($import as $key => $value) {
             $query = $this->setTable($key)->select()->execute();
 
-            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, 'exception.database.create_table', $key, $this->getLastError());
+            if (!$query && !$this->setTable($key)->create($value)) throw new DatabaseException(1, "exception.database.create_table", $key, $this->getLastError());
         }
     }
 
@@ -392,16 +392,16 @@ class Database{
         foreach ($update as $key => $value) {
             $query = $this->setTable($key)->select()->execute();
 
-            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, 'exception.database.add_column', $key, $this->getLastError());
+            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, "exception.database.add_column", $key, $this->getLastError());
         }
     }
 
     public function setup(Config $config) : void {
-        $import = $config->get('import', []);
+        $import = $config->get("import", []);
 
         $this->import($import);
 
-        $update = $config->get('update', []);
+        $update = $config->get("update", []);
 
         $this->updateImport($update);
     }

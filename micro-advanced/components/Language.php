@@ -18,7 +18,6 @@
 namespace advanced\components;
 
 use advanced\config\Config;
-use Exception;
 
 class Language{
 
@@ -48,7 +47,7 @@ class Language{
     }
 
     public function getPath() : string {
-        return ($this->path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . 'resources' . DIRECTORY_SEPARATOR . 'languages' . DIRECTORY_SEPARATOR;
+        return ($this->path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . "resources" . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
     }
 
     private function updateConfig(string $file) : void {

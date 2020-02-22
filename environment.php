@@ -31,9 +31,9 @@ class environment{
     }
 
     public static function init(string $dir) : void{
-        define('MAIN', __DIR__ . DIRECTORY_SEPARATOR);
-        define('PROJECT', dirname($dir) . DIRECTORY_SEPARATOR);
-        define('ADVANCED', MAIN . 'micro-advanced' . DIRECTORY_SEPARATOR);
+        define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
+        define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
+        define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
 
         self::autoload();
 
@@ -45,7 +45,7 @@ class environment{
 
         (new Bootstrap());
 
-        if (file_exists(PROJECT . 'Project.php')) {
+        if (file_exists(PROJECT . "Project.php")) {
             $project = new project\Project();
 
             $project->init();
