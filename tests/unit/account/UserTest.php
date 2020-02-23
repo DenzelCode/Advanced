@@ -17,8 +17,8 @@
 
 namespace tests\unit\account;
 
-use advanced\account\Auth;
-use advanced\account\User;
+use advanced\user\Auth;
+use advanced\user\User;
 use advanced\Bootstrap;
 use advanced\data\Database;
 use advanced\http\router\Request;
@@ -35,7 +35,7 @@ class UserTest extends TestCase {
     }
 
     public function testCreateAccount() : void {
-        $user = Bootstrap::getUsers()->createUser([
+        $user = Bootstrap::getUsersFactory()->createUser([
             "username" => "dsdsdsds",
             "password" => Auth::hash("testing"),
             "mail" => "testing@example.com",

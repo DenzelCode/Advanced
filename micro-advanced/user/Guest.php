@@ -15,16 +15,17 @@
  * 
  */
 
-namespace advanced\account;
+namespace advanced\user;
 
-use advanced\account\base\User;
 use advanced\Bootstrap;
 use advanced\http\router\Request;
 
 /**
  * Guest class
  */
-class Guest extends User {
+class Guest implements IUser {
+
+    protected $data;
 
     public function __construct() {
         $config = Bootstrap::getConfig();
@@ -37,7 +38,7 @@ class Guest extends User {
             "id" => 0,
             "username" => Bootstrap::getMainLanguage()->get("general.guest"),
             "rank" => 1,
-            "gender" => (Auth::get("gender") ? Auth::get("gender") : "M"),
+            "gender" => "M",
             "ip_last" => Request::getIp(),
             "ip_reg" => Request::getIp(),
             "display_name" => Bootstrap::getMainLanguage()->get("general.guest")
@@ -48,37 +49,53 @@ class Guest extends User {
         $this->set($data);
     }
 
-    public function set(array $data) : void {
-        $keys = ["username", "id", "password"];
-
-        foreach ($data as $key => $value) {
-            if (!in_array($key, array_keys($keys))) Auth::set([ $key => $value ]);
-
-            $this->data[$key] = $value;
-        }
+    public function set(array $values) {
+        foreach ($values as $key => $value) $this->data[$key] = $value;
     }
 
-    /**
-     * @return bool
-     */
-    protected function create() : bool {
-        return true;
+    public function get(string $key) {
+        return $this->data[$key];
     }
 
-    public function delete() : bool {
-        return false;
+    public function getId() : int {
+        return 0;
     }
 
-    public function exists() : bool {
-        return false;
+    public function getName() : string {
+        return "Guest";
     }
 
-    public function getAll() : array {
-        return $this->data;
+    public function getFirstName() : string {
+        return "Guest";
     }
 
-    public function authenticate(bool $cookie = false, array $data = []) : bool {
-        return false;
+    public function getLastName() : string {
+        return "";
     }
+
+    public function getFullName() : string {
+        return "Guest";
+    }
+
+    public function getGender() : string {
+        return "M";
+    }
+
+    public function getMail() : string {
+        return "guest@example.com";
+    }
+
+    public function getPassword() : string {
+        return "";
+    }
+
+    public function getRegisterIp() : string {
+        return Request::getIp();
+    }
+
+    public function getLastIp() : string {
+        return Request::getIp();
+    }
+
 }
 

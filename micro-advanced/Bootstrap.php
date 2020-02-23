@@ -23,8 +23,8 @@ use advanced\http\router\Request;
 use advanced\body\template\TemplateProvider;
 use advanced\components\Language;
 use advanced\data\Database;
-use advanced\account\Users;
-use advanced\account\Auth;
+use advanced\user\UsersFactory;
+use advanced\user\Auth;
 use advanced\project\Project;
 use advanced\session\SessionManager;
 
@@ -166,8 +166,8 @@ class Bootstrap{
     /**
      * @return Users
      */
-    public static function getUsers() : Users {
-        if (!self::$classes["users"]) self::$classes["users"] = new Users();
+    public static function getUsersFactory() : UsersFactory {
+        if (!self::$classes["users"]) self::$classes["users"] = new UsersFactory();
         
         return self::$classes["users"];
     }

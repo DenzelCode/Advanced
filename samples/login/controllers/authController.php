@@ -23,7 +23,7 @@ use advanced\exceptions\UserException;
 use advanced\http\Post;
 use advanced\http\Response;
 use advanced\http\router\Request;
-use advanced\account\Auth;
+use advanced\user\Auth;
 
 /**
 * authController class
@@ -43,10 +43,10 @@ class authController extends Controller {
             "remember" => null
         ]);
 
-        $user = Bootstrap::getUsers()->getUser((string) $pop["username"], $pop);
+        $user = Bootstrap::getUsersFactory()->getUser((string) $pop["username"], $pop);
 
         // Get user by mail
-        if (!$user) $user = Bootstrap::getUsers()->getUserByMail((string) $pop["username"], $pop);
+        if (!$user) $user = Bootstrap::getUsersFactory()->getUserByMail((string) $pop["username"], $pop);
 
         $language = Bootstrap::getLanguage();
 
@@ -97,15 +97,15 @@ class authController extends Controller {
         ]);
 
         // Get user
-        $user = Bootstrap::getUsers()->getUser((string) $pop["username"]);
+        $user = Bootstrap::getUsersFactory()->getUser((string) $pop["username"]);
 
-        $mailUser = Bootstrap::getUsers()->getUserByMail((string) $pop["mail"]);
+        $mailUser = Bootstrap::getUsersFactory()->getUserByMail((string) $pop["mail"]);
 
         $accountsLimit = Bootstrap::getConfig()->get("sign_up.accounts_limit");
 
         $ip = Request::getIp();
 
-        if ($accountsLimit) $usersByIp = Bootstrap::getUsers()->getUsersByIp($ip);
+        if ($accountsLimit) $usersByIp = Bootstrap::getUsersFactory()->getUsersByIp($ip);
 
         if (empty($usersByIp)) $usersByIp = [];
 
@@ -150,7 +150,7 @@ class authController extends Controller {
 
                 // Create user with data $data (keys are the columns from the database)
 
-                $user = Bootstrap::getUsers()->createUser($data, $pop);
+                $user = Bootstrap::getUsersFactory()->createUser($data, $pop);
 
                 // Authenticate the account and log in
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace advanced\account;
+namespace advanced\user;
 
 use advanced\Bootstrap;
-use advanced\account\base\User as BaseUser;
+use advanced\user\User;
 use advanced\http\router\Request;
 use advanced\session\SessionManager;
 
@@ -23,7 +23,9 @@ class Auth {
     }
 
     public static function attempt(array $data, User $user) : bool {
-        if (!password_verify($data["password"], $user->getPassword()) || substr($user->getPassword(), 0, 1) != "$" && $user->getPassword() != $data["password"] || strtolower($data["username"]) != strtolower($user->getName())) return false;
+        // test: || substr($user->getPassword(), 0, 1) != "$" && $user->getPassword() != $data["password"] || strtolower($data["username"]) != strtolower($user->getName())
+
+        if (!password_verify($data["password"], $user->getPassword())) return false;
 
         self::create([
             "user_id" => $user->getId(),
@@ -38,7 +40,7 @@ class Auth {
     public static function check() : bool {
         if (!self::get("user_id") && !self::get("username") && !self::get("auth_code")) return false;
 
-        $user = Bootstrap::getUsers()->getUser(self::get("username"));
+        $user = Bootstrap::getUsersFactory()->getUser(self::get("username"));
 
         if (!$user) return false;
 
@@ -52,14 +54,14 @@ class Auth {
     }
 
     /**
-    * @return User|null
+    * @return IUser|null
     */
-    public static function getUser() : ?BaseUser {
-        $guest = Users::getGuestObject();
+    public static function getUser() : ?IUser {
+        $guest = UsersFactory::getGuestObject();
 
         if (!self::check()) return new $guest();
         
-        $user = Bootstrap::getUsers()->getUser(self::get("username"));
+        $user = Bootstrap::getUsersFactory()->getUser(self::get("username"));
 
         if (!$user) return new $guest();
 

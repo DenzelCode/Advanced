@@ -15,26 +15,26 @@
  * 
  */
 
-namespace advanced\account;
+namespace advanced\user;
 
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
-use advanced\account\base\User;
+use advanced\user\User;
 use advanced\config\Config;
 use advanced\data\Database;
 
 /**
- * Users class
+ * UsersFactory class
  */
-class Users {
+class UsersFactory {
 
     private $users = [];
 
     private static $instance;
 
-    private static $userObject = "\\advanced\\account\\User";
+    private static $userObject = "\\advanced\\user\\User";
     
-    private static $guestObject = "\\advanced\\account\\Guest";
+    private static $guestObject = "\\advanced\\user\\Guest";
 
     public function __construct() {
         self::$instance = $this;
@@ -45,9 +45,9 @@ class Users {
     }
 
     /**
-     * @return Users
+     * @return UsersFactory
      */
-    public static function getInstance() : Users {
+    public static function getInstance() : UsersFactory {
         return self::$instance;
     }
 

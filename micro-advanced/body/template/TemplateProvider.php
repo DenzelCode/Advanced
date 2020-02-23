@@ -22,7 +22,7 @@ use advanced\file\File;
 use advanced\http\router\RequestProvider;
 use project\Project;
 use advanced\http\router\Request;
-use advanced\account\Auth;
+use advanced\user\Auth;
 
 class TemplateProvider{
 

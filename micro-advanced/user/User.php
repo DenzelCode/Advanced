@@ -15,27 +15,25 @@
  * 
  */
 
-namespace advanced\account;
+namespace advanced\user;
 
-use advanced\account\base\User as BaseUser;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
-use advanced\account\Auth;
+use advanced\user\Auth;
 use advanced\mailer\Mailer;
 use advanced\mailer\Receipient;
-use Exception;
 
 /**
  * User class
  */
-class User extends BaseUser {
+class User extends AbstractUser {
 
     public function __construct(array $data, array $authData = []) {
         $this->data = $data;
 
         $this->authData = $authData;
 
-        Users::setupTable();
+        UsersFactory::setupTable();
 
         if (!$this->exists()) {
             $config = Bootstrap::getMainConfig();
@@ -88,6 +86,7 @@ class User extends BaseUser {
 
         foreach ($data as $key => $value) $this->data[$key] = $value;
     }
+
     /**
      * @return array
      */
