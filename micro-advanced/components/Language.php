@@ -18,6 +18,7 @@
 namespace advanced\components;
 
 use advanced\config\Config;
+use advanced\session\SessionManager;
 
 class Language{
 
@@ -36,6 +37,10 @@ class Language{
         $this->path = $path;
 
         self::updateConfig($language);
+    }
+
+    public function getName() : string {
+        return $this->language;
     }
 
     public function setPath(string $path) : void {
@@ -60,6 +65,10 @@ class Language{
         $value = $this->config->get($key, $default);
 
         return is_string($value) ? self::filter($value, $params) : $value;
+    }
+
+    public static function setLanguage(Language $language) {
+        SessionManager::set("language", $language->getName());
     }
 
     private function filter(string $text, $params) : string {
