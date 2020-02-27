@@ -41,3 +41,6 @@ Xampp [Windows](https://www.apachefriends.org/xampp-files/7.4.2/xampp-windows-x6
 
 ## Licensing information
 This project is licensed under LGPL-3.0. Please see the [LICENSE](/LICENSE) file for details.
+
+## Donations
+* [PayPal](https://paypal.me/DenzelGiraldo)
