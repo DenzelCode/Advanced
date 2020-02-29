@@ -23,6 +23,7 @@ use advanced\http\router\Request;
 use advanced\body\template\TemplateProvider;
 use advanced\components\Language;
 use advanced\data\Database;
+use advanced\data\sql\ISQL;
 use advanced\user\UsersFactory;
 use advanced\user\Auth;
 use advanced\project\Project;
@@ -161,6 +162,20 @@ class Bootstrap{
      */
     public static function getDatabase(): ?Database {
         return self::$classes["database"] ?? null;
+    }
+
+    /**
+     * @return ISQL
+     */
+    public static function setSQL(ISQL $database) : void {
+        self::$classes["sql"] = $database;
+    }
+
+    /**
+     * @return ISQL
+     */
+    public static function getSQL(): ?ISQL {
+        return self::$classes["sql"] ?? null;
     }
 
     /**

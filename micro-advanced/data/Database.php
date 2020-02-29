@@ -19,7 +19,6 @@ namespace advanced\data;
 
 use PDO;
 use advanced\exceptions\DatabaseException;
-use advanced\Bootstrap;
 use advanced\config\Config;
 use PDOStatement;
 
