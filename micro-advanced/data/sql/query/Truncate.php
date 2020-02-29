@@ -23,7 +23,7 @@ namespace advanced\data\sql\query;
 class Truncate extends Query{
 
     public function convertToQuery() : string {
-        $query = "TRUNCATE TABLE " . $this->table;
+        $query = "TRUNCATE TABLE {$this->table}";
         
         return $query;
     }

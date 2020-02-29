@@ -23,7 +23,7 @@ namespace advanced\data\sql\query;
 class Drop extends Query{
 
     public function convertToQuery() : string {
-        $query = "DROP TABLE " . $this->table;
+        $query = "DROP TABLE {$this->table}";
         
         return $query;
     }

@@ -49,7 +49,7 @@ class Update extends Query{
     }
 
     public function convertToQuery() : string {
-        $query = "UPDATE " . $this->table . " ";
+        $query = "UPDATE {$this->table} ";
 
         foreach ($this->fields as $i => $field) $query .= $i != (count($this->fields) == 1) ? "SET {$field} = ? " : ($i == 0 ? "SET {$field} = ?, " : ($i != (count($this->fields) != 1) ? "{$field} = ?, " : "{$field} = ?"));
 

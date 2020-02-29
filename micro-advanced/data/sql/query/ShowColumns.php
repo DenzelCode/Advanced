@@ -20,15 +20,31 @@ namespace advanced\data\sql\query;
 use PDOStatement;
 
 /**
- * Update class
+ * ShowColumns class
  */
-class Delete extends Query{
+class ShowColumns extends Query implements Prepared{
+
+    private $like = null;
+
+    public function execute() : PDOStatement {
+        parent::execute();
+
+        return $this->prepare;
+    }
+
+    public function like(string $like) : ShowColumns {
+        $this->like = $like;
+
+        $this->execute[] = $like;
+
+        return $this;
+    }
 
     public function convertToQuery() : string {
-        $query = "DELETE FROM {$this->table}";
+        $query = "SHOW COLUMNS FROM {$this->table}";
 
-        $query .= !empty($this->where) ? " WHERE {$this->where}" : "";
-        
+        $query .= !empty($this->like) ? "LIKE ?" : "";
+
         return $query;
     }
 }

@@ -25,13 +25,15 @@ use PDOStatement;
  */
 abstract class Query implements IQuery{
 
-    protected $sql;
+    protected $sql = null;
 
-    protected $table;
+    protected $table = null;
 
-    protected $execute;
+    protected $execute = [];
 
-    protected $prepare;
+    protected $prepare = null;
+
+    protected $where = null;
 
     public function __construct(ISQL $sql) {
         $this->sql = $sql;

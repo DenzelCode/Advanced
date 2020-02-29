@@ -43,9 +43,11 @@ class Create extends Query{
     }
 
     public function convertToQuery() : string {
-        $query = "CREATE TABLE IF NOT EXISTS " . $this->table . " ( ";
+        $query = "CREATE TABLE IF NOT EXISTS {$this->table} ( ";
 
         for ($i = 0; $i < (count($this->columns - 1)); $i++) $query .= $i != (count($this->fields) - 1) ? "{$this->columns[$i]} {$this->types[$i]}, " :  "{$this->columns[$i]} {$this->types[$i]} ";
+
+        $query .= ")";
 
         return $query;
     }

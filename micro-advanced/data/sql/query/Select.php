@@ -29,7 +29,7 @@ use PDOStatement;
  */
 class Select extends Query implements Prepared{
 
-    private $columns = [];
+    private $columns = ["*"];
 
     private $distinct = null;
 
@@ -49,19 +49,19 @@ class Select extends Query implements Prepared{
         return ($this->joins[] = new Join($this, $table));
     }
 
-    public function leftJoin(string $table, string $on) : IJoin {
+    public function leftJoin(string $table) : IJoin {
         return ($this->joins[] = new Join($this, $table));
     }
 
-    public function innerJoin(string $table, string $on) : IJoin {
+    public function innerJoin(string $table) : IJoin {
         return ($this->joins[] = new InnerJoin($this, $table));
     }
 
-    public function rightJoin(string $table, string $on) : IJoin {
+    public function rightJoin(string $table) : IJoin {
         return ($this->joins[] = new RightJoin($this, $table));
     }
 
-    public function fullJoin(string $table, string $on) : IJoin {
+    public function fullJoin(string $table) : IJoin {
         return ($this->joins[] = new FullJoin($this, $table));
     }
 
@@ -76,7 +76,7 @@ class Select extends Query implements Prepared{
 
         foreach ($this->columns as $i => $column) $query .= $i != (count($this->columns) - 1) ? "{$column}, " : $query .= "{$column} ";
 
-        if (!empty($table)) $query .= "FROM " . $this->table;
+        $query .= !empty($this->table) ? "FROM " . $this->table : "";
 
         foreach ($this->joins as $join) $query .= " " . $join->convertToQuery();
 
