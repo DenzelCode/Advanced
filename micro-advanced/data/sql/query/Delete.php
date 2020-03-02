@@ -24,6 +24,31 @@ use PDOStatement;
  */
 class Delete extends Query{
 
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Delete
+     */
+    public function setTable(string $table) : Delete {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Delete
+     */
+    public function table(string $table) : Delete {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Convert object to query.
+     *
+     * @return string
+     */
     public function convertToQuery() : string {
         $query = "DELETE FROM {$this->table}";
 

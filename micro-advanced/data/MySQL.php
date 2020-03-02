@@ -21,12 +21,15 @@ use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
 use advanced\data\sql\ISQL;
+use advanced\data\sql\query\AddColumns;
 use advanced\data\sql\query\Create;
 use advanced\data\sql\query\Delete;
 use advanced\data\sql\query\Drop;
+use advanced\data\sql\query\DropColumns;
 use advanced\data\sql\query\Insert;
 use advanced\data\sql\query\Query;
 use advanced\data\sql\query\Select;
+use advanced\data\sql\query\ShowColumns;
 use advanced\data\sql\query\Truncate;
 use advanced\data\sql\query\Update;
 use PDOStatement;
@@ -36,22 +39,51 @@ use PDOStatement;
  */
 class MySQL implements ISQL{
 
+    /**
+     * @var string
+     */
     private $host, $port, $username, $password;
 
+    /**
+     * @var PDO
+     */
     private $con;
 
+    /**
+     * @var PDOStatement
+     */
     private $lastStatement;
 
+    /**
+     * @var MySQL
+     */
+    private static $instance;
+
+    /**
+     * @var string
+     */
     private static $configPath = PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "database";
 
-    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "") {
+    /**
+     * Initialize MySQL Connection.
+     *
+     * @param string $host
+     * @param integer $port
+     * @param string $username
+     * @param string $password
+     * @param string $database
+     * @param Database $db
+     */
+    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "", Database $db = null) {
         self::$instance = $this;
 
-        $this->host = $host;
-        $this->port = $port;
-        $this->username = $username;
-        $this->password = $password;
-        $this->database = $database;
+        $this->host = $db instanceof Database ? $db->getHost() : $host;
+        $this->port = $db instanceof Database ? $db->getPort() : $port;
+        $this->username = $db instanceof Database ? $db->getUsername() : $username;
+        $this->password = $db instanceof Database ? $db->getPassword() : $password;
+        $this->database = $db instanceof Database ? $db->getDatabase() : $database;
+
+        if ($db instanceof Database) $this->con = $db->getPDO();
 
         if (!extension_loaded("pdo")) {
             throw new DatabaseException(0, "exception.database.pdo_required");
@@ -59,28 +91,15 @@ class MySQL implements ISQL{
             return;
         }
 
-        (new Config(self::$configPath, [
-            "import" => [],
-
-            "update" => []
-        ]));
+        (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
         $this->run();
     }
 
-    public function getInstance() : MySQL {
-        return self::$instance;
-    }
-
-    public static function getConfigPath() : string {
-        return self::$configPath;
-    }
-
-    public static function setConfigPath(string $configPath) : void {
-        self::$configPath = $configPath;
-    }
-
-    public function run() {
+    /**
+     * @return void
+     */
+    public function run() : void {
         try {
             $options = [
                 // PDO::ATTR_EMULATE_PREPARES => false,
@@ -97,6 +116,8 @@ class MySQL implements ISQL{
                     $temp = new PDO("mysql:host=" . $this->host, $this->username, $this->password);
 
                     $temp->exec("CREATE DATABASE {$this->database}");
+
+                    $temp = null;
                 } catch (\PDOException $ex) {
                     throw new DatabaseException($ex->getCode(), "exception.database.connecting", $e->getMessage());
                 }
@@ -110,35 +131,173 @@ class MySQL implements ISQL{
         }
     }
 
+    /**
+     * @return MySQL
+     */
+    public function getInstance() : MySQL {
+        return self::$instance;
+    }
+
+    /**
+     * Create a MySQL object from a Database connection object.
+     * 
+     * @param Database $database
+     * @return MySQL
+     */
+    public static function fromDatabase(Database $database) : MySQL {
+        return new MySQL("127.0.0.1", 3306, "root", "", "", $database);
+    }
+
+    /**
+     * @return string
+     */
+    public function getHost() : string {
+        return $this->host;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getPort() : int {
+        return $this->port;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername() : string {
+        return $this->username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword() : string {
+        return $this->password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatabase() : string {
+        return $this->database;
+    }
+
+    /**
+     * @return Select
+     */
     public function select() : Select {
         return (new Select($this));
     }
 
+    /**
+     * @return Insert
+     */
     public function insert() : Insert {
         return (new Insert($this));
     }
 
+    /**
+     * @return Update
+     */
     public function update() : Update {
         return (new Update($this));
     }
 
+    /**
+     * @return Delete
+     */
     public function delete() : Delete {
         return (new Delete($this));
     }
 
+    /**
+     * @return Create
+     */
     public function create() : Create {
         return (new Create($this));
     }
     
+    /**
+     * @return Drop
+     */
     public function drop() : Drop {
         return (new Drop($this));
     }
 
+    /**
+     * @return ShowColumns
+     */
+    public function showColumns() : ShowColumns {
+        return (new ShowColumns($this));
+    }
+
+    /**
+     * @return AddColumns
+     */
+    public function addColumns() : AddColumns {
+        return (new AddColumns($this));
+    }
+
+    /**
+     * @return DropColumns
+     */
+    public function dropColumns() : DropColumns {
+        return (new DropColumns($this));
+    }
+
+    /**
+     * @return Truncate
+     */
     public function truncate() : Truncate {
         return (new Truncate($this));
     }
 
+    /**
+     * Prepare the query.
+     * @param Query $query
+     * @return PDOStatement
+     */
     public function prepare(Query $query) : PDOStatement {
         return $this->con->prepare((string) $query);
+    }
+
+    /**
+     * Set last statement. 
+     *
+     * @param PDOStatement $statement
+     * @return void
+     */
+    public function setLastStatement(PDOStatement $statement) : void {
+        $this->lastStatement = $statement;
+    }
+
+    /**
+     * @return PDOStatement|null
+     */
+    public function getLastStatement() : ?PDOStatement {
+        return $this->lastStatement;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastError() : string {
+        return $this->getLastStatement()->errorInfo()[2];
+    }
+
+    /**
+     * @return string
+     */
+    public static function getConfigPath() : string {
+        return self::$configPath;
+    }
+
+    /**
+     * @param string $configPath
+     * @return void
+     */
+    public static function setConfigPath(string $configPath) : void {
+        self::$configPath = $configPath;
     }
 }

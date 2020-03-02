@@ -24,14 +24,46 @@ use PDOStatement;
  */
 class ShowColumns extends Query implements Prepared{
 
+    /**
+     * @var string|null
+     */
     private $like = null;
 
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return ShowColumns
+     */
+    public function setTable(string $table) : IQuery {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Set the table that you want to modify
+     *
+     * @param string $table
+     * @return ShowColumns
+     */
+    public function table(string $table) : IQuery {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Execute the Query and return an PDOStatement Object so you can fetch results.
+     *
+     * @return PDOStatement
+     */
     public function execute() : PDOStatement {
         parent::execute();
 
         return $this->prepare;
     }
 
+    /**
+     * @param string $like
+     * @return ShowColumns
+     */
     public function like(string $like) : ShowColumns {
         $this->like = $like;
 
@@ -40,6 +72,11 @@ class ShowColumns extends Query implements Prepared{
         return $this;
     }
 
+    /**
+    * Generate the query string of the object
+    *
+    * @return string
+    */
     public function convertToQuery() : string {
         $query = "SHOW COLUMNS FROM {$this->table}";
 

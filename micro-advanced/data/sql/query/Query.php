@@ -25,29 +25,74 @@ use PDOStatement;
  */
 abstract class Query implements IQuery{
 
+    /**
+     * @var ISQL
+     */
     protected $sql = null;
 
+    /**
+     * @var string
+     */
     protected $table = null;
 
     protected $execute = [];
 
+    /**
+     * @var PDOStatement
+     */
     protected $prepare = null;
 
+    /**
+     * @var string
+     */
     protected $where = null;
 
+    /**
+     * @param ISQL $sql
+     */
     public function __construct(ISQL $sql) {
         $this->sql = $sql;
     }
 
-    public function setTable(string $table) : void {
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return IQuery
+     */
+    public function setTable(string $table) : IQuery {
         $this->table = $table;
+
+        return $this;
     }
 
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return IQuery
+     */
+    public function table(string $table) : IQuery {
+        return $this->setTable($table);
+    }
+
+    /**
+     * Get the table that you want to modify.
+     *
+     * @return string|null
+     */
     public function getTable() : ?string {
         return $this->table;
     }
 
-    public function where(string $where, array $execute = []) : Query {
+    /**
+     * Set the WHERE SQL parameter.
+     *
+     * @param string $where
+     * @param array $execute
+     * @return IQuery
+     */
+    public function where(string $where, array $execute = []) : IQuery {
         $this->where = $where;
 
         $this->execute = $execute;
@@ -55,20 +100,38 @@ abstract class Query implements IQuery{
         return $this;
     }
 
+    /**
+     * Execute the query.
+     *
+     * @return boolean
+     */
     public function execute() : bool {
         $prepare = $this->sql->prepare($this);
+
+        $this->sql->setLastStatement($prepare);
 
         $this->prepare = $prepare;
 
         return $prepare->execute($this->execute);
     }
 
-    public function getPrepare() : PDOStatement {
+    /**
+     * @return PDOStatement|null
+     */
+    public function getPrepare() : ?PDOStatement {
         return $this->prepare;
     }
 
+    /**
+    * Generate the query string of the object
+    *
+    * @return string
+    */
     protected abstract function convertToQuery() : string;
 
+    /**
+     * @return string
+     */
     public function __toString() {
         return $this->convertToQuery();
     }

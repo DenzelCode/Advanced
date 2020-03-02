@@ -103,7 +103,7 @@ class User extends AbstractUser {
     /**
      * @return bool
      */
-    protected function create() : bool {
+    public function create() : bool {
         return Bootstrap::getDatabase()->setTable("users")->insert($this->data);
     }
 

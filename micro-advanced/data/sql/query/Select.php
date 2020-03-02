@@ -21,6 +21,7 @@ use advanced\data\sql\query\join\FullJoin;
 use advanced\data\sql\query\join\IJoin;
 use advanced\data\sql\query\join\InnerJoin;
 use advanced\data\sql\query\join\Join;
+use advanced\data\sql\query\join\LeftJoin;
 use advanced\data\sql\query\join\RightJoin;
 use PDOStatement;
 
@@ -29,48 +30,141 @@ use PDOStatement;
  */
 class Select extends Query implements Prepared{
 
+    /**
+     * @var array
+     */
     private $columns = ["*"];
 
+    /**
+     * @var string|null
+     */
     private $distinct = null;
 
+    /**
+     * @var array
+     */
     private $joins = [];
 
-    public function setColumns(array $columns = ["*"]) : void {
-        $this->columns = $columns;
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Select
+     */
+    public function setTable(string $table) : Select {
+        return parent::setTable($table);
     }
 
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Select
+     */
+    public function table(string $table) : Select {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Set the list of columns that tou want to select by array
+     *
+     * @param array $columns
+     * @return Select
+     */
+    public function setColumns(array $columns = ["*"]) : Select {
+        $this->columns = $columns;
+
+        return $this;
+    }
+
+    /**
+     * Set the list of columns that tou want to select by array
+     *
+     * @param array $columns
+     * @return Select
+     */
+    public function columns(array $columns = ["*"]) : Select {
+        return $this->setColumns($columns);
+    }
+
+    /**
+     * Select distinct value
+     *
+     * @param string $column
+     * @return Select
+     */
     public function distinct(string $column = null) : Select {
         $this->distinct = $column;
 
         return $this;
     }
 
+    /**
+     * Join table.
+     *
+     * @param string $table
+     * @return Join
+     */
     public function join(string $table) : IJoin {
         return ($this->joins[] = new Join($this, $table));
     }
 
+    /**
+     * Left join table.
+     *
+     * @param string $table
+     * @return LeftJoin
+     */
     public function leftJoin(string $table) : IJoin {
-        return ($this->joins[] = new Join($this, $table));
+        return ($this->joins[] = new LeftJoin($this, $table));
     }
 
+    /**
+     * Inner join table.
+     *
+     * @param string $table
+     * @return InnerJoin
+     */
     public function innerJoin(string $table) : IJoin {
         return ($this->joins[] = new InnerJoin($this, $table));
     }
 
+    /**
+     * Right join table.
+     *
+     * @param string $table
+     * @return RightJoin
+     */
     public function rightJoin(string $table) : IJoin {
         return ($this->joins[] = new RightJoin($this, $table));
     }
 
+    /**
+     * Full join table.
+     *
+     * @param string $table
+     * @return FullJoin
+     */
     public function fullJoin(string $table) : IJoin {
         return ($this->joins[] = new FullJoin($this, $table));
     }
 
+    /**
+     * Execute the Query and return an PDOStatement Object so you can fetch results.
+     *
+     * @return PDOStatement
+     */
     public function execute(): PDOStatement {
         parent::execute();
 
         return $this->prepare;
     }
 
+    /**
+    * Generate the query string of the object
+    *
+    * @return string
+    */
     public function convertToQuery() : string {
         $query = "SELECT " . (!empty($this->distinct) ? "DISTINCT {$this->distinct}" : "");
 

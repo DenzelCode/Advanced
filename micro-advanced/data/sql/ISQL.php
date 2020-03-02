@@ -17,7 +17,17 @@
 
 namespace advanced\data\sql;
 
+use advanced\data\sql\query\AddColumns;
+use advanced\data\sql\query\Create;
+use advanced\data\sql\query\Delete;
+use advanced\data\sql\query\Drop;
+use advanced\data\sql\query\DropColumns;
+use advanced\data\sql\query\Insert;
 use advanced\data\sql\query\Query;
+use advanced\data\sql\query\Select;
+use advanced\data\sql\query\ShowColumns;
+use advanced\data\sql\query\Truncate;
+use advanced\data\sql\query\Update;
 use PDOStatement;
 
 /**
@@ -25,19 +35,31 @@ use PDOStatement;
  */
 interface ISQL{
 
-    public function select();
+    public function select() : Select;
 
-    public function insert();
+    public function insert() : Insert;
 
-    public function update();
+    public function update() : Update;
 
-    public function delete();
+    public function delete() : Delete;
 
-    public function create();
+    public function create() : Create;
 
-    public function truncate();
+    public function truncate() : Truncate;
 
-    public function drop();
+    public function drop() : Drop;
+
+    public function showColumns() : ShowColumns;
+
+    public function addColumns() : AddColumns;
+
+    public function dropColumns() : DropColumns;
 
     public function prepare(Query $query) : PDOStatement;
+
+    public function setLastStatement(PDOStatement $statement) : void;
+
+    public function getLastStatement() : ?PDOStatement;
+
+    public function getLastError() : string;
 }

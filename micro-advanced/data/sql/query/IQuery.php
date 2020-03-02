@@ -22,8 +22,6 @@ namespace advanced\data\sql\query;
  */
 interface IQuery{
 
-    public function setTable(string $table) : void;
-
     public function getTable() : ?string;
 
     public function where(string $where, array $execute = []) : IQuery;

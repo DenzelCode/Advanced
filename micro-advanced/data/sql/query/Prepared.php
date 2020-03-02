@@ -24,5 +24,10 @@ use PDOStatement;
  */
 interface Prepared{
 
+    /**
+     * Execute the Query and return an PDOStatement Object so you can fetch results.
+     *
+     * @return PDOStatement
+     */
     public function execute() : PDOStatement;
 }

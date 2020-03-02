@@ -18,11 +18,11 @@
 namespace advanced\data\sql\query\join;
 
 /**
- * InnerJoin class
+ * LeftJoin class
  */
-class InnerJoin extends Join {
+class LeftJoin extends Join {
 
     public function getPreffix(): string {
-        return "INNER JOIN";
+        return "LEFT JOIN";
     }
 }

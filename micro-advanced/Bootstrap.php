@@ -167,8 +167,8 @@ class Bootstrap{
     /**
      * @return ISQL
      */
-    public static function setSQL(ISQL $database) : void {
-        self::$classes["sql"] = $database;
+    public static function setSQL(ISQL $sql) : void {
+        self::$classes["sql"] = $sql;
     }
 
     /**

@@ -22,6 +22,31 @@ namespace advanced\data\sql\query;
  */
 class Drop extends Query{
 
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Drop
+     */
+    public function setTable(string $table) : Drop {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Drop
+     */
+    public function table(string $table) : Drop {
+        return parent::setTable($table);
+    }
+
+    /**
+    * Generate the query string of the object
+    *
+    * @return string
+    */
     public function convertToQuery() : string {
         $query = "DROP TABLE {$this->table}";
         

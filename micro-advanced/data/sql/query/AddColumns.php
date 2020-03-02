@@ -17,12 +17,10 @@
 
 namespace advanced\data\sql\query;
 
-use PDOStatement;
-
 /**
- * Create class
+ * AddColumns class
  */
-class Create extends Query{
+class AddColumns extends Query{
 
     /**
      * @var array
@@ -32,39 +30,39 @@ class Create extends Query{
     /**
      * @var array
      */
-    private $types = [];
+    private $values = [];
 
     /**
-     * Set the table that you want to modify.
+     * Set the table that you want to modify
      *
      * @param string $table
-     * @return Create
+     * @return AddColumns
      */
     public function setTable(string $table) : IQuery {
         return parent::setTable($table);
     }
 
     /**
-     * Set the table that you want to modify
+     * Set the table that you want to modify.
      *
      * @param string $table
-     * @return Create
+     * @return AddColumns
      */
     public function table(string $table) : IQuery {
         return parent::setTable($table);
     }
-    
+
     /**
      * Set a column that you want to add.
      *
      * @param string $column
-     * @param mixed $value
-     * @return Create
+     * @param string $value
+     * @return AddColumns
      */
-    public function setColumn(string $column, $value) : Create {
+    public function setColumn(string $column, string $value) : AddColumns {
         $this->columns[] = $column;
 
-        $this->types[] = $value;
+        $this->values[] = $value;
 
         return $this;
     }
@@ -73,10 +71,10 @@ class Create extends Query{
      * Set a column that you want to add.
      *
      * @param string $column
-     * @param mixed $value
-     * @return Create
+     * @param string $value
+     * @return AddColumns
      */
-    public function column(string $column, $value) : Create {
+    public function column(string $column, string $value) : AddColumns {
         $this->setColumn($column, $value);
         
         return $this;
@@ -85,11 +83,12 @@ class Create extends Query{
     /**
      * Set the columns that you want to add by array.
      *
-     * @param array $columns
-     * @return Create
+     * @param string $column
+     * @param string $value
+     * @return AddColumns
      */
-    public function setColumnsByArray(array $columns) : Create {
-        foreach ($columns as $key => $value) $this->setColumn($key, $value);
+    public function setColumnsByArray(array $data) : AddColumns {
+        foreach ($data as $key => $value) $this->setColumn($key, $value);
 
         return $this;
     }
@@ -97,25 +96,38 @@ class Create extends Query{
     /**
      * Set the columns that you want to add by array.
      *
-     * @param array $columns
-     * @return Create
+     * @param string $column
+     * @param string $value
+     * @return AddColumns
      */
-    public function columns(array $columns) : Create {
+    public function columns(array $columns) : AddColumns {
         $this->setColumnsByArray($columns);
-        
+
         return $this;
     }
 
     /**
      * Set the columns that you want to add by array.
      *
-     * @param array $columns
-     * @return Create
+     * @param string $column
+     * @param string $value
+     * @return AddColumns
      */
-    public function setColumns(array $columns) : Create {
-        $this->setColumnsByArray($columns);
-        
+    public function setColumns(array $data) : AddColumns {
+        $this->setColumnsByArray($data);
+
         return $this;
+    }
+
+    /**
+     * Execute the query.
+     *
+     * @return boolean
+     */
+    public function execute(): bool {
+        $this->execute = array_merge($this->values, $this->execute);
+
+        return parent::execute();
     }
 
     /**
@@ -124,12 +136,10 @@ class Create extends Query{
      * @return string
      */
     public function convertToQuery() : string {
-        $query = "CREATE TABLE IF NOT EXISTS {$this->table} ( ";
+        $query = "ALTER TABLE {$this->table}";
 
-        for ($i = 0; $i < count($this->columns); $i++) $query .= $i != (count($this->columns) - 1) ? "{$this->columns[$i]} {$this->types[$i]}, " :  "{$this->columns[$i]} {$this->types[$i]} ";
-
-        $query .= ")";
-
+        for ($i = 0; $i < count($this->columns); $i++) $query .= $i != (count($this->columns) == 1) ? " ADD COLUMN {$this->columns[$i]} {$this->values[$i]};" : ($i == 0 ? " ADD COLUMN {$this->columns[$i]} {$this->values[$i]}, " : ($i != (count($this->columns) != 1) ? "ADD COLUMN {$this->columns[$i]} {$this->values[$i]}, " : "ADD COLUMN {$this->columns[$i]} {$this->values[$i]};"));
+        
         return $query;
     }
 }

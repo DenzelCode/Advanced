@@ -22,6 +22,7 @@ use advanced\Bootstrap;
 use advanced\components\Language;
 use advanced\config\Config;
 use advanced\data\Database;
+use advanced\data\MySQL;
 use advanced\data\sql\ISQL;
 use advanced\exceptions\RouterException;
 use advanced\http\router\Request;
@@ -94,6 +95,8 @@ abstract class Project {
         self::$database = $database;
 
         Bootstrap::setDatabase($database);
+
+        if (!self::$sql instanceof ISQL) self::setSQL(MySQL::fromDatabase($database));
     }
 
     public static function getSQL() : ?ISQL {
@@ -104,6 +107,8 @@ abstract class Project {
         self::$sql = $sql;
 
         Bootstrap::setSQL($sql);
+
+        if (!self::$database instanceof Database) self::setDatabase(Database::fromMySQL($sql));
     }
 
     public static function getConfig() : ?Config {

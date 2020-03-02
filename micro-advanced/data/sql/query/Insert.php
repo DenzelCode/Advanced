@@ -28,6 +28,33 @@ class Insert extends Query{
 
     private $values = [];
 
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Insert
+     */
+    public function setTable(string $table) : Insert {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Set the table that you want to modify.
+     *
+     * @param string $table
+     * @return Insert
+     */
+    public function table(string $table) : Insert {
+        return parent::setTable($table);
+    }
+
+    /**
+     * Set the column name and the value that you want to asign to the row.
+     *
+     * @param string $field
+     * @param mixed $value
+     * @return Insert
+     */
     public function setField(string $field, $value) : Insert {
         $this->fields[] = $field;
 
@@ -35,13 +62,61 @@ class Insert extends Query{
 
         return $this;
     }
+
+    /**
+     * Set the column name and the value that you want to asign to the row.
+     *
+     * @param string $field
+     * @param mixed $value
+     * @return Insert
+     */
+    public function field(string $field, $value) : Insert {
+        $this->setField($field, $value);
+
+        return $this;
+    }
     
-    public function setFieldsByArray(array $data) : Insert {
-        foreach ($data as $key => $value) $this->setField($key, $value);
+    /**
+     * Set the column name and the value that you want to asign to the row bu array.
+     *
+     * @param array $fields
+     * @return Insert
+     */
+    public function setFieldsByArray(array $fields) : Insert {
+        foreach ($fields as $key => $value) $this->setField($key, $value);
 
         return $this;
     }
 
+    /**
+     * Set the column name and the value that you want to asign to the row bu array.
+     *
+     * @param array $fields
+     * @return Insert
+     */
+    public function fields(array $fields) : Insert {
+        $this->setFieldsByArray($fields);
+
+        return $this;
+    }
+
+    /**
+     * Set the column name and the value that you want to asign to the row bu array.
+     *
+     * @param array $fields
+     * @return Insert
+     */
+    public function setFields(array $fields) : Insert {
+        $this->setFieldsByArray($fields);
+
+        return $this;
+    }
+
+    /**
+    * Generate the query string of the object
+    *
+    * @return string
+    */
     public function convertToQuery() : string {
         $query = "INSERT INTO {$this->table} (";
 
