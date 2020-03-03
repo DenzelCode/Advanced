@@ -22,7 +22,7 @@ use PDOStatement;
 /**
  * ShowColumns class
  */
-class ShowColumns extends Query implements Prepared{
+class ShowColumns extends Query{
 
     /**
      * @var string|null
@@ -40,7 +40,7 @@ class ShowColumns extends Query implements Prepared{
     }
 
     /**
-     * Set the table that you want to modify
+     * Set the table that you want to modify.
      *
      * @param string $table
      * @return ShowColumns
@@ -54,7 +54,7 @@ class ShowColumns extends Query implements Prepared{
      *
      * @return PDOStatement
      */
-    public function execute() : PDOStatement {
+    public function execute() {
         parent::execute();
 
         return $this->prepare;
@@ -73,7 +73,7 @@ class ShowColumns extends Query implements Prepared{
     }
 
     /**
-    * Generate the query string of the object
+    * Generate the query string of the object.
     *
     * @return string
     */

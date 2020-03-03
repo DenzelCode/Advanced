@@ -18,9 +18,9 @@
 namespace advanced\data\sql\query;
 
 /**
- * AddColumns class
+ * ModifyColumns class
  */
-class AddColumns extends Query{
+class ModifyColumns extends Query{
 
     /**
      * @var array
@@ -36,7 +36,7 @@ class AddColumns extends Query{
      * Set the table that you want to modify.
      *
      * @param string $table
-     * @return AddColumns
+     * @return ModifyColumns
      */
     public function setTable(string $table) : IQuery {
         return parent::setTable($table);
@@ -46,20 +46,20 @@ class AddColumns extends Query{
      * Set the table that you want to modify.
      *
      * @param string $table
-     * @return AddColumns
+     * @return ModifyColumns
      */
     public function table(string $table) : IQuery {
         return parent::setTable($table);
     }
 
     /**
-     * Set a column that you want to add.
+     * Set a column that you want to modify.
      *
      * @param string $column
      * @param string $value
-     * @return AddColumns
+     * @return ModifyColumns
      */
-    public function setColumn(string $column, string $value) : AddColumns {
+    public function setColumn(string $column, string $value) : ModifyColumns {
         $this->columns[] = $column;
 
         $this->values[] = $value;
@@ -68,52 +68,52 @@ class AddColumns extends Query{
     }
 
     /**
-     * Set a column that you want to add.
+     * Set a column that you want to modify.
      *
      * @param string $column
      * @param string $value
-     * @return AddColumns
+     * @return ModifyColumns
      */
-    public function column(string $column, string $value) : AddColumns {
+    public function column(string $column, string $value) : ModifyColumns {
         $this->setColumn($column, $value);
         
         return $this;
     }
     
     /**
-     * Set the columns that you want to add by array.
+     * Set the columns that you want to modify by array.
      *
      * @param string $column
      * @param string $value
-     * @return AddColumns
+     * @return ModifyColumns
      */
-    public function setColumnsByArray(array $data) : AddColumns {
+    public function setColumnsByArray(array $data) : ModifyColumns {
         foreach ($data as $key => $value) $this->setColumn($key, $value);
 
         return $this;
     }
 
     /**
-     * Set the columns that you want to add by array.
+     * Set the columns that you want to modify by array.
      *
      * @param string $column
      * @param string $value
-     * @return AddColumns
+     * @return ModifyColumns
      */
-    public function columns(array $columns) : AddColumns {
+    public function columns(array $columns) : ModifyColumns {
         $this->setColumnsByArray($columns);
 
         return $this;
     }
 
     /**
-     * Set the columns that you want to add by array.
+     * Set the columns that you want to modify by array.
      *
      * @param string $column
      * @param string $value
-     * @return AddColumns
+     * @return ModifyColumns
      */
-    public function setColumns(array $data) : AddColumns {
+    public function setColumns(array $data) : ModifyColumns {
         $this->setColumnsByArray($data);
 
         return $this;
@@ -138,7 +138,7 @@ class AddColumns extends Query{
     public function convertToQuery() : string {
         $query = "ALTER TABLE {$this->table}";
 
-        for ($i = 0; $i < count($this->columns); $i++) $query .= $i != (count($this->columns) == 1) ? " ADD COLUMN {$this->columns[$i]} {$this->values[$i]};" : ($i == 0 ? " ADD COLUMN {$this->columns[$i]} {$this->values[$i]}, " : ($i != (count($this->columns) != 1) ? "ADD COLUMN {$this->columns[$i]} {$this->values[$i]}, " : "ADD COLUMN {$this->columns[$i]} {$this->values[$i]};"));
+        for ($i = 0; $i < count($this->columns); $i++) $query .= $i != (count($this->columns) == 1) ? " MODIFY COLUMN {$this->columns[$i]} {$this->values[$i]};" : ($i == 0 ? " MODIFY COLUMN {$this->columns[$i]} {$this->values[$i]}, " : ($i != (count($this->columns) != 1) ? "MODIFY COLUMN {$this->columns[$i]} {$this->values[$i]}, " : "MODIFY COLUMN {$this->columns[$i]} {$this->values[$i]};"));
         
         return $query;
     }

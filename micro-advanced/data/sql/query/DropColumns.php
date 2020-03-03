@@ -30,7 +30,7 @@ class DropColumns extends Query{
      * @param string $table
      * @return DropColumns
      */
-    public function setTable(string $table) : DropColumns {
+    public function setTable(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -40,7 +40,7 @@ class DropColumns extends Query{
      * @param string $table
      * @return DropColumns
      */
-    public function table(string $table) : DropColumns {
+    public function table(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -109,8 +109,8 @@ class DropColumns extends Query{
      *
      * @return boolean
      */
-    public function execute(): bool {
-        $this->execute = array_merge($this->values, $this->execute);
+    public function execute() {
+        $this->execute = $this->columns;
 
         return parent::execute();
     }

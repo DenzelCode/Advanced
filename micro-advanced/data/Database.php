@@ -20,6 +20,7 @@ namespace advanced\data;
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
+use advanced\data\sql\MySQL;
 use PDOStatement;
 
 /**
@@ -93,6 +94,7 @@ class Database{
 
     /**
      * @return void
+     * @throws DatabaseException
      */
     public function run() : void {
         try {
@@ -454,7 +456,7 @@ class Database{
     }
 
     /**
-     * Drop columns of a table
+     * Add columns to a table
      *
      * @param array $data
      * @param string $options
@@ -471,15 +473,43 @@ class Database{
         $exc = [];
 
         foreach ($data as $key => $value) {
-            $queryColumn = $this->getPDO()->prepare("SHOW COLUMNS FROM {$this->getTable()} LIKE ?");
+            if (count($data) == 1) $query .= " ADD COLUMN {$key} {$value};"; else if ($i == 0) $query .= " ADD COLUMN {$key} {$value}, "; else if ($i != (count($data) - 1)) $query .= "ADD COLUMN {$key} {$value}, "; else $query .= "ADD COLUMN {$key} {$value};";
 
-            $queryColumn->execute([$key]);
-
-            if (count($queryColumn->fetchAll())) unset($data[$key]);
+            $i++;
         }
 
+        if ($options) $query .= " " . $options;
+
+        $exc = array_merge($exc, $execute);
+
+        $add = $this->getPDO()->prepare($query);
+
+        $this->lastStatement = $add;
+
+        $add = $add->execute($exc);
+
+        return $add;
+    }
+
+    /**
+     * Modify columns of a table
+     *
+     * @param array $data
+     * @param string $options
+     * @param array $execute
+     * @return boolean
+     */
+    public function modifyColumns(array $data, string $options = null, array $execute = []) : bool {
+        if (!$this->getTable()) return false;
+
+        $query = "ALTER TABLE " . $this->getTable();
+
+        $i = 0;
+
+        $exc = [];
+
         foreach ($data as $key => $value) {
-            if (count($data) == 1) $query .= " ADD COLUMN {$key} {$value};"; else if ($i == 0) $query .= " ADD COLUMN {$key} {$value}, "; else if ($i != (count($data) - 1)) $query .= "ADD COLUMN {$key} {$value}, "; else $query .= "ADD COLUMN {$key} {$value};";
+            if (count($data) == 1) $query .= " MODIFY COLUMN {$key} {$value};"; else if ($i == 0) $query .= " MODIFY COLUMN {$key} {$value}, "; else if ($i != (count($data) - 1)) $query .= "MODIFY COLUMN {$key} {$value}, "; else $query .= "MODIFY COLUMN {$key} {$value};";
 
             $i++;
         }
@@ -512,14 +542,6 @@ class Database{
 
         $i = 0;
 
-        foreach ($data as $key => $value) {
-            $queryColumn = $this->getPDO()->prepare("SHOW COLUMNS FROM {$this->getTable()} LIKE ?");
-
-            $queryColumn->execute([$key]);
-
-            if (!count($queryColumn->fetchAll())) unset($data[$key]);
-        }
-
         foreach ($data as $key) {
             if (count($data) == 1) $query .= " DROP COLUMN {$key};"; else if ($i == 0) $query .= " DROP COLUMN {$key}, "; else if ($i != (count($data) - 1)) $query .= "DROP COLUMN {$key}, "; else $query .= "DROP COLUMN {$key};";
 
@@ -542,6 +564,7 @@ class Database{
      *
      * @param array $import
      * @return void
+     * @throws DatabaseException
      */
     public function import(array $import) : void {
         foreach ($import as $key => $value) {
@@ -556,6 +579,7 @@ class Database{
      *
      * @param array $update
      * @return void
+     * @throws DatabaseException
      */
     public function updateImport(array $update) : void {
         foreach ($update as $key => $value) {

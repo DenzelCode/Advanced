@@ -17,6 +17,7 @@
 
 namespace advanced\data\sql\query;
 
+use Exception;
 use PDOStatement;
 
 /**
@@ -24,8 +25,14 @@ use PDOStatement;
  */
 class Insert extends Query{
 
+    /**
+     * @var array
+     */
     private $fields = [];
 
+    /**
+     * @var array
+     */
     private $values = [];
 
     /**
@@ -34,7 +41,7 @@ class Insert extends Query{
      * @param string $table
      * @return Insert
      */
-    public function setTable(string $table) : Insert {
+    public function setTable(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -44,7 +51,7 @@ class Insert extends Query{
      * @param string $table
      * @return Insert
      */
-    public function table(string $table) : Insert {
+    public function table(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -60,6 +67,8 @@ class Insert extends Query{
 
         $this->values[] = $value;
 
+        $this->execute[] = $value;
+
         return $this;
     }
 
@@ -71,9 +80,7 @@ class Insert extends Query{
      * @return Insert
      */
     public function field(string $field, $value) : Insert {
-        $this->setField($field, $value);
-
-        return $this;
+        return $this->setField($field, $value);
     }
     
     /**
@@ -95,9 +102,7 @@ class Insert extends Query{
      * @return Insert
      */
     public function fields(array $fields) : Insert {
-        $this->setFieldsByArray($fields);
-
-        return $this;
+        return $this->setFieldsByArray($fields);
     }
 
     /**
@@ -107,13 +112,11 @@ class Insert extends Query{
      * @return Insert
      */
     public function setFields(array $fields) : Insert {
-        $this->setFieldsByArray($fields);
-
-        return $this;
+        return $this->setFieldsByArray($fields);
     }
 
     /**
-    * Generate the query string of the object
+    * Generate the query string of the object.
     *
     * @return string
     */
@@ -124,7 +127,7 @@ class Insert extends Query{
 
         $query .= ") VALUES (";
 
-        for ($i = 0; $i < (count($this->values) - 1); $i++) $query .= $i != (count($this->values) - 1) ? "?, " : "?";
+        for ($i = 0; $i < count($this->values); $i++) $query .= $i != (count($this->values) - 1) ? "?, " : "?";
 
         $query .= ")";
 

@@ -23,6 +23,16 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class Mailer {
 
+    /**
+     * Send a mail.
+     *
+     * @param string $server
+     * @param string $subject
+     * @param string $body
+     * @param Recipient|Recipient[]|array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         $recipients
+     * @param [type] $attachments
+     * @return boolean
+     */
     public static function sendMail(string $server, string $subject, string $body, $recipients, $attachments = null) : bool {
         $config = new Config(PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "mailer");
 

@@ -33,7 +33,7 @@ class Truncate extends Query{
     }
 
     /**
-     * Set the table that you want to modify
+     * Set the table that you want to modify.
      *
      * @param string $table
      * @return Truncate
@@ -43,7 +43,7 @@ class Truncate extends Query{
     }
 
     /**
-    * Generate the query string of the object
+    * Generate the query string of the object.
     *
     * @return string
     */

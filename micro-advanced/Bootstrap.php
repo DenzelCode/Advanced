@@ -187,10 +187,19 @@ class Bootstrap{
         return self::$classes["users"];
     }
 
+    /**
+     * @param string $name
+     * @param mixed $object
+     * @return void
+     */
     public static function setClass(string $name, $object) : void {
         self::$classes[$name] = $object;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public static function getClass(string $name) {
         return self::$classes[$name];
     }

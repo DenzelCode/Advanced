@@ -30,7 +30,7 @@ class Delete extends Query{
      * @param string $table
      * @return Delete
      */
-    public function setTable(string $table) : Delete {
+    public function setTable(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -40,7 +40,7 @@ class Delete extends Query{
      * @param string $table
      * @return Delete
      */
-    public function table(string $table) : Delete {
+    public function table(string $table) : IQuery {
         return parent::setTable($table);
     }
 

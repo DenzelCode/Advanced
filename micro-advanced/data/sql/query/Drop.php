@@ -28,7 +28,7 @@ class Drop extends Query{
      * @param string $table
      * @return Drop
      */
-    public function setTable(string $table) : Drop {
+    public function setTable(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -38,7 +38,7 @@ class Drop extends Query{
      * @param string $table
      * @return Drop
      */
-    public function table(string $table) : Drop {
+    public function table(string $table) : IQuery {
         return parent::setTable($table);
     }
 

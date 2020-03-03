@@ -51,6 +51,11 @@ class TemplateProvider{
     }
 
     /**
+     * Set parameter into templates.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param boolean $prefix
      * @return void
      */
     public static function setParameter(string $key, $value, bool $prefix = true) : void {
@@ -60,24 +65,40 @@ class TemplateProvider{
     }
 
     /**
+     * Set parameters into templates.
+     *
+     * @param array $params
+     * @param boolean $prefix
      * @return void
      */
     public static function setParameters(array $params, bool $prefix = true) : void {
-        foreach ($params as $key => $value) {
-            self::$params[$key]["value"] = $value;
-
-            self::$params[$key]["prefix"] = $prefix;
-        }
+        foreach ($params as $key => $value) self::setParameter($key, $value, $prefix);
     }
-
+    
     /**
+     * Unset parameter.
+     *
+     * @param string $key
      * @return void
      */
-    public static function unsetParams(array $params) : void {
-        foreach ($params as $key) unset(self::$params[$key]);
+    public static function unsetParameter(string $key) : void {
+        unset(self::$params[$key]);
     }
 
     /**
+     * Unset parameters
+     *
+     * @param array $params
+     * @return void
+     */
+    public static function unsetParameters(array $params) : void {
+        foreach ($params as $key) self::unsetParameter($key);
+    }
+
+    /**
+     * Get parameter value.
+     *
+     * @param string $param
      * @return string|null
      */
     public static function getParameter(string $param) : ?string {
@@ -100,6 +121,12 @@ class TemplateProvider{
         return $data;
     }
 
+    /**
+     * Get template from the Advanced path.
+     *
+     * @param string $template
+     * @return string
+     */
     public static function getRootTemplate(string $template) : string {
         TemplateProvider::setPath("advanced");
 
@@ -110,6 +137,12 @@ class TemplateProvider{
         return $template;
     }
 
+    /**
+     * Get templates from the Advanced path.
+     *
+     * @param array $templates
+     * @return string
+     */
     public static function getRootTemplates(array $templates) : string {
         TemplateProvider::setPath("advanced");
 
@@ -121,6 +154,9 @@ class TemplateProvider{
     }
 
     /**
+     * Filter template code.
+     *
+     * @param string $data
      * @return string
      */
     public static function filterTemplate(string $data) : string {
@@ -149,6 +185,9 @@ class TemplateProvider{
     }
 
     /**
+     * Get a list of templates together by order.
+     *
+     * @param array $templates
      * @return string
      */
     public static function getByArray(array $templates) : string {
@@ -160,6 +199,7 @@ class TemplateProvider{
     }
 
     /**
+     * @param string $path
      * @return void
      */
     public static function setPath(string $path) : void {
@@ -174,6 +214,11 @@ class TemplateProvider{
     }
 
     /**
+     * Get a template.
+     *
+     * @param string $template
+     * @param boolean $cache
+     * @param boolean $create
      * @return string
      */
     public static function get(string $template, bool $cache = true, bool $create = true) : string {
@@ -208,10 +253,21 @@ class TemplateProvider{
         }
     }
 
+    /**
+     * Check if a parameter exists.
+     *
+     * @param string $param
+     * @return boolean
+     */
     public static function parameterExists(string $param) : bool {
         return in_array($param, array_keys(self::getParameters()));
     }
-
+ 
+    /**
+     * Get templates default parameters.
+     *
+     * @return array
+     */
     public static function getDefaultParameters() : array {
         return [
             "title" => Bootstrap::getMainLanguage()->get("template.undefined"),
@@ -230,6 +286,12 @@ class TemplateProvider{
         ];
     }
 
+    /**
+     * Set templates default parameters.
+     *
+     * @param boolean $force
+     * @return void
+     */
     public static function setDefaultParameters(bool $force = false) {
         foreach (self::getDefaultParameters() as $key => $value) {
             if (!$force && !self::parameterExists($key) || $force) self::setParameter($key, $value);

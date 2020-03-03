@@ -45,7 +45,7 @@ class Update extends Query{
     }
 
     /**
-     * Set the table that you want to modify
+     * Set the table that you want to modify.
      *
      * @param string $table
      * @return Update
@@ -59,7 +59,7 @@ class Update extends Query{
      *
      * @param string $field
      * @param mixed $value
-     * @return Insert
+     * @return Update
      */
     public function setField(string $field, $value) : Update {
         $this->fields[] = $field;
@@ -74,10 +74,10 @@ class Update extends Query{
      *
      * @param string $field
      * @param mixed $value
-     * @return Insert
+     * @return Update
      */
-    public function field(string $field, $value) : void {
-        $this->setField($field, $value);
+    public function field(string $field, $value) : Update {
+        return $this->setField($field, $value);
     }
     
     /**
@@ -98,8 +98,8 @@ class Update extends Query{
      * @param array $fields
      * @return void
      */
-    public function fields(array $fields) : void {
-        $this->setFieldsByArray($fields);
+    public function fields(array $fields) : Update {
+        return $this->setFieldsByArray($fields);
     }
 
     /**
@@ -108,12 +108,12 @@ class Update extends Query{
      * @param array $fields
      * @return void
      */
-    public function setFields(array $fields) : void {
+    public function setFields(array $fields) : Update {
         $this->setFieldsByArray($fields);
     }
 
     /**
-     * Execute the query
+     * Execute the query.
      *
      * @return boolean
      */
@@ -124,7 +124,7 @@ class Update extends Query{
     }
 
     /**
-    * Generate the query string of the object
+    * Generate the query string of the object.
     *
     * @return string
     */

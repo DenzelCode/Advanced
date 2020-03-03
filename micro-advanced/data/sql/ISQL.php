@@ -23,6 +23,7 @@ use advanced\data\sql\query\Delete;
 use advanced\data\sql\query\Drop;
 use advanced\data\sql\query\DropColumns;
 use advanced\data\sql\query\Insert;
+use advanced\data\sql\query\ModifyColumns;
 use advanced\data\sql\query\Query;
 use advanced\data\sql\query\Select;
 use advanced\data\sql\query\ShowColumns;
@@ -52,6 +53,8 @@ interface ISQL{
     public function showColumns() : ShowColumns;
 
     public function addColumns() : AddColumns;
+
+    public function modifyColumns() : ModifyColumns;
 
     public function dropColumns() : DropColumns;
 

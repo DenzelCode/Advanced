@@ -28,6 +28,13 @@ use advanced\mailer\Receipient;
  */
 class User extends AbstractUser {
 
+    /**
+     * Create a user instance.
+     *
+     * @param array $data
+     * @param array $authData
+     * @throws UserException
+     */
     public function __construct(array $data, array $authData = []) {
         $this->data = $data;
 
@@ -58,13 +65,25 @@ class User extends AbstractUser {
         if (!empty(($fetch = $query->fetch()))) $this->data = $fetch;
     }
 
+    /**
+     * Send mail into the user.
+     *
+     * @param string $server
+     * @param string $subject
+     * @param string $body
+     * @return void
+     */
     public function sendMail(string $server, string $subject, string $body) : void {
         Mailer::sendMail($server, $subject, $body, new Receipient($this->getName(), $this->getMail()));
     }
 
     /**
-    * @return bool
-    */
+     * Authenticate account.
+     *
+     * @param boolean $cookie
+     * @param array $data
+     * @return boolean
+     */
     public function authenticate(bool $cookie = false, array $data = []) : bool {
         foreach ($data as $key => $value) $this->authData[$key] = $value;
 
@@ -81,6 +100,12 @@ class User extends AbstractUser {
         return false;
     }
     
+    /**
+     * Set a data into the object and mm
+     *
+     * @param array $data
+     * @return void
+     */
     public function set(array $data) : void {
         Bootstrap::getDatabase()->setTable("users")->update($data, "WHERE id = ?", [$this->getId()]);
 
@@ -94,6 +119,11 @@ class User extends AbstractUser {
         return $this->data ?? null;
     }
 
+    /**
+     * Update the data from the table.
+     *
+     * @return void
+     */
     public function updateData() : void {
         $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE id = ? AND username = ?", [$this->getId(), $this->getName()]);
         
@@ -101,18 +131,30 @@ class User extends AbstractUser {
     }
 
     /**
-     * @return bool
+     * Create.
+     *
+     * @return boolean
      */
     public function create() : bool {
         return Bootstrap::getDatabase()->setTable("users")->insert($this->data);
     }
 
+    /**
+     * Delete user.
+     *
+     * @return boolean
+     */
     public function delete() : bool {
         if (!$this->exists()) return false;
 
         return Bootstrap::getDatabase()->setTable("users")->delete("WHERE id = ?", [$this->getId()]);
     }
 
+    /**
+     * Check if user exists
+     *
+     * @return boolean
+     */
     public function exists() : bool {
         $name = strtolower($this->getName());
 

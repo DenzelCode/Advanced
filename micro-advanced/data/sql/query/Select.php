@@ -28,7 +28,7 @@ use PDOStatement;
 /**
  * Select class
  */
-class Select extends Query implements Prepared{
+class Select extends Query{
 
     /**
      * @var array
@@ -51,7 +51,7 @@ class Select extends Query implements Prepared{
      * @param string $table
      * @return Select
      */
-    public function setTable(string $table) : Select {
+    public function setTable(string $table) : IQuery {
         return parent::setTable($table);
     }
 
@@ -61,8 +61,19 @@ class Select extends Query implements Prepared{
      * @param string $table
      * @return Select
      */
-    public function table(string $table) : Select {
+    public function table(string $table) : IQuery {
         return parent::setTable($table);
+    }
+
+    /**
+     * Add WHERE parameter to the query.
+     *
+     * @param string $where
+     * @param array $execute
+     * @return Select
+     */
+    public function where(string $where, array $execute = []) : IQuery {
+        return parent::where($where, $execute);
     }
 
     /**
@@ -154,10 +165,14 @@ class Select extends Query implements Prepared{
      *
      * @return PDOStatement
      */
-    public function execute(): PDOStatement {
+    public function execute() {
         parent::execute();
 
         return $this->prepare;
+    }
+
+    public function getError() : ?string {
+        return $this->prepare = null || empty($this->prepare->errorInfo()[2]) ? null : $this->prepare->errorInfo()[2];
     }
 
     /**
@@ -166,11 +181,11 @@ class Select extends Query implements Prepared{
     * @return string
     */
     public function convertToQuery() : string {
-        $query = "SELECT " . (!empty($this->distinct) ? "DISTINCT {$this->distinct}" : "");
+        $query = "SELECT " . (!empty($this->distinct) ? "DISTINCT {$this->distinct} " : "");
 
-        foreach ($this->columns as $i => $column) $query .= $i != (count($this->columns) - 1) ? "{$column}, " : $query .= "{$column} ";
+        $query .= join(", ", $this->columns);
 
-        $query .= !empty($this->table) ? "FROM " . $this->table : "";
+        $query .= !empty($this->table) ? " FROM " . $this->table : "";
 
         foreach ($this->joins as $join) $query .= " " . $join->convertToQuery();
 

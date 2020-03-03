@@ -26,54 +26,110 @@ use PDOStatement;
  */
 class Join implements IJoin {
 
+    /**
+     * @var Select
+     */
     protected $query;
 
+    /**
+     * @var string
+     */
     protected $table;
 
+    /**
+     * @var string
+     */
     protected $on;
 
+    /**
+     * @var string
+     */
     protected $as;
 
+    /**
+     * @var array
+     */
     protected $using = [];
 
+    /**
+     * @param Select $query
+     * @param string $table
+     */
     public function __construct(Select $query, string $table) {
         $this->query = $query;
+
+        $this->table = $table;
     }
 
+    /**
+     * @param string $on
+     * @return Join
+     */
     public function on(string $on) : Join {
         $this->on = $on;
 
         return $this;
     }
 
+    /**
+     * @param string $as
+     * @return Join
+     */
     public function as(string $as) : Join {
         $this->as = $as;
 
         return $this;
     }
 
+    /**
+     * @param array $columns
+     * @return Join
+     */
     public function using(array $columns) : Join {
         $this->using = $columns;
 
         return $this;
     }
 
+
+    /**
+     * @param string $table
+     * @return IJoin
+     */
     public function join(string $table) : IJoin {
         return $this->query->join($table);
     }
 
+    /**
+     * @param string $where
+     * @param array $execute
+     * @return Query
+     */
     public function where(string $where, array $execute = []) : Query {
         return $this->query->where($where, $execute);
     }
 
+    /**
+     * Execute query and return PDOStatement.
+     * 
+     * @return PDOStatement
+     */
     public function execute() : PDOStatement {
         return $this->query->execute();
     }
 
+    /**
+     * @return string
+     */
     public function getPreffix(): string {
         return "JOIN";
     }
 
+    /**
+     * Convert Object to Query string. 
+     *
+     * @return string
+     */
     public function convertToQuery(): string {
         $query = "{$this->getPreffix()} {$this->table}";
 

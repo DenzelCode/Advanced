@@ -105,7 +105,7 @@ abstract class Query implements IQuery{
      *
      * @return boolean
      */
-    public function execute() : bool {
+    public function execute() {
         $prepare = $this->sql->prepare($this);
 
         $this->sql->setLastStatement($prepare);
@@ -123,11 +123,11 @@ abstract class Query implements IQuery{
     }
 
     /**
-    * Generate the query string of the object
+    * Generate the query string of the object.
     *
     * @return string
     */
-    protected abstract function convertToQuery() : string;
+    public abstract function convertToQuery() : string;
 
     /**
      * @return string

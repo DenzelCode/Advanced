@@ -24,5 +24,21 @@ interface IQuery{
 
     public function getTable() : ?string;
 
+    /**
+     * Add WHERE parameter to the query.
+     *
+     * @param string $where
+     * @param array $execute
+     * @return IQuery
+     */
     public function where(string $where, array $execute = []) : IQuery;
+
+    public function convertToQuery() : string;
+
+    /**
+     * Execute the query.
+     *
+     * @return boolean
+     */
+    public function execute();
 }

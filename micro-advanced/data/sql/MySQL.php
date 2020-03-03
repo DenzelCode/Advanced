@@ -15,11 +15,12 @@
  * 
  */
 
-namespace advanced\data;
+namespace advanced\data\sql;
 
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
+use advanced\data\Database;
 use advanced\data\sql\ISQL;
 use advanced\data\sql\query\AddColumns;
 use advanced\data\sql\query\Create;
@@ -37,22 +38,12 @@ use PDOStatement;
 /**
  * MySQL class
  */
-class MySQL implements ISQL{
+class MySQL extends SQL{
 
     /**
      * @var string
      */
     private $host, $port, $username, $password;
-
-    /**
-     * @var PDO
-     */
-    private $con;
-
-    /**
-     * @var PDOStatement
-     */
-    private $lastStatement;
 
     /**
      * @var MySQL
@@ -184,109 +175,6 @@ class MySQL implements ISQL{
     }
 
     /**
-     * @return Select
-     */
-    public function select() : Select {
-        return (new Select($this));
-    }
-
-    /**
-     * @return Insert
-     */
-    public function insert() : Insert {
-        return (new Insert($this));
-    }
-
-    /**
-     * @return Update
-     */
-    public function update() : Update {
-        return (new Update($this));
-    }
-
-    /**
-     * @return Delete
-     */
-    public function delete() : Delete {
-        return (new Delete($this));
-    }
-
-    /**
-     * @return Create
-     */
-    public function create() : Create {
-        return (new Create($this));
-    }
-    
-    /**
-     * @return Drop
-     */
-    public function drop() : Drop {
-        return (new Drop($this));
-    }
-
-    /**
-     * @return ShowColumns
-     */
-    public function showColumns() : ShowColumns {
-        return (new ShowColumns($this));
-    }
-
-    /**
-     * @return AddColumns
-     */
-    public function addColumns() : AddColumns {
-        return (new AddColumns($this));
-    }
-
-    /**
-     * @return DropColumns
-     */
-    public function dropColumns() : DropColumns {
-        return (new DropColumns($this));
-    }
-
-    /**
-     * @return Truncate
-     */
-    public function truncate() : Truncate {
-        return (new Truncate($this));
-    }
-
-    /**
-     * Prepare the query.
-     * @param Query $query
-     * @return PDOStatement
-     */
-    public function prepare(Query $query) : PDOStatement {
-        return $this->con->prepare((string) $query);
-    }
-
-    /**
-     * Set last statement. 
-     *
-     * @param PDOStatement $statement
-     * @return void
-     */
-    public function setLastStatement(PDOStatement $statement) : void {
-        $this->lastStatement = $statement;
-    }
-
-    /**
-     * @return PDOStatement|null
-     */
-    public function getLastStatement() : ?PDOStatement {
-        return $this->lastStatement;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastError() : string {
-        return $this->getLastStatement()->errorInfo()[2];
-    }
-
-    /**
      * @return string
      */
     public static function getConfigPath() : string {
@@ -300,4 +188,6 @@ class MySQL implements ISQL{
     public static function setConfigPath(string $configPath) : void {
         self::$configPath = $configPath;
     }
+
+    public function import() : void {}
 }
