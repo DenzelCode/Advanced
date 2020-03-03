@@ -30,7 +30,7 @@ class Mailer {
      * @param string $subject
      * @param string $body
      * @param Recipient|Recipient[]|array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         $recipients
-     * @param [type] $attachments
+     * @param Attachment|Attachment[] $attachments
      * @return boolean
      */
     public static function sendMail(string $server, string $subject, string $body, $recipients, $attachments = null) : bool {
