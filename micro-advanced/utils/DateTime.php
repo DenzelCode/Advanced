@@ -25,20 +25,39 @@ use advanced\Bootstrap;
  */
 class DateTime extends \DateTime {
 
-    public $format = "m-d-Y H:i:s"; // F jS, Y
+    /**
+     * @var string
+     */
+    public $format = "m-d-Y H:i:s";
 
+    /**
+     * @param string $time
+     * @param DateTimeZone $timezone
+     */
     public function __construct(string $time = "now", DateTimeZone $timezone = null) {
         parent::__construct($time, $timezone);
     }
 
+    /**
+     * @return string
+     */
     public function getFormat() : string {
         return $this->format;
     }
 
+    /**
+     * @param string $format
+     * @return void
+     */
     public function setFormat(string $format) {
         $this->format = $format;
     }
 
+    /**
+     * Get how much time ago passed since this date.
+     *
+     * @return string
+     */
     public function getAgo() : string {
         $time = (new DateTime())->getTimestamp() - $this->getTimestamp();
 

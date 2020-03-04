@@ -22,6 +22,12 @@ namespace advanced\utils;
 */
 class Convert {
 
+	/**
+	 * Convert number into string number for example: 1000 returns 1k.
+	 *
+	 * @param object $number
+	 * @return string
+	 */
 	public static function numToString(object $number) : string {
 		if ($number >= 1000000000000) {
 			$num = substr($number, 1, -11);

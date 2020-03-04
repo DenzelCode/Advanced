@@ -24,11 +24,33 @@ use advanced\Bootstrap;
 */	
 abstract class AdvancedException extends \Exception {
 
+    /**
+     * @var int
+     */
     protected $code;
+
+    /**
+     * @var string
+     */
     protected $message;
+
+    /**
+     * @var string
+     */
     protected $message_code;
+
+    /**
+     * @var array
+     */
     protected $parameters = [];
     
+    /**
+     * Generate a translated exception.
+     *
+     * @param integer $code
+     * @param string $message
+     * @param mixed ...$parameters
+     */
     public function __construct(int $code = 0, string $message = null, ...$parameters) {
         $this->code = $code;
         $this->message_code = $message;
@@ -36,10 +58,20 @@ abstract class AdvancedException extends \Exception {
         $this->message = $this->getTranslatedMessage();
     }
 
+    /**
+     * Get parameters.
+     *
+     * @return array|null
+     */
     public function getParameters() : ?array {
         return $this->parameters;
     }
 
+    /**
+     * Translate message.
+     *
+     * @return string
+     */
     public function getTranslatedMessage() : string {
         $arguments = [$this->message_code, null];
 

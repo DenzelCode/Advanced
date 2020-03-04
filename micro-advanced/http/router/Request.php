@@ -32,16 +32,34 @@ class Request{
     public const ALL = "ALL";
     public const ANY = "ANY";
 
+    /**
+     * @var string
+     */
     private static $controller = "main";
 
+    /**
+     * @var string
+     */
     private static $method = "index";
 
+    /**
+     * @var string
+     */
     private static $requestMethod = "get";
 
+    /**
+     * @var array
+     */
     private static $arguments = [];
 
+    /**
+     * @var Request
+     */
     private static $instance;
 
+    /**
+     * @param string $url
+     */
     public function __construct(string $url = null) {
         self::$instance = $this;
 
@@ -70,6 +88,9 @@ class Request{
         for ($i; $i < count($route); $i++) self::$arguments[$i] = $route[$i];
     }
 
+    /**
+     * @return Request
+     */
     public static function getInstance() : Request {
         return self::$instance;
     }
@@ -81,6 +102,10 @@ class Request{
         return self::$controller;
     }
 
+    /**
+     * @param string $data
+     * @return void
+     */
     public static function setController(string $data) {
         return self::$controller = $data;
     }
@@ -93,6 +118,9 @@ class Request{
     }
 
     /**
+     * Get controller object.
+     *
+     * @param string $preffix
      * @return Controller
      */
     public static function getObject(string $preffix) : Controller {
@@ -101,6 +129,12 @@ class Request{
         return new $obj();
     }
 
+    /**
+     * Get file.
+     *
+     * @param string $preffix
+     * @return string
+     */
     public static function getFile(string $preffix) : string {
         return $preffix . "controllers" . DIRECTORY_SEPARATOR . self::$controller . "Controller.php";
     }
@@ -112,25 +146,39 @@ class Request{
         return self::$method;
     }
 
+    /**
+     * @param string $data
+     * @return void
+     */
     public static function setMethod(string $data = null) {
         return self::$method = $data;
     }
 
+    /**
+     * @return string
+     */
     public static function getSecure() : string {
         return (string) (!empty($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on") ? "https://" : "http://");
     }
 
+    /**
+     * @return string
+     */
     public static function getURL() : string {
         return (string) $_SERVER["HTTP_HOST"];
     }
 
     /**
-    * @return array[]
-    */
+     * @return array
+     */
     public static function getArguments() : array {
         return self::$arguments;
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public static function setArguments(array $data) {
         return self::$arguments = $data;
     }
@@ -142,6 +190,10 @@ class Request{
         return self::$requestMethod;
     }
 
+    /**
+     * @param string $method
+     * @return void
+     */
     public static function setRequestMethod(string $method = null) {
         return self::$requestMethod = $method;
     }
@@ -153,7 +205,12 @@ class Request{
         return self::getSecure() . self::getURL();
     }
 
-    public static function getIp() {
+    /**
+     * Get app user IP.
+     *
+     * @return string
+     */
+    public static function getIp() : string {
         if (isset($_SERVER)) {
             if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) $userIP = $_SERVER["HTTP_CF_CONNECTING_IP"]; else if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) $userIP = $_SERVER["HTTP_X_FORWARDED_FOR"]; else if (isset($_SERVER["HTTP_CLIENT_IP"])) $userIP = $_SERVER["HTTP_CLIENT_IP"]; else $userIP = $_SERVER["REMOTE_ADDR"];
         } else if (getenv("HTTP_CF_CONNECTING_IP")) $userIP = getenv("HTTP_CF_CONNECTING_IP"); else if (getenv("HTTP_X_FORWARDED_FOR")) $userIP = getenv("HTTP_X_FORWARDED_FOR"); else if (getenv("HTTP_CLIENT_IP")) $userIP = getenv("HTTP_CLIENT_IP"); else $userIP = getenv("REMOTE_ADDR");

@@ -25,10 +25,19 @@ class Language{
     public const PATH_ADVANCED = "advanced";
     public const PATH_PROJECT = "project";
 
+    /**
+     * @var string
+     */
     private $language;
 
+    /**
+     * @var string
+     */
     private $path;
 
+    /**
+     * @var Config
+     */
     private $config;
 
     public function __construct(string $language, string $path = self::PATH_ADVANCED) {
@@ -39,10 +48,21 @@ class Language{
         self::updateConfig($language);
     }
 
+    /**
+     * Get the language name.
+     *
+     * @return string
+     */
     public function getName() : string {
         return $this->language;
     }
 
+    /**
+     * Set the path where we are going to get the language.
+     *
+     * @param string $path
+     * @return void
+     */
     public function setPath(string $path) : void {
         $different = $path != $this->path;
 
@@ -51,26 +71,58 @@ class Language{
         if ($different) self::updateConfig($this->language);
     }
 
+    /**
+     * Get the path where we are going to get the language.
+     *
+     * @return string
+     */
     public function getPath() : string {
         return ($this->path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . "resources" . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
     }
 
+    /**
+     * Update language file.
+     *
+     * @param string $file
+     * @return void
+     */
     private function updateConfig(string $file) : void {
         $file = $this->getPath() . $file;
 
         $this->config = new Config($file);
     }
 
+    /**
+     * Get translated string from the language files.
+     *
+     * @param string $key
+     * @param string $default
+     * @param mixed ...$params
+     * @return mixed
+     */
     public function get(string $key, string $default = null, ...$params) {
         $value = $this->config->get($key, $default);
 
         return is_string($value) ? self::filter($value, $params) : $value;
     }
 
+    /**
+     * Change app language.
+     *
+     * @param Language $language
+     * @return void
+     */
     public static function setLanguage(Language $language) {
         SessionManager::set("language", $language->getName());
     }
 
+    /**
+     * Filter string.
+     *
+     * @param string $text
+     * @param mixed $params
+     * @return string
+     */
     private function filter(string $text, $params) : string {
         foreach ($params as $key => $value) $text = str_replace("{{$key}}", $value, $text);
         

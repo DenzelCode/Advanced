@@ -4,9 +4,21 @@ namespace advanced\file;
 
 class Directory implements IFile {
 
+    /**
+     * @var string
+    */
     private $name;
+
+    /**
+     * @var string
+    */
     private $path;
 
+    /**
+     * Create directory object.
+     *
+     * @param string $directory
+     */
     public function __construct(string $directory) {
         $this->path = $directory;
 
@@ -18,16 +30,33 @@ class Directory implements IFile {
         $this->name = end($directories);
     }
 
+    /**
+     * Get directory name.
+     *
+     * @return string
+     */
+    public function getName() : string {
+        return $this->name;
+    }
+
+    /**
+     * Set directory name.
+     *
+     * @param string $name
+     * @return void
+     */
     public function setName(string $name): void {
         rename($this->directory->getPath() . $this->name, $this->directory->getPath() . $name);
 
         $this->name = $name;
     }
 
-    public function getName() : string {
-        return $this->name;
-    }
-
+    /**
+     * Change directory path.
+     *
+     * @param string $path
+     * @return void
+     */
     public function setPath(string $path): void {
         rename($this->path, $path);
 
@@ -36,22 +65,49 @@ class Directory implements IFile {
         $this->name = end(explode(DIRECTORY_SEPARATOR, $this->path));
     }
 
+    /**
+     * Get directory path.
+     *
+     * @return string
+     */
     public function getPath() : string {
         return $this->path;
     }
 
-    public function setPermission(int $permission): void {
-        chmod($this->path, $permission);
-    }
-
+    /**
+     * Get directory permissions.
+     *
+     * @return integer
+     */
     public function getPermission(): int {
         return fileperms($this->path);
     }
 
+    /**
+     * Set directory permissions.
+     *
+     * @param integer $permission
+     * @return void
+     */
+    public function setPermission(int $permission): void {
+        chmod($this->path, $permission);
+    }
+
+    /**
+     * Check if directory exists.
+     *
+     * @return boolean
+     */
     public function exists(): bool {
         return is_dir($this->path);
     }
 
+    /**
+     * Create direcrtory if not exists.
+     *
+     * @param integer $permission
+     * @return void
+     */
     public function create(int $permission = 0777): void {
         if ($this->exists()) return;
 

@@ -24,7 +24,8 @@
             "connecting": "Error conectando a el servidor MySQL: {0}",
             "needed": "Debes configurar un Database en el Bootstrap para poder usar esta característica. Ej: Project::setDatabase(new Database($host, $port, $username, $password, $database))",
             "create_table": "Ha ocurrido un error creando la tabla {0}: {1}",
-            "add_column": "Ha ocurrido un error agregando una columna a la tabla {0}: {1}"
+            "add_column": "Ha ocurrido un error agregando una columna a la tabla {0}: {1}",
+            "modify_column": "Ha ocurrido un error modificando una columna en la tabla {0}: {1}"
         },
 
         "file": {

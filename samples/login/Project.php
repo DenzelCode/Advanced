@@ -18,25 +18,28 @@
 namespace project;
 
 use advanced\project\Project as BaseProject;
-use advanced\data\Database;
 use advanced\exceptions\DatabaseException;
 use advanced\body\template\TemplateProvider;
+use advanced\data\sql\MySQL;
 
 /**
 * Project class
 */
 class Project extends BaseProject {
 
+    /**
+     * @return void
+     */
     public function init() : void {
         // Set all elements on the web section of the config into all templates parameters
         // Example: {@name}, {@cdn}, etc.
         TemplateProvider::setParameters(self::$config->get("web"));
 
         try {
-            // Initialize database
-            $database = new Database(self::$config->get("database.host"), self::$config->get("database.port"), self::$config->get("database.username"), self::$config->get("database.password"), self::$config->get("database.database"));
+            // Initialize MySQL
+            $sql = new MySQL(self::$config->get("database.host"), self::$config->get("database.port"), self::$config->get("database.username"), self::$config->get("database.password"), self::$config->get("database.database"));
 
-            self::setDatabase($database);
+            self::setSQL($sql);
         } catch (DatabaseException $e) {
             die($e->getMessage());
         }
@@ -45,6 +48,11 @@ class Project extends BaseProject {
         self::initRouter();
     }
 
+    /**
+     * Project name.
+     *
+     * @return string
+     */
     public function getName(): string {
         return "Auth";
     }

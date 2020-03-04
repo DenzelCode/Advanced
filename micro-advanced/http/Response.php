@@ -84,6 +84,12 @@ class Response{
 
     private static $json = false;
         
+    /**
+     * Write response
+     *
+     * @param [type] $data
+     * @return void
+     */
     public function write($data) {
         if (self::isJSON()) {
             self::setHeader('text/json');
@@ -94,26 +100,55 @@ class Response{
         return $data;
     }
 
+    /**
+     * Ser response code.
+     *
+     * @param integer $code
+     * @return Response
+     */
     public static function setCode(int $code) : Response {
         http_response_code($code);
 
         return new Response();
     }
 
+    /**
+     * Set app header.
+     *
+     * @param [type] $header
+     * @return void
+     */
     public static function setHeader($header) {
         header("Content-Type: {$header}");
     }
 
+    /**
+     * Activate the JSON mode.
+     *
+     * @param boolean $value
+     * @return Response
+     */
     public static function setJSON(bool $value = true) : Response {
         self::$json = $value;
 
         return new Response();
     }
 
+    /**
+     * Check if JSON mode is on.
+     *
+     * @return boolean
+     */
     public static function isJSON() : bool {
         return self::$json;
     }
 
+    /**
+     * Redirect app into an URL.
+     *
+     * @param string $url
+     * @return void
+     */
     public static function redirect(string $url) : void {
         header("Location: {$url}");
 

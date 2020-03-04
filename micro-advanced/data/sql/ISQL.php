@@ -65,4 +65,8 @@ interface ISQL{
     public function getLastStatement() : ?PDOStatement;
 
     public function getLastError() : string;
+
+    public function import(array $import) : void;
+
+    public function modify(array $update) : void;
 }

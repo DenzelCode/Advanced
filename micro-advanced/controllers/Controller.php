@@ -26,6 +26,12 @@ use advanced\http\router\Request;
 */
 abstract class Controller {
 
+    /**
+     * Create URL /index or / and let ALL methods request.
+     *
+     * @param string $method
+     * @return string
+     */
     public function index(string $method = Request::ALL) : string {
         TemplateProvider::setParameters([
             "title" => Bootstrap::getMainLanguage()->get("general.description"),

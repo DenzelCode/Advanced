@@ -19,24 +19,61 @@ namespace advanced\session;
 
 class SessionManager{
 
+    /**
+     * Init session.
+     *
+     * @return void
+     */
     public static function init() : void {
         session_start();
     }
     
+    /**
+     * Get data feom session or cookie.
+     *
+     * @param string $name
+     * @return mixed
+     */
     public static function get(string $name) {
         if (!empty($_SESSION[$name])) return $_SESSION[$name]; else if (!empty($_COOKIE[$name])) return $_COOKIE[$name]; else return null;
     }
 
+    /**
+     * Set data to session/cookie.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @param boolean $cookie
+     * @param integer $time
+     * @param string $directory
+     * @return void
+     */
     public static function set(string $name, $value, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = "/") : void {
         $_SESSION[$name] = $value;
 
         if ($cookie) setcookie($name, $value, time() + $time, $directory);
     }
 
-    public static function setAll(array $sessions, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = "/") : void {
+    /**
+     * Set data to session/cookie as array.
+     *
+     * @param array $sessions
+     * @param boolean $cookie
+     * @param integer $time
+     * @param string $directory
+     * @return void
+     */
+    public static function setByArray(array $sessions, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = "/") : void {
         foreach ($sessions as $key => $value) self::set($key, $value, $cookie, $time, $directory);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $name
+     * @param string $directory
+     * @return void
+     */
     public static function delete(string $name, string $directory = "/") : void {
         unset($_SESSION[$name]);
 

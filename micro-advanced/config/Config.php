@@ -17,6 +17,7 @@
 
 namespace advanced\config;
 
+use advanced\config\provider\IProvider;
 use advanced\config\provider\JsonProvider;
 use advanced\config\provider\Provider;
 use advanced\file\File;
@@ -29,18 +30,43 @@ class Config {
     public const PROVIDER_JSON = "json";
     public const PROVIDER_YAML = "yaml";
 
+    /**
+     * @var array
+     */
     private $initialData = [];
 
+    /**
+     * @var array
+     */
     private $data = [];
 
+    /**
+     * @var File
+     */
     private $file = null;
 
+    /**
+     * @var Config
+     */
     private static $instance;
 
+    /**
+     * @var array
+     */
     private static $files = [];
 
+    /**
+     * @var IProvider
+     */
     private $provider = null;
 
+    /**
+     * New config file.
+     *
+     * @param string $file
+     * @param array $default
+     * @param string $provider
+     */
     public function __construct(string $file, array $default = [], string $provider = Config::PROVIDER_JSON) {
         // Instance
         self::$instance = $this;
@@ -56,10 +82,20 @@ class Config {
         if (empty(self::$files[$this->file->getPath()])) $this->update($default); else $this->data = self::$files[$this->file->getPath()];
     }
 
+    /**
+     * @return Config
+     */
     public function getInstance() : Config {
         return self::$instance;
     }
 
+    /**
+     * Set config data.
+     * 
+     * @param string $key
+     * @param mixed $value
+     * @return Config
+     */
     public function set(string $key, $value): Config {
         $values = &$this->data;
 
@@ -76,22 +112,46 @@ class Config {
         return $this;
     }
 
+    /**
+     * Set config data if not exists.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return Config
+     */
     public function setIfNotExists(string $key, $value) : Config {
         if (!$this->has($key)) $this->set($key, $value);
 
         return $this;
     }
 
+    /**
+     * Save if file has been modified.
+     *
+     * @return void
+     */
     public function saveIfModified() : void {
         if ($this->initialData != $this->data) $this->save();
     }
 
+    /**
+     * Save file.
+     *
+     * @return void
+     */
     public function save() : void {
         $this->file->write(json_encode($this->data, JSON_PRETTY_PRINT));
 
         self::$files[$this->file->getPath()] = $this->data;
     }
 
+    /**
+     * Get config field.
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return void
+     */
     public function get(string $key, $default = null) {
         if (!is_array($this->data)) $this->data = [];
 
@@ -110,14 +170,31 @@ class Config {
         return $values;
     }
 
+    /**
+     * Get all data.
+     *
+     * @return array
+     */
     public function getAll() : array {
         return $this->data;
     }
 
+    /**
+     * Check if config has method.
+     *
+     * @param string $key
+     * @return boolean
+     */
     public function has(string $key) : bool {
         return ($this->get($key) !== null);
     }
     
+    /**
+     * Delete a config field.
+     *
+     * @param string $key
+     * @return void
+     */
     public function delete(string $key): void {
         $values = &$this->data;
 
@@ -132,10 +209,16 @@ class Config {
         self::$files[$this->file->getPath()] = $this->data;
     }
 
+    /**
+     * @return File|null
+     */
     public function getFile() : ?File {
         return $this->file;
     }
 
+    /**
+     * @var string
+     */
     public function updateProvider(string $provider) : void {
         switch ($provider) {
             case "json":
@@ -149,10 +232,19 @@ class Config {
         }
     }
 
-    public function getProvider() : ?Provider {
+    /**
+     * @return IProvider|null
+     */
+    public function getProvider() : ?IProvider {
         return $this->provider;
     }
 
+    /**
+     * Update config.
+     *
+     * @param array $default
+     * @return void
+     */
     private function update(array $default = null) : void {
         $this->file->create(!$default ? $this->provider->encode([]) : $this->provider->prettyPrint($default));
 

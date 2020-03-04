@@ -18,5 +18,11 @@
 namespace advanced\file;
 
 interface IFile {
+
+    /**
+     * Check if file not exists.
+     *
+     * @return boolean
+     */
     public function exists(): bool;
 }

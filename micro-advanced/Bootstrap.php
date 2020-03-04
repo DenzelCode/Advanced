@@ -34,10 +34,16 @@ use advanced\session\SessionManager;
 */
 class Bootstrap{
 
+    /**
+     * @var Bootstrap
+     */
     private static $instance;
 
+    /**
+     * @var array
+     */
     private static $classes = [];
-    
+
     public function __construct() {
         // Classes
         self::$instance = $this;
@@ -123,14 +129,14 @@ class Bootstrap{
     }
 
     /**
-    * @return LanguageProvider
+    * @return Language
     */
     public static function getLanguage() : Language {
         return self::$classes["language"];
     }
 
     /**
-    * @return LanguageProvider
+    * @return Language
     */
     public static function getMainLanguage() : Language {
         return self::$classes["mainLanguage"];
@@ -179,7 +185,7 @@ class Bootstrap{
     }
 
     /**
-     * @return Users
+     * @return UsersFactory
      */
     public static function getUsersFactory() : UsersFactory {
         if (!self::$classes["users"]) self::$classes["users"] = new UsersFactory();

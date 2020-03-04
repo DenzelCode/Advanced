@@ -30,7 +30,12 @@ use advanced\user\Auth;
 */
 class authController extends Controller {
 
-    // URL: /auth/login Method: POST
+    /**
+     * Create URL /auth/login and let POST method requests.
+     *
+     * @param string $method
+     * @return string
+     */
     public function login(string $method = Request::POST) : string {
         // Login
         $response = [];
@@ -82,7 +87,12 @@ class authController extends Controller {
         return Response::setJSON(true)->write($response);
     }
 
-    // URL: /auth/register Method: POST
+    /**
+     * Create URL /auth/register and let POST method requests.
+     *
+     * @param string $method
+     * @return string
+     */
     public function register(string $method = Request::POST) : string {
         // Register
         $response = [];

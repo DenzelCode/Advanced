@@ -21,8 +21,9 @@ use advanced\utils\ExecutionTime;
 class environment{
     
     /**
-     * Autoload function
-     * @return  require, autoload.php
+     * Run autoloads.
+     *
+     * @return void
      */
     public function autoload() : void{
         require "autoload.php";
@@ -30,6 +31,12 @@ class environment{
         @include "vendor/autoload.php";
     }
 
+    /**
+     * Init application.
+     *
+     * @param string $dir
+     * @return void
+     */
     public static function init(string $dir) : void{
         define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);

@@ -19,18 +19,35 @@ namespace advanced\mailer;
 
 class Receipient {
 
+    /**
+     * @var string
+     */
     private $name;
+
+    /**
+     * @var string
+     */
     private $mail;
 
+    /**
+     * @param string $name
+     * @param string $mail
+     */
     public function __construct(string $name, string $mail) {
         $this->name = $name;
         $this->mail = $mail;
     }
 
+    /**
+     * @return string
+     */
     public function getName() : string {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getMail() : string {
         return $this->mail;
     }

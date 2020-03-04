@@ -17,7 +17,7 @@
 
 namespace advanced\config\provider;
 
-interface Provider {
+interface IProvider {
     
     public function getName() : string;
     public function getExtension() : string;

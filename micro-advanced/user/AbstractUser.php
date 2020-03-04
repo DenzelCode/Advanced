@@ -19,12 +19,21 @@ namespace advanced\user;
 
 use advanced\user\Guest;
 use advanced\Bootstrap;
+use advanced\user\provider\IProvider;
 
 /**
  * User abstract class
  */
 abstract class AbstractUser implements IUser {
 
+    /**
+     * @var IProvider
+     */
+    protected static $provider;
+
+    /**
+     * @var array
+     */
     protected $authData = [];
 
     /**
@@ -104,6 +113,10 @@ abstract class AbstractUser implements IUser {
         return (int) $this->data['account_created'];
     }
 
+    /**
+     * @param string $data
+     * @return mixed
+     */
     public function get(string $data) {
         return $this->data[$data];
     }
@@ -114,12 +127,14 @@ abstract class AbstractUser implements IUser {
     abstract protected function delete() : bool;
 
     /**
-     * @return bool
+     * @param boolean $cookie
+     * @param array $data
+     * @return boolean
      */
     abstract protected function authenticate(bool $cookie = false, array $data = []) : bool;
 
     /**
-     * @return bool
+     * @return boolean
      */
     abstract protected function create() : bool;
 
@@ -128,6 +143,10 @@ abstract class AbstractUser implements IUser {
      */
     abstract protected function exists() : bool;
 
+    /**
+     * @param array $data
+     * @return void
+     */
     abstract protected function set(array $data) : void;
 
     /**
@@ -136,42 +155,72 @@ abstract class AbstractUser implements IUser {
     abstract protected function getAll() : ?array;
 
     /**
-     * @return bool
+     * @param string $mail
+     * @return boolean
      */
     public static function isValidMail(string $mail) : bool {
         return filter_var($mail, FILTER_VALIDATE_EMAIL);
     }
 
+    /**
+     * @return array
+     */
     public function getData() : array {
         return $this->data;
     }
 
+    /**
+     * @param array $data
+     * @return void
+     */
     public function setDataArray(array $data) {
         foreach ($data as $key => $value) $this->data[$key] = $value;
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
     public function setData(string $name, $value) {
         $this->data[$name] = $value;
     }
 
+    /**
+     * @param string $data
+     * @return mixed
+     */
     public function getAuthData(string $data) {
         return $this->authData[$data];
     }
 
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
     public function setAuthData(string $name, $value) {
         $this->authData[$name] = $value;
     }
 
+    /**
+     * @return array
+     */
     public function getAuthDataArray() : array {
         return $this->authData;
     }
 
+    /**
+     * @param array $authData
+     * @return void
+     */
     public function setAuthDataArray(array $authData = []) {
         foreach ($authData as $key => $value) $this->authData[$key] = $value;
     }
 
     /**
-     * @return bool
+     * @param string $name
+     * @return boolean
      */
     public static function isValidName(string $name) : bool {
         $config = Bootstrap::getConfig();
@@ -185,11 +234,16 @@ abstract class AbstractUser implements IUser {
         return $userCheck && !in_array(strtolower($name), $invalidNames) && !self::isValidMail($name);
     }
 
+    /**
+     * @param string $name
+     * @return boolean
+     */
     public static function isValidDisplayName(string $name) : bool {
         return !preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $name);
     }
 
     /**
+     * @param integer $length
      * @return string
      */
     public static function generateToken(int $length = 40) : string {

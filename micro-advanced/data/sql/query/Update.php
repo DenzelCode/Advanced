@@ -55,6 +55,37 @@ class Update extends Query{
     }
 
     /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return Update
+     */
+    public function setLimit(int $limit) : IQuery {
+        return parent::setTable($limit);
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return Update
+     */
+    public function limit(int $limit) : IQuery {
+        return parent::setTable($limit);
+    }
+
+    /**
+     * Add WHERE parameter to the query.
+     *
+     * @param string $where
+     * @param array $execute
+     * @return Update
+     */
+    public function where(string $where, array $execute = []) : IQuery {
+        return parent::where($where, $execute);
+    }
+
+    /**
      * Set the column name and the value that you want to asign to the row.
      *
      * @param string $field
@@ -109,7 +140,7 @@ class Update extends Query{
      * @return void
      */
     public function setFields(array $fields) : Update {
-        $this->setFieldsByArray($fields);
+        return $this->setFieldsByArray($fields);
     }
 
     /**
@@ -134,6 +165,8 @@ class Update extends Query{
         foreach ($this->fields as $i => $field) $query .= $i != (count($this->fields) == 1) ? "SET {$field} = ? " : ($i == 0 ? "SET {$field} = ?, " : ($i != (count($this->fields) != 1) ? "{$field} = ?, " : "{$field} = ?"));
 
         $query .= !empty($this->where) ? " WHERE {$this->where}" : "";
+
+        $query .= $this->limit > 0 ? " LIMIT {$this->limit}" : "";
         
         return $query;
     }

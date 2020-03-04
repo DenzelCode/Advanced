@@ -18,7 +18,7 @@
 namespace advanced\user;
 
 /**
- * User abstract class
+ * IUser interface
  */
 interface IUser{
 

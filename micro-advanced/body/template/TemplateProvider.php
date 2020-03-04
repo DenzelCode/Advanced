@@ -28,11 +28,20 @@ class TemplateProvider{
 
     public const PATH_ADVANCED = "advanced";
     public const PATH_PROJECT = "project";
-      
+    
+    /**
+     * @var array
+     */
     private static $params = [];
 
+    /**
+     * @var TemplateProvider
+     */
     private static $instance;
 
+    /**
+     * @var string
+     */
     private static $path;
 
     public function __construct() {

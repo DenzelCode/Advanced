@@ -45,6 +45,37 @@ class Delete extends Query{
     }
 
     /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return Delete
+     */
+    public function setLimit(int $limit) : IQuery {
+        return parent::setTable($limit);
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return Delete
+     */
+    public function limit(int $limit) : IQuery {
+        return parent::setTable($limit);
+    }
+
+    /**
+     * Add WHERE parameter to the query.
+     *
+     * @param string $where
+     * @param array $execute
+     * @return Delete
+     */
+    public function where(string $where, array $execute = []) : IQuery {
+        return parent::where($where, $execute);
+    }
+
+    /**
      * Convert object to query.
      *
      * @return string
@@ -53,6 +84,8 @@ class Delete extends Query{
         $query = "DELETE FROM {$this->table}";
 
         $query .= !empty($this->where) ? " WHERE {$this->where}" : "";
+
+        $query .= $this->limit > 0 ? " LIMIT {$this->limit}" : "";
         
         return $query;
     }

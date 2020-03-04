@@ -19,8 +19,18 @@ namespace advanced\http;
 
 class Post{
 
+    /**
+     * @var array
+     */
     private static $params = [];
 
+    /**
+     * Get parameters from the $_POST var or php://input.
+     *
+     * @param array $pop
+     * @param boolean $common
+     * @return mixed
+     */
     public static function get(array $pop, bool $common = true) {
         self::populate($common);
 
@@ -31,10 +41,21 @@ class Post{
         return $pop;
     }
 
+    /**
+     * Get parameters.
+     *
+     * @return array
+     */
     public static function getParameters() : array {
         return self::$params;
     }
 
+    /**
+     * Populate data.
+     *
+     * @param boolean $common
+     * @return void
+     */
     private static function populate(bool $common = true) {
         $body = file_get_contents('php://input');
 

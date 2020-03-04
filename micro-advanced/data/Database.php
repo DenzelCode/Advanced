@@ -21,6 +21,7 @@ use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
 use advanced\data\sql\MySQL;
+use PDOException;
 use PDOStatement;
 
 /**
@@ -75,17 +76,19 @@ class Database{
     public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "", MySQL $mysql = null) {
         self::$instance = $this;
 
-        $this->host = $mysql instanceof MySQL ? $mysql->getHost() : $host;
-        $this->port = $mysql instanceof MySQL ? $mysql->getPort() : $port;
-        $this->username = $mysql instanceof MySQL ? $mysql->getUsername() : $username;
-        $this->password = $mysql instanceof MySQL ? $mysql->getPassword() : $password;
-        $this->database = $mysql instanceof MySQL ? $mysql->getDatabase() : $database;
-
         if (!extension_loaded("pdo")) {
             throw new DatabaseException(0, "exception.database.pdo_required");
 
             return;
         }
+
+        if ($mysql instanceof MySQL) $this->con = $mysql;
+
+        $this->host = $mysql instanceof MySQL ? $mysql->getHost() : $host;
+        $this->port = $mysql instanceof MySQL ? $mysql->getPort() : $port;
+        $this->username = $mysql instanceof MySQL ? $mysql->getUsername() : $username;
+        $this->password = $mysql instanceof MySQL ? $mysql->getPassword() : $password;
+        $this->database = $mysql instanceof MySQL ? $mysql->getDatabase() : $database;
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -230,10 +233,10 @@ class Database{
      * @param array $execute
      * @return PDOStatement
      */
-    public function select(array $data = ["*"], string $options = null, array $execute = []) : PDOStatement {
-        if (!$this->getTable()) return false;
+    public function select(array $data = ["*"], string $options = null, array $execute = []) : ?PDOStatement {
+        if (!$this->getTable()) return null;
 
-        if (empty($data)) return false;
+        if (empty($data)) return null;
 
         $query = "SELECT ";
 
@@ -267,20 +270,20 @@ class Database{
     /**
      * Insert row into a table.
      *
-     * @param array $data
+     * @param array $fields
      * @return boolean
      */
-    public function insert(array $data) : bool {
+    public function insert(array $fields) : bool {
         if (!$this->getTable()) return false;
 
-        if (empty($data)) return false;
+        if (empty($fields)) return false;
 
         $query = "INSERT INTO " . $this->getTable() . " (";
 
         $i = 0;
 
-        foreach ($data as $key => $value) {
-            if ($i != (count($data) - 1)) $query .= "{$key}, "; else $query .= "{$key}";
+        foreach ($fields as $key => $value) {
+            if ($i != (count($fields) - 1)) $query .= "{$key}, "; else $query .= "{$key}";
 
             $i++;
         }
@@ -291,8 +294,8 @@ class Database{
 
         $execute = [];
 
-        foreach ($data as $key => $value) {
-            if ($i != (count($data) - 1)) $query .= "?, "; else $query .= "?";
+        foreach ($fields as $key => $value) {
+            if ($i != (count($fields) - 1)) $query .= "?, "; else $query .= "?";
 
             $execute[] = $value;
 
@@ -301,13 +304,13 @@ class Database{
 
         $query .= ")";
 
-        $add = $this->getPDO()->prepare($query);
+        $insert = $this->getPDO()->prepare($query);
 
-        $this->lastStatement = $add;
+        $this->lastStatement = $insert;
 
-        $add = $add->execute($execute);
+        $insert = $insert->execute($execute);
 
-        return $add;
+        return $insert;
     }
 
     /**
@@ -315,13 +318,13 @@ class Database{
      *
      * @param array $data
      * @param string $options
-     * @param array $execute
+     * @param array $fields
      * @return boolean
      */
-    public function update(array $data, string $options = null, array $execute = []) : bool {
+    public function update(array $fields, string $options = null, array $execute = []) : bool {
         if (!$this->getTable()) return false;
 
-        if (empty($data)) return false;
+        if (empty($fields)) return false;
 
         $query = "UPDATE " . $this->getTable() . " ";
 
@@ -329,8 +332,8 @@ class Database{
 
         $exc = [];
 
-        foreach ($data as $key => $value) {
-            if (count($data) == 1) $query .= "SET {$key} = ? "; else if ($i == 0) $query .= "SET {$key} = ?, "; else if ($i != (count($data) - 1)) $query .= "{$key} = ?, "; else $query .= "{$key} = ?";
+        foreach ($fields as $key => $value) {
+            if (count($fields) == 1) $query .= "SET {$key} = ? "; else if ($i == 0) $query .= "SET {$key} = ?, "; else if ($i != (count($fields) - 1)) $query .= "{$key} = ?, "; else $query .= "{$key} = ?";
 
             $exc[] = $value;
 
@@ -376,22 +379,22 @@ class Database{
     /**
      * Create a table.
      *
-     * @param array $data
+     * @param array $columns
      * @return void
      */
-    public function create(array $data) : bool {
+    public function create(array $columns) : bool {
         if (!$this->getTable()) return false;
 
         if (empty($data)) return false;
 
-        $query = "CREATE TABLE IF NOT EXISTS " . $this->getTable() . " ( ";
+        $query = "CREATE TABLE IF NOT EXISTS {$this->table} ( ";
 
         $i = 0;
 
         $execute = [];
 
-        foreach ($data as $key => $value) {
-            if ($i != (count($data) - 1)) $query .= "{$key} {$value}, "; else $query .= "{$key} {$value} ";
+        foreach ($columns as $key => $value) {
+            if ($i != (count($columns) - 1)) $query .= "{$key} {$value}, "; else $query .= "{$key} {$value} ";
 
             $execute[] = $value;
 
@@ -419,7 +422,7 @@ class Database{
     public function truncate(string $options = null, array $execute = []) : bool {
         if (!$this->getTable()) return false;
 
-        $query = "TRUNCATE TABLE " . $this->getTable();
+        $query = "TRUNCATE TABLE {$this->table}";
 
         if ($options) $query .= " " . $options;
 
@@ -442,7 +445,7 @@ class Database{
     public function drop(string $options = null, array $execute = []) : bool {
         if (!$this->getTable()) return false;
 
-        $query = "DROP TABLE " . $this->getTable();
+        $query = "DROP TABLE {$this->table}";
 
         if ($options) $query .= " " . $options;
 
@@ -458,22 +461,22 @@ class Database{
     /**
      * Add columns to a table
      *
-     * @param array $data
+     * @param array $columns
      * @param string $options
      * @param array $execute
      * @return boolean
      */
-    public function addColumns(array $data, string $options = null, array $execute = []) : bool {
+    public function addColumns(array $columns, string $options = null, array $execute = []) : bool {
         if (!$this->getTable()) return false;
 
-        $query = "ALTER TABLE " . $this->getTable();
+        $query = "ALTER TABLE {$this->table}";
 
         $i = 0;
 
         $exc = [];
 
-        foreach ($data as $key => $value) {
-            if (count($data) == 1) $query .= " ADD COLUMN {$key} {$value};"; else if ($i == 0) $query .= " ADD COLUMN {$key} {$value}, "; else if ($i != (count($data) - 1)) $query .= "ADD COLUMN {$key} {$value}, "; else $query .= "ADD COLUMN {$key} {$value};";
+        foreach ($columns as $key => $value) {
+            if (count($columns) == 1) $query .= " ADD COLUMN {$key} {$value};"; else if ($i == 0) $query .= " ADD COLUMN {$key} {$value}, "; else if ($i != (count($columns) - 1)) $query .= "ADD COLUMN {$key} {$value}, "; else $query .= "ADD COLUMN {$key} {$value};";
 
             $i++;
         }
@@ -494,12 +497,12 @@ class Database{
     /**
      * Modify columns of a table
      *
-     * @param array $data
+     * @param array $fields
      * @param string $options
      * @param array $execute
      * @return boolean
      */
-    public function modifyColumns(array $data, string $options = null, array $execute = []) : bool {
+    public function modifyColumns(array $fields, string $options = null, array $execute = []) : bool {
         if (!$this->getTable()) return false;
 
         $query = "ALTER TABLE " . $this->getTable();
@@ -508,8 +511,8 @@ class Database{
 
         $exc = [];
 
-        foreach ($data as $key => $value) {
-            if (count($data) == 1) $query .= " MODIFY COLUMN {$key} {$value};"; else if ($i == 0) $query .= " MODIFY COLUMN {$key} {$value}, "; else if ($i != (count($data) - 1)) $query .= "MODIFY COLUMN {$key} {$value}, "; else $query .= "MODIFY COLUMN {$key} {$value};";
+        foreach ($fields as $key => $value) {
+            if (count($fields) == 1) $query .= " MODIFY COLUMN {$key} {$value};"; else if ($i == 0) $query .= " MODIFY COLUMN {$key} {$value}, "; else if ($i != (count($fields) - 1)) $query .= "MODIFY COLUMN {$key} {$value}, "; else $query .= "MODIFY COLUMN {$key} {$value};";
 
             $i++;
         }
@@ -518,13 +521,13 @@ class Database{
 
         $exc = array_merge($exc, $execute);
 
-        $add = $this->getPDO()->prepare($query);
+        $modify = $this->getPDO()->prepare($query);
 
-        $this->lastStatement = $add;
+        $this->lastStatement = $modify;
 
-        $add = $add->execute($exc);
+        $modify = $modify->execute($exc);
 
-        return $add;
+        return $modify;
     }
 
     /**
@@ -560,6 +563,30 @@ class Database{
     }
 
     /**
+     * Show columns from a table.
+     *
+     * @param array $data
+     * @param string $options
+     * @param array $execute
+     * @return PDOStatement|null
+     */
+    public function showColumns(string $options = null, array $execute = []) : ?PDOStatement {
+        if (!$this->getTable()) return null;
+
+        $query = "SHOW COLUMNS FROM " . $this->getTable();
+
+        if ($options) $query .= " " . $options;
+
+        $show = $this->getPDO()->prepare($query);
+
+        $this->lastStatement = $show;
+
+        $show->execute($execute);
+
+        return $show;
+    }
+
+    /**
      * Import tables (create tables) from a list of tables.
      *
      * @param array $import
@@ -575,34 +602,41 @@ class Database{
     }
 
     /**
-     * Update the columns of a list of tables.
+     * Modify/add columns into a list of tables.
      *
-     * @param array $update
+     * @param array $tables
      * @return void
      * @throws DatabaseException
      */
-    public function updateImport(array $update) : void {
-        foreach ($update as $key => $value) {
-            $query = $this->setTable($key)->select()->execute();
+    public function modify(array $tables) : void {
+        foreach ($tables as $table => $columns) {
+            $query = $this->setTable($table)->select()->execute();
 
-            if ($query && !$this->setTable($key)->addColumns($value)) throw new DatabaseException(2, "exception.database.add_column", $key, $this->getLastError());
+            if ($query) throw new DatabaseException(2, "exception.database.add_column", $table, $this->getLastError());
+
+            $colms = [];
+
+            foreach ($this->setTable($table)->showColumns()->fetchAll() as $column) $colms[] = $colms["Field"];
+
+            foreach ($columns as $column => $type) {
+                $execute = in_array($column, $colms) ? $this->setTable($table)->addColumns([ $column => $type ]) : $this->setTable($table)->modifyColumns([ $column => $type ]);
+
+                if (!$execute) throw new DatabaseException(3, "exception.database.modify_column", $table, $this->getLastError());
+            }
         }
     }
 
     /**
-     * Setup the tables to import and update from a Config.
+     * Setup the tables to import and modify from a Config.
      *
      * @param Config $config
      * @return void
+     * @throws DatabaseException
      */
     public function setup(Config $config) : void {
-        $import = $config->get("import", []);
+        $this->import($config->get("import", []));
 
-        $this->import($import);
-
-        $update = $config->get("update", []);
-
-        $this->updateImport($update);
+        $this->modify($config->get("modify", []));
     }
 
     /**

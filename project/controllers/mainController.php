@@ -26,14 +26,33 @@ use advanced\http\router\Request;
 */
 class mainController extends Controller {
 
+    /**
+     * Create the URL /index or / and allow all methods request.
+     *
+     * @param string $method
+     * @return string
+     */
     public function index(string $method = Request::ALL) : string {
         return parent::index($method);
     }
 
+    /**
+     * Create the URL /testing, allow GET method requests and receive an argument that has a default value but you can edit with /testing/try_this
+     *
+     * @param string $method
+     * @param string $argument
+     * @return string
+     */
     public function testing(string $method = Request::GET, string $argument = "default value") : string {
         return "Testing URL: {$argument}";
     }
 
+    /**
+     * Create the URL /error404 that catches all the non-existent URLs.
+     *
+     * @param string $method
+     * @return string
+     */
     public function error404(string $method = Request::ALL) : string {
         return "Error 404";
     }

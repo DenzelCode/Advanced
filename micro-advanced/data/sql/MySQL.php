@@ -21,19 +21,6 @@ use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
 use advanced\data\Database;
-use advanced\data\sql\ISQL;
-use advanced\data\sql\query\AddColumns;
-use advanced\data\sql\query\Create;
-use advanced\data\sql\query\Delete;
-use advanced\data\sql\query\Drop;
-use advanced\data\sql\query\DropColumns;
-use advanced\data\sql\query\Insert;
-use advanced\data\sql\query\Query;
-use advanced\data\sql\query\Select;
-use advanced\data\sql\query\ShowColumns;
-use advanced\data\sql\query\Truncate;
-use advanced\data\sql\query\Update;
-use PDOStatement;
 
 /**
  * MySQL class
@@ -66,21 +53,21 @@ class MySQL extends SQL{
      * @param Database $db
      */
     public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "", Database $db = null) {
+        if (!extension_loaded("pdo")) {
+            throw new DatabaseException(0, "exception.database.pdo_required");
+
+            return;
+        }
+
         self::$instance = $this;
+
+        if ($db instanceof Database) $this->con = $db->getPDO();
 
         $this->host = $db instanceof Database ? $db->getHost() : $host;
         $this->port = $db instanceof Database ? $db->getPort() : $port;
         $this->username = $db instanceof Database ? $db->getUsername() : $username;
         $this->password = $db instanceof Database ? $db->getPassword() : $password;
         $this->database = $db instanceof Database ? $db->getDatabase() : $database;
-
-        if ($db instanceof Database) $this->con = $db->getPDO();
-
-        if (!extension_loaded("pdo")) {
-            throw new DatabaseException(0, "exception.database.pdo_required");
-
-            return;
-        }
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -189,5 +176,56 @@ class MySQL extends SQL{
         self::$configPath = $configPath;
     }
 
-    public function import() : void {}
+    /**
+     * Import tables (create tables) from a list of tables.
+     *
+     * @param array $import
+     * @return void
+     * @throws DatabaseException
+     */
+    public function import(array $import) : void {
+        foreach ($import as $key => $value) {
+            $query = $this->select()->table($key)->executeBool();
+
+            if (!$query && !$this->create()->table($key)->execute()) throw new DatabaseException(1, "exception.database.create_table", $key, $this->getLastError());
+        }
+    }
+
+    /**
+     * Modify/add columns into a list of tables.
+     *
+     * @param array $tables
+     * @return void
+     * @throws DatabaseException
+     */
+    public function modify(array $tables) : void {
+        foreach ($tables as $table => $columns) {
+            $query = $this->select()->table($table)->executeBool();
+
+            if (!$query) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
+    
+            $colms = [];
+
+            foreach ($this->showColumns()->table($table)->execute()->fetchAll() as $column) $colms[] = $colms["Field"];
+
+            foreach ($columns as $column => $type) {
+                $execute = in_array($column, $colms) ? $this->addColumns()->table($table)->column($column, $type) : $this->modifyColumns()->table($table)->column($column, $type);
+
+                if (!$execute) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
+            }
+        }
+    }
+
+    /**
+     * Setup the tables to import and modify from a Config.
+     *
+     * @param Config $config
+     * @return void
+     * @throws DatabaseException
+     */
+    public function setup(Config $config) : void {
+        $this->import($config->get("import", []));
+
+        $this->modify($config->get("modify", []));
+    }
 }

@@ -22,24 +22,45 @@ use advanced\exceptions\UserException;
 use advanced\user\User;
 use advanced\config\Config;
 use advanced\data\Database;
+use advanced\user\provider\MySQLProvider;
+use advanced\user\provider\IProvider;
 
 /**
  * UsersFactory class
  */
 class UsersFactory {
 
+    /**
+     * @var User[]
+     */
     private $users = [];
 
+    /**
+     * @var UsersFactory
+     */
     private static $instance;
 
+    /**
+     * @var string
+     */
     private static $userObject = "\\advanced\\user\\User";
     
+    /**
+     * @var string
+     */
     private static $guestObject = "\\advanced\\user\\Guest";
+
+    /**
+     * @var IProvider
+     */
+    private static $provider = null;
 
     public function __construct() {
         self::$instance = $this;
 
         if (!Bootstrap::getDatabase()) throw new UserException(0, "exception.database.needed");
+
+        self::$provider = new MySQLProvider();
 
         $this->setupTable();
     }
@@ -51,23 +72,67 @@ class UsersFactory {
         return self::$instance;
     }
 
+    /**
+     * Get data provider.
+     *
+     * @return IProvider
+     */
+    public static function getProvider() : IProvider {
+        return self::$provider;
+    }
+
+    /**
+     * Set data provider.
+     *
+     * @param IProvider $provider
+     * @return void
+     */
+    public static function setProvider(IProvider $provider) : void {
+        self::$provider = $provider;
+    }
+
+    /**
+     * Get the User object namespace.
+     * 
+     * @return string
+     */
     public static function getUserObject() : string {
         return self::$userObject;
     }
 
+    /**
+     * Modify the User object namespace.
+     *
+     * @param string $object
+     * @return void
+     */
     public static function setUserObject(string $object) : void {
         self::$userObject = $object;
     }
 
+    /**
+     * Get the Guest object namespace.
+     *
+     * @return string
+     */
     public static function getGuestObject() : string {
         return self::$guestObject;
     }
 
+    /**
+     * Modify the Guest object namespace.
+     *
+     * @return string
+     */
     public static function setGuestObject(string $object) : void {
         self::$guestObject = $object;
     }
 
     /**
+     * Create user object.
+     *
+     * @param array $data
+     * @param array $authData
      * @return User
      */
     public function createUser(array $data, array $authData = []) : User {
@@ -77,35 +142,16 @@ class UsersFactory {
     }
 
     /**
-     * @return User[]|null
-     */
-    public function getUsers(int $limit = 1) : ? array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], ($limit > 0) ? "LIMIT {$limit}" : "");
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
-
-        return $users;
-    }
-
-    /**
+     * Get user by username.
+     *
+     * @param string $name
+     * @param array $authData
      * @return User|null
      */
-    public function getUser(string $name, array $authData = []) : ? User {
+    public function getUser(string $name, array $authData = []) : ?User {
         $return = null;
 
-        $this->users = [];
-
-        // User
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE username = ?", [$name]);
-
-        if (($data = $query->fetch())) {
+        if (($data = self::$provider->getUserBy("username", $name))) {
             $this->users[$data["id"]] = $this->createUser($data, $authData);
 
             $return = $this->users[$data["id"]];
@@ -115,17 +161,16 @@ class UsersFactory {
     }
 
     /**
+     * Get user by ID.
+     *
+     * @param integer $id
+     * @param array $authData
      * @return User|null
      */
-    public function getUserById(int $id, array $authData = []) : ? User {
+    public function getUserById(int $id, array $authData = []) : ?User {
         $return = null;
 
-        $this->users = [];
-
-        // User
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE id = ?", [$id]);
-
-        if (($data = $query->fetch())) {
+        if (($data = self::$provider->getUserBy("id", $id))) {
             $this->users[$data["id"]] = $this->createUser($data, $authData);
 
             $return = $this->users[$data["id"]];
@@ -135,17 +180,16 @@ class UsersFactory {
     }
 
     /**
+     * Get user by mail.
+     *
+     * @param string $mail
+     * @param array $authData
      * @return User|null
      */
-    public function getUserByMail(string $mail, array $authData = []) : ? User {
+    public function getUserByMail(string $mail, array $authData = []) : ?User {
         $return = null;
 
-        $this->users = [];
-
-        // User
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE mail = ?", [$mail]);
-
-        if (($data = $query->fetch())) {
+        if (($data = self::$provider->getUserBy("mail", $mail))) {
             $this->users[$data["id"]] = $this->createUser($data, $authData);
 
             $return = $this->users[$data["id"]];
@@ -155,77 +199,58 @@ class UsersFactory {
     }
 
     /**
-     * @return User[]|null
+     * Get last users registered.
+     *
+     * @param integer $limit
+     * @return User[]
      */
-    public function getLastUsers(int $limit = 1) : ? array {
+    public function getLastUsers(int $limit = 1) : array {
         return $this->getTopUsers("id", $limit);
     }
 
     /**
-     * @return User[]|null
+     * Get random users
+     *
+     * @param integer $limit
+     * @return User[]
      */
-    public function getRankUsers(int $rank = null, int $limit = 1, bool $occult = true) : ? array {
+    public function getRandomUsers(int $limit = 1) : array {
         $users = [];
 
-        // Users
-        if ($rank == null) {
-            $rank = Bootstrap::getConfig()->get("hk")["min_rank"];
-
-            $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE rank >= ? ORDER BY rank DESC" . ($limit > 0 ? " LIMIT {$limit}" : ""), [$rank]);
-        } else {
-            $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE rank = ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), [$rank]);
-        }
-
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) if ($occult && $user["staff_occult"]) continue; else $users[$user["id"]] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
-
-        return $users;
-    }
-
-    /**
-     * @return User[]|null
-     */
-    public function getRandomUsers(int $limit = 1) : ? array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "ORDER BY RAND()" . ($limit > 0 ? " LIMIT {$limit}" : ""));
-
-        $data = $query->fetchAll();
+        $data = self::$provider->getUsersNotBy("username", "", $limit, "RAND()");
 
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
-        if (empty($users)) $users = null;
-
         return $users;
     }
 
     /**
-     * @return User[]|null
+     * Get users by IP
+     *
+     * @param string $ip
+     * @param integer $limit
+     * @return User[]
      */
-    public function getUsersByIp(string $ip, int $limit = 1) : ? array {
+    public function getUsersByIp(string $ip, int $limit = 1) : array {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE ip_last LIKE ? OR ip_reg LIKE ? OR ip_current LIKE ? OR ip_register LIKE ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$ip}%", "%{$ip}%", "%{$ip}%", "%{$ip}%"]);
-
-        $data = $query->fetchAll();
+        $data = self::$provider->getUsersByMultiple("ip_last LIKE ? OR ip_reg LIKE ?", [$ip, $ip], $limit);
 
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
 
         return $users;
     }
 
     /**
-     * @return User[]|null
+     * Get users by name
+     *
+     * @param string $name
+     * @param integer $limit
+     * @param integer $from
+     * @return array
      */
-    public function getUsersByName(string $name, int $limit = 1, int $from = 1) : ? array {
+    public function getUsersByName(string $name, int $limit = 1, int $from = 1) : array {
         $users = [];
 
         // Users
@@ -235,51 +260,17 @@ class UsersFactory {
 
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
-        if (empty($users)) $users = null;
-
         return $users;
     }
 
     /**
-     * @return User[]|null
+     * Get users ordered by a column from from highest to lowest.
+     *
+     * @param string $column
+     * @param integer $limit
+     * @return array
      */
-    public function getUsersByNameAndDisplay(string $name, int $limit = 1, int $from = 1) : ? array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE username LIKE ? OR display_name LIKE ? AND id >= ?"  . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$name}%", $from, "%{$name}%", $from]);
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
-
-        return $users;
-    }
-
-    /**
-     * @return User[]|null
-     */
-    public function getUsersByDisplayName(string $name, int $limit = 1, int $from = 1) : ? array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE display_name LIKE ? AND id >= ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$name}%", $from]);
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
-
-        if (empty($users)) $users = null;
-
-        return $users;
-    }
-
-    /**
-     * @return User[]|null
-     */
-    public function getTopUsers(string $column, int $limit = 1) : ? array {
+    public function getTopUsers(string $column, int $limit = 1) : array {
         $users = [];
 
         // Users
@@ -289,11 +280,14 @@ class UsersFactory {
 
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
-        if (empty($users)) $users = null;
-
         return $users;
     }
 
+    /**
+     * Setup the users tables.
+     *
+     * @return void
+     */
     public static function setupTable() : void {
         Bootstrap::getConfig()->setIfNotExists("database.setup", true)->saveIfModified();
 
@@ -302,7 +296,7 @@ class UsersFactory {
 
             $config->setIfNotExists("import.users", [
                 "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
-                "username" => "varchar(125)",
+                "username" => "varchar(255)",
                 "firstname" => "varchar(255)",
                 "lastname" => "varchar(255)",
                 "password" => "varchar(255)",

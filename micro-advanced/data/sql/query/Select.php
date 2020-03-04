@@ -46,6 +46,11 @@ class Select extends Query{
     private $joins = [];
 
     /**
+     * @var ?string
+     */
+    private $order = null;
+
+    /**
      * Set the table that you want to modify.
      *
      * @param string $table
@@ -63,6 +68,38 @@ class Select extends Query{
      */
     public function table(string $table) : IQuery {
         return parent::setTable($table);
+    }
+
+    /**
+     * Set the ORDER BY attribute to the SQL query.
+     *
+     * @param string|null $table
+     * @return Select
+     */
+    public function orderBy(?string $by) : Select {
+        $this->order = $by;
+
+        return $this;
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return Select
+     */
+    public function setLimit(int $limit) : IQuery {
+        return parent::setTable($limit);
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return Select
+     */
+    public function limit(int $limit) : IQuery {
+        return parent::setTable($limit);
     }
 
     /**
@@ -171,8 +208,13 @@ class Select extends Query{
         return $this->prepare;
     }
 
-    public function getError() : ?string {
-        return $this->prepare = null || empty($this->prepare->errorInfo()[2]) ? null : $this->prepare->errorInfo()[2];
+    /**
+     * Execute the query.
+     *
+     * @return bool
+     */
+    public function executeBool() {
+        return parent::execute();
     }
 
     /**
@@ -190,6 +232,10 @@ class Select extends Query{
         foreach ($this->joins as $join) $query .= " " . $join->convertToQuery();
 
         $query .= !empty($this->where) ? " WHERE {$this->where}" : "";
+
+        $query .= !empty($this->order) ? " ORDER BY {$this->order}" : "";
+
+        $query .= $this->limit > 0 ? " LIMIT {$this->limit}" : "";
 
         return $query;
     }

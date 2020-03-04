@@ -53,6 +53,26 @@ class AddColumns extends Query{
     }
 
     /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return AddColumns
+     */
+    public function setLimit(int $limit) : IQuery {
+        return parent::setTable($limit);
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return AddColumns
+     */
+    public function limit(int $limit) : IQuery {
+        return $this->setLimit($limit);
+    }
+
+    /**
      * Set a column that you want to add.
      *
      * @param string $column

@@ -25,6 +25,9 @@ use advanced\http\router\Request;
  */
 class Guest implements IUser {
 
+    /**
+     * @var array
+     */
     protected $data;
 
     public function __construct() {

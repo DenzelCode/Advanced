@@ -24,17 +24,37 @@ use advanced\Bootstrap;
  */
 class ExecutionTime {
 
+    /**
+     * @var float
+     */
     private $startTime;
+
+    /**
+     * @var float
+     */
     private $endTime;
 
-    public function start() {
+    /**
+     * Start counting process time.
+     *
+     * @return void
+     */
+    public function start() : void {
         $this->startTime = microtime(true);
     }
 
-    public function end() {
+    /**
+     * Stop counting process time.
+     *
+     * @return void
+     */
+    public function end() : void {
         $this->endTime = microtime(true);
     }
 
+    /**
+     * @return string
+     */
     public function __toString() : string {
         return Bootstrap::getMainLanguage()->get("execution_time", null, $this->endTime - $this->startTime);
     }

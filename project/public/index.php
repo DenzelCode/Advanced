@@ -17,4 +17,5 @@
 
 require "../../environment.php";
 
+// Initialize project.
 environment::init(__DIR__);

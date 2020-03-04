@@ -22,8 +22,18 @@ use advanced\http\Response;
 
 class Router{
 
+    /**
+     * @var array
+     */
     private static $http_methods = ["GET", "POST", "DELETE", "PUT", "CONNECT","TRACE", "HEAD", "*", "general", "any", "all"];
 
+    /**
+     * Run Router from request.
+     *
+     * @param Request $request
+     * @param string $preffix
+     * @return void
+     */
     public static function run(Request $request, string $preffix = "advanced") : void {
         if ($preffix == "advanced" && !file_exists($request->getFile("advanced"))){
             self::run($request, "project");
@@ -61,6 +71,10 @@ class Router{
         echo @call_user_func_array([ $request->getObject($preffix), $request->getMethod() ], $execute);
     }
 
+    /**
+     * @param array $methods
+     * @return boolean
+     */
     private static function checkMethods(array $methods) : bool {
         $methods = array_map("strtolower", $methods);
 

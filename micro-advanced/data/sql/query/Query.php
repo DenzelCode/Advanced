@@ -48,6 +48,11 @@ abstract class Query implements IQuery{
     protected $where = null;
 
     /**
+     * @var integer
+     */
+    protected $limit = 0;
+
+    /**
      * @param ISQL $sql
      */
     public function __construct(ISQL $sql) {
@@ -74,6 +79,28 @@ abstract class Query implements IQuery{
      */
     public function table(string $table) : IQuery {
         return $this->setTable($table);
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return IQuery
+     */
+    public function setLimit(int $limit) : IQuery {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * Set the LIMIT attribute to the SQL query.
+     *
+     * @param int $limit
+     * @return IQuery
+     */
+    public function limit(int $limit) : IQuery {
+        return $this->setLimit($limit);
     }
 
     /**
@@ -120,6 +147,15 @@ abstract class Query implements IQuery{
      */
     public function getPrepare() : ?PDOStatement {
         return $this->prepare;
+    }
+
+    /**
+     * Get error string if there is a problem with the Query.
+     *
+     * @return string|null
+     */
+    public function getError() : ?string {
+        return $this->prepare = null || empty($this->prepare->errorInfo()[2]) ? null : $this->prepare->errorInfo()[2];
     }
 
     /**

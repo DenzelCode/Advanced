@@ -41,4 +41,11 @@ interface IQuery{
      * @return boolean
      */
     public function execute();
+
+    /**
+     * Get error string if there is a problem with the Query.
+     *
+     * @return string|null
+     */
+    public function getError() : ?string;
 }
