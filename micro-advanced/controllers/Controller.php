@@ -60,6 +60,16 @@ abstract class Controller {
     }
 
     /**
+     * Set response code.
+     *
+     * @param integer $code
+     * @return void
+     */
+    public function setResponseCode(int $code) : void {
+        $this->response->setCode($code);
+    }
+
+    /**
      * Get response Object.
      *
      * @return Response
