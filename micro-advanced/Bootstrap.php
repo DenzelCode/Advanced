@@ -149,13 +149,6 @@ class Bootstrap{
     }
 
     /**
-    * @return Auth
-    */
-    public static function getAuth() : Auth {
-        return self::$classes["auth"];
-    }
-
-    /**
      * @return Database
      */
     public static function setDatabase(Database $database) : void {
