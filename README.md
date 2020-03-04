@@ -44,3 +44,6 @@ This project is licensed under LGPL-3.0. Please see the [LICENSE](/LICENSE) file
 
 ## Donations
 * [PayPal](https://paypal.me/DenzelGiraldo)
+
+## Contribution
+Anyone who wants to contribute to the project can do it, this is an independent project that plans to become a community.

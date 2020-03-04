@@ -17,6 +17,7 @@
 
 namespace advanced\data\sql;
 
+use advanced\Bootstrap;
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
