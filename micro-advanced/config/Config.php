@@ -150,7 +150,7 @@ class Config {
      *
      * @param string $key
      * @param mixed $default
-     * @return void
+     * @return mixed
      */
     public function get(string $key, $default = null) {
         if (!is_array($this->data)) $this->data = [];
