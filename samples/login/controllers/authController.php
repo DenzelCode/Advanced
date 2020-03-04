@@ -21,7 +21,6 @@ use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\exceptions\UserException;
 use advanced\http\Post;
-use advanced\http\Response;
 use advanced\http\router\Request;
 use advanced\user\Auth;
 
@@ -84,7 +83,7 @@ class authController extends Controller {
             } else $response["message"] = $language->get("form.login.invalid_password");
         }
 
-        return Response::setJSON()->write($response);
+        return $this->response->setJSON()->write($response);
     }
 
     /**
@@ -176,6 +175,6 @@ class authController extends Controller {
             }
         }
 
-        return Response::setJSON()->write($response);
+        return $this->response->setJSON()->write($response);
     }
 }

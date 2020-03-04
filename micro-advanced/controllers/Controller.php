@@ -19,12 +19,29 @@ namespace advanced\controllers;
 
 use advanced\Bootstrap;
 use advanced\body\template\TemplateProvider;
+use advanced\http\Response;
 use advanced\http\router\Request;
 
 /**
 * Controller abstract class
 */
 abstract class Controller {
+
+    /**
+     * @var Response
+     */
+    protected $response = null;
+
+    /**
+     * @var Request
+     */
+    protected $request = null;
+
+    public function __construct() {
+        $this->response = Bootstrap::getResponse();
+
+        $this->request = Request::getInstance();
+    }
 
     /**
      * Create URL /index or / and let ALL methods request.
@@ -40,5 +57,23 @@ abstract class Controller {
         ]);
 
         return TemplateProvider::getRootTemplate('main/index');
+    }
+
+    /**
+     * Get response Object.
+     *
+     * @return Response
+     */
+    private function getResponse() : Response {
+        return $this->response;
+    }
+
+    /**
+     * Get response Object.
+     *
+     * @return Request
+     */
+    private function getRequest() : Request {
+        return $this->request;
     }
 }
