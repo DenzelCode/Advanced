@@ -3,7 +3,10 @@
 ## What's Advanced?
 Advanced Micro Framework - Create more by doing less
 
-Advanced Micro Framework is a framework that can make your life in PHP easier, Advanced provides you routers with controllers, responses, secure authentication and register, MySQL query generator, templates system, languages system and more, try Advanced out and you'll see that you will not want to leave it.
+Advanced Micro Framework is a PHP Object Oriented framework that make your life easier, advanced provides you a whole bunch of functionalities that you will not have the need of write a lot of code. It is already predefined so you only have to create your project and use the internal libraries of Advanced such as the authentications (login/register), In-code routing by controllers, SQL automatization (generate queries and execute them in a safe way with just PHP code), and more.
+
+Get started with Advanced and see what else it can provide you.
+
 [Get started](https://github.com/DenzelCode/Advanced/wiki/Get-started)
 
 
