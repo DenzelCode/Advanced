@@ -63,6 +63,8 @@ class Request{
     public function __construct(string $url = null) {
         self::$instance = $this;
 
+        $url = urldecode($url);
+
         $route = explode("/", substr($url, 0, ($str = strrpos($url, "?")) ? $str : strlen($url)));
 
         array_shift($route);
