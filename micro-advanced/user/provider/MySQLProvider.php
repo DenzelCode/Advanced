@@ -18,7 +18,9 @@
 namespace advanced\user\provider;
 
 use advanced\Bootstrap;
+use advanced\data\sql\ISQL;
 use advanced\user\IUser;
+use project\Project;
 
 /**
  * MySQLProvider class
@@ -26,11 +28,22 @@ use advanced\user\IUser;
 class MySQLProvider implements IProvider{
 
     /**
+     * @var ISQL
+     */
+    protected $sql;
+
+    public function __construct(ISQL $sql) {
+        $this->sql = $sql;
+    }
+
+    /**
      * @param IUser $user
      * @return array
      */
     public function getAll(IUser $user) : array {
-        return Bootstrap::getSQL()->select()->table("users")->where("id = ?", [$user->getId()])->execute()->fetch();
+        $fetch = $this->sql->select()->table("users")->where((!empty($user->getName()) && !empty($user->getId()) ? "id = ? AND username = ?" : (!empty($user->getName()) ? "username = ?" : "id = ?")), (!empty($user->getName()) && !empty($user->getId()) ? [$user->getId(), $user->getName()] : (!empty($user->getName()) ? [$user->getName()] : [$user->getId()])))->execute()->fetch();
+
+        return !$fetch ? [] : $fetch;
     }
 
     /**
@@ -39,7 +52,7 @@ class MySQLProvider implements IProvider{
      * @return boolean
      */
     public function set(IUser $user, array $data) : bool {
-        return Bootstrap::getSQL()->update()->table("users")->fields($data)->where("id = ?", [$user->getId()])->execute();
+        return $this->sql->update()->table("users")->fields($data)->where("id = ?", [$user->getId()])->execute();
     }
 
     /**
@@ -47,7 +60,9 @@ class MySQLProvider implements IProvider{
      * @return boolean
      */
     public function create(array $data) : bool {
-        return Bootstrap::getSQL()->insert()->table("users")->fields($data)->execute();
+        $insert = $this->sql->insert()->table("users")->fields($data);
+
+        return $insert->execute();
     }
     
     /**
@@ -55,7 +70,7 @@ class MySQLProvider implements IProvider{
      * @return boolean
      */
     public function delete(IUser $user) : bool {
-        return Bootstrap::getSQL()->delete()->table("users")->where("id = ?", [$user->getId()])->execute();
+        return $this->sql->delete()->table("users")->where("id = ?", [$user->getId()])->execute();
     }
 
     /**
@@ -64,7 +79,9 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUserBy(string $field, $value) : array {
-        return Bootstrap::getSQL()->select()->table("users")->where("{$field} = ?", [$value])->limit(1)->execute()->fetch();
+        $fetch = $this->sql->select()->table("users")->where("{$field} = ?", [$value])->limit(1)->execute()->fetch();
+
+        return !$fetch ? [] : $fetch;
     }
 
     /**
@@ -75,7 +92,22 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersBy(string $field, $value, int $limit = 0, ?string $orderBy = null) : array {
-        return Bootstrap::getSQL()->select()->table("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->execute()->fetch();
+        $fetchAll = $this->sql->select()->table("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->execute()->fetchAll();
+
+        return !$fetchAll ? [] : $fetchAll;
+    }
+
+    /**
+     * @param string $field
+     * @param mixed $value
+     * @param integer $limit
+     * @param string|null $orderBy
+     * @return array
+     */
+    public function getUsersNotEqual(string $field, $value, int $limit = 0, ?string $orderBy = null) : array {
+        $fetchAll = $this->sql->select()->table("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->execute()->fetchAll();
+
+        return !$fetchAll ? [] : $fetchAll;
     }
 
     /**
@@ -86,7 +118,9 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersByMultiple(string $fields, array $values, int $limit = 0, ?string $orderBy = null) : array {
-        return Bootstrap::getSQL()->select()->table("users")->where($fields, $values)->orderBy($orderBy)->limit($limit)->execute()->fetch();
+        $fetchAll = $this->sql->select()->table("users")->where($fields, $values)->orderBy($orderBy)->limit($limit)->execute()->fetch();
+
+        return !$fetchAll ? [] : $fetchAll;
     }
 }
 

@@ -58,17 +58,17 @@ class Language{
     }
 
     /**
-     * Set the path where we are going to get the language.
+     * Enable/disable project mode.
      *
-     * @param string $path
+     * @param boolean $value
      * @return void
      */
-    public function setPath(string $path) : void {
-        $different = $path != $this->path;
+    public function setProjectMode(bool $value = true) : void {
+        $path = $this->path;
 
-        $this->path = $path;
+        $this->path = $value ? self::PATH_PROJECT : self::PATH_ADVANCED;
 
-        if ($different) self::updateConfig($this->language);
+        if ($path != $this->path) self::updateConfig($this->language);
     }
 
     /**
@@ -113,7 +113,7 @@ class Language{
      * @return void
      */
     public static function setLanguage(Language $language) {
-        SessionManager::set("language", $language->getName());
+        SessionManager::set("language", $language->getName(), true);
     }
 
     /**

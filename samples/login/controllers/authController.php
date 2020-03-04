@@ -84,7 +84,7 @@ class authController extends Controller {
             } else $response["message"] = $language->get("form.login.invalid_password");
         }
 
-        return Response::setJSON(true)->write($response);
+        return Response::setJSON()->write($response);
     }
 
     /**
@@ -156,7 +156,7 @@ class authController extends Controller {
                     "last_used" => time()
                 ];
 
-                $data = array_merge($data, Bootstrap::getConfig()->get("sign_up")["user"]);
+                $data = array_merge($data, Bootstrap::getConfig()->get("sign_up.user", []));
 
                 // Create user with data $data (keys are the columns from the database)
 
@@ -176,6 +176,6 @@ class authController extends Controller {
             }
         }
 
-        return Response::setJSON(true)->write($response);
+        return Response::setJSON()->write($response);
     }
 }

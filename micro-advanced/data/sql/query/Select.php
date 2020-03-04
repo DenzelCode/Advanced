@@ -41,7 +41,7 @@ class Select extends Query{
     private $distinct = null;
 
     /**
-     * @var array
+     * @var Join[]
      */
     private $joins = [];
 
@@ -89,7 +89,7 @@ class Select extends Query{
      * @return Select
      */
     public function setLimit(int $limit) : IQuery {
-        return parent::setTable($limit);
+        return parent::setLimit($limit);
     }
 
     /**
@@ -99,7 +99,7 @@ class Select extends Query{
      * @return Select
      */
     public function limit(int $limit) : IQuery {
-        return parent::setTable($limit);
+        return parent::limit($limit);
     }
 
     /**
@@ -227,7 +227,7 @@ class Select extends Query{
 
         $query .= join(", ", $this->columns);
 
-        $query .= !empty($this->table) ? " FROM " . $this->table : "";
+        $query .= !empty($this->table) ? " FROM {$this->table}" : "";
 
         foreach ($this->joins as $join) $query .= " " . $join->convertToQuery();
 

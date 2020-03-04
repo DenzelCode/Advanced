@@ -124,35 +124,35 @@ abstract class AbstractUser implements IUser {
     /**
      * @return bool
      */
-    abstract protected function delete() : bool;
+    abstract public function delete() : bool;
 
     /**
      * @param boolean $cookie
      * @param array $data
      * @return boolean
      */
-    abstract protected function authenticate(bool $cookie = false, array $data = []) : bool;
+    abstract public function authenticate(bool $cookie = false, array $data = []) : bool;
 
     /**
      * @return boolean
      */
-    abstract protected function create() : bool;
+    abstract public function create() : bool;
 
     /**
      * @return bool
      */
-    abstract protected function exists() : bool;
+    abstract public function exists() : bool;
 
     /**
      * @param array $data
      * @return void
      */
-    abstract protected function set(array $data) : void;
+    abstract public function set(array $data) : void;
 
     /**
      * @return array
      */
-    abstract protected function getAll() : ?array;
+    abstract public function getAll() : array;
 
     /**
      * @param string $mail

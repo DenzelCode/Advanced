@@ -20,6 +20,7 @@ namespace project;
 use advanced\project\Project as BaseProject;
 use advanced\exceptions\DatabaseException;
 use advanced\body\template\TemplateProvider;
+use advanced\Bootstrap;
 use advanced\data\sql\MySQL;
 
 /**
@@ -38,7 +39,7 @@ class Project extends BaseProject {
         try {
             // Initialize MySQL
             $sql = new MySQL(self::$config->get("database.host"), self::$config->get("database.port"), self::$config->get("database.username"), self::$config->get("database.password"), self::$config->get("database.database"));
-
+            
             self::setSQL($sql);
         } catch (DatabaseException $e) {
             die($e->getMessage());
@@ -49,7 +50,7 @@ class Project extends BaseProject {
     }
 
     /**
-     * Project name.
+     * Get project name.
      *
      * @return string
      */

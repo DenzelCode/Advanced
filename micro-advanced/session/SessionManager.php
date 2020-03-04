@@ -80,7 +80,7 @@ class SessionManager{
         setcookie($name, false, time() - 1000, $directory);
     }
 
-    public static function deleteAll(array $sessions, string $directory = "/") : void {
+    public static function deleteByArray(array $sessions, string $directory = "/") : void {
         foreach ($sessions as $session) {
             unset($_SESSION[$session]);
 

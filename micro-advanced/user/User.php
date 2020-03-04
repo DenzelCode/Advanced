@@ -22,6 +22,7 @@ use advanced\exceptions\UserException;
 use advanced\user\Auth;
 use advanced\mailer\Mailer;
 use advanced\mailer\Receipient;
+use Exception;
 
 /**
  * User class
@@ -43,6 +44,7 @@ class User extends AbstractUser {
         UsersFactory::setupTable();
 
         if (!$this->exists()) {
+            echo "XDD";
             $config = Bootstrap::getMainConfig();
 
             $min = $config->get("sign_up.min_characters", 4);
@@ -55,14 +57,14 @@ class User extends AbstractUser {
                 throw new UserException(1, "exception.user.invalid_name");
             } else if (!empty($this->getMail()) && !self::isValidMail($this->getMail())) {
                 throw new UserException(2, "exception.user.invalid_email");
-            } else if (!$this->create()) throw new UserException(3, "exception.database.error", Bootstrap::getDatabase()->getLastStatement()->errorInfo()[2]);
+            } else if (!$this->create()) throw new UserException(3, "exception.database.error", Bootstrap::getSQL()->getLastError());
         }
 
         $name = strtolower($this->getName());
 
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], (!empty($this->getName()) && !empty($this->getId()) == 0 ? "WHERE id = ? AND username = ?" : (!empty($this->getName()) ? "WHERE username = ?" : "WHERE id = ?")), (!empty($this->getName()) && !empty($this->getId()) == 0 ? [$this->getId(), $name] : (!empty($this->getName()) ? [$name] : [$this->getId()])));
+        $fetch = UsersFactory::getProvider()->getAll($this);
 
-        if (!empty(($fetch = $query->fetch()))) $this->data = $fetch;
+        if ($fetch) $this->data = $fetch;
     }
 
     /**
@@ -75,6 +77,26 @@ class User extends AbstractUser {
      */
     public function sendMail(string $server, string $subject, string $body) : void {
         Mailer::sendMail($server, $subject, $body, new Receipient($this->getName(), $this->getMail()));
+    }
+    
+    /**
+     * Update the data from the table.
+     *
+     * @return void
+     */
+    public function updateData() : void {
+        $this->data = UsersFactory::getProvider()->getAll($this);
+    }
+
+    /**
+     * Delete user.
+     * 
+     * @return bool
+     */
+    public function delete() : bool {
+        if (!$this->exists()) return false;
+
+        return UsersFactory::getProvider()->delete($this);
     }
 
     /**
@@ -99,15 +121,31 @@ class User extends AbstractUser {
 
         return false;
     }
-    
+
     /**
-     * Set a data into the object and mm
-     *
+     * Create user.
+     * 
+     * @return boolean
+     */
+    public function create() : bool {
+        return UsersFactory::getProvider()->create($this->data);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function exists() : bool {
+        $data = UsersFactory::getProvider()->getAll($this);
+
+        return !empty($data);
+    }
+
+    /**
      * @param array $data
      * @return void
      */
     public function set(array $data) : void {
-        Bootstrap::getDatabase()->setTable("users")->update($data, "WHERE id = ?", [$this->getId()]);
+        UsersFactory::getProvider()->set($this, $data);
 
         foreach ($data as $key => $value) $this->data[$key] = $value;
     }
@@ -115,54 +153,8 @@ class User extends AbstractUser {
     /**
      * @return array
      */
-    public function getAll() : ?array {
-        return $this->data ?? null;
-    }
-
-    /**
-     * Update the data from the table.
-     *
-     * @return void
-     */
-    public function updateData() : void {
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE id = ? AND username = ?", [$this->getId(), $this->getName()]);
-        
-        $this->data = $query->fetch();
-    }
-
-    /**
-     * Create.
-     *
-     * @return boolean
-     */
-    public function create() : bool {
-        return Bootstrap::getDatabase()->setTable("users")->insert($this->data);
-    }
-
-    /**
-     * Delete user.
-     *
-     * @return boolean
-     */
-    public function delete() : bool {
-        if (!$this->exists()) return false;
-
-        return Bootstrap::getDatabase()->setTable("users")->delete("WHERE id = ?", [$this->getId()]);
-    }
-
-    /**
-     * Check if user exists
-     *
-     * @return boolean
-     */
-    public function exists() : bool {
-        $name = strtolower($this->getName());
-
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["username"], "WHERE username = ?", [$name]);
-
-        $exist = $query->fetchAll();
-
-        return (bool) count($exist);
+    public function getAll() : array {
+        return !empty($this->data) ? $this->data : [];
     }
 }
 

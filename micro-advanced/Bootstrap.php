@@ -50,7 +50,6 @@ class Bootstrap{
 
         self::$classes = [
             "request" => new Request($_SERVER["REQUEST_URI"]),
-            "auth" => new Auth(),
             "response" => new Response(),
             "config" => new Config(Project::getConfigPath()),
             "mainConfig" => ($config = new Config(ADVANCED . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config"))
@@ -58,7 +57,7 @@ class Bootstrap{
 
         if (!SessionManager::get("language")) SessionManager::set("language", substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2), true);
 
-        if (!in_array(SessionManager::get("language"), $config->get("languages"))) SessionManager::set("language", "en", true);
+        if (!in_array(SessionManager::get("language"), $config->get("languages"))) Language::setLanguage(new Language(("en")));
 
         self::$classes["mainLanguage"] = new Language(SessionManager::get("language"), Language::PATH_ADVANCED);
         
@@ -171,14 +170,15 @@ class Bootstrap{
     }
 
     /**
-     * @return ISQL
+     * @param ISQL $sql
+     * @return void
      */
     public static function setSQL(ISQL $sql) : void {
         self::$classes["sql"] = $sql;
     }
 
     /**
-     * @return ISQL
+     * @return ISQL|null
      */
     public static function getSQL(): ?ISQL {
         return self::$classes["sql"] ?? null;
@@ -188,7 +188,7 @@ class Bootstrap{
      * @return UsersFactory
      */
     public static function getUsersFactory() : UsersFactory {
-        if (!self::$classes["users"]) self::$classes["users"] = new UsersFactory();
+        if (empty(self::$classes["users"])) self::$classes["users"] = new UsersFactory();
         
         return self::$classes["users"];
     }

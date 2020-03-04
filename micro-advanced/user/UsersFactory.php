@@ -22,8 +22,8 @@ use advanced\exceptions\UserException;
 use advanced\user\User;
 use advanced\config\Config;
 use advanced\data\Database;
-use advanced\user\provider\MySQLProvider;
 use advanced\user\provider\IProvider;
+use advanced\user\provider\MySQLProvider;
 
 /**
  * UsersFactory class
@@ -31,12 +31,7 @@ use advanced\user\provider\IProvider;
 class UsersFactory {
 
     /**
-     * @var User[]
-     */
-    private $users = [];
-
-    /**
-     * @var UsersFactory
+     * @var UsersFactory|null
      */
     private static $instance;
 
@@ -55,12 +50,17 @@ class UsersFactory {
      */
     private static $provider = null;
 
+    /**
+     * Initialize factory.
+     * 
+     * @throws UserException
+     */
     public function __construct() {
+        if (!Bootstrap::getSQL()) throw new UserException(0, "exception.database.needed");
+
         self::$instance = $this;
-
-        if (!Bootstrap::getDatabase()) throw new UserException(0, "exception.database.needed");
-
-        self::$provider = new MySQLProvider();
+        
+        self::$provider = new MySQLProvider(Bootstrap::getSQL());
 
         $this->setupTable();
     }
@@ -68,7 +68,7 @@ class UsersFactory {
     /**
      * @return UsersFactory
      */
-    public static function getInstance() : UsersFactory {
+    public static function getInstance() : ?UsersFactory {
         return self::$instance;
     }
 
@@ -151,11 +151,7 @@ class UsersFactory {
     public function getUser(string $name, array $authData = []) : ?User {
         $return = null;
 
-        if (($data = self::$provider->getUserBy("username", $name))) {
-            $this->users[$data["id"]] = $this->createUser($data, $authData);
-
-            $return = $this->users[$data["id"]];
-        }
+        if (($data = self::$provider->getUserBy("username", $name))) return $this->createUser($data, $authData);
 
         return $return;
     }
@@ -170,11 +166,7 @@ class UsersFactory {
     public function getUserById(int $id, array $authData = []) : ?User {
         $return = null;
 
-        if (($data = self::$provider->getUserBy("id", $id))) {
-            $this->users[$data["id"]] = $this->createUser($data, $authData);
-
-            $return = $this->users[$data["id"]];
-        }
+        if (($data = self::$provider->getUserBy("id", $id))) return $this->createUser($data, $authData);
 
         return $return;
     }
@@ -189,11 +181,7 @@ class UsersFactory {
     public function getUserByMail(string $mail, array $authData = []) : ?User {
         $return = null;
 
-        if (($data = self::$provider->getUserBy("mail", $mail))) {
-            $this->users[$data["id"]] = $this->createUser($data, $authData);
-
-            $return = $this->users[$data["id"]];
-        }
+        if (($data = self::$provider->getUserBy("mail", $mail))) return $this->createUser($data, $authData);
 
         return $return;
     }
@@ -217,7 +205,7 @@ class UsersFactory {
     public function getRandomUsers(int $limit = 1) : array {
         $users = [];
 
-        $data = self::$provider->getUsersNotBy("username", "", $limit, "RAND()");
+        $data = self::$provider->getUsersNotEqual("username", "", $limit, "RAND()");
 
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
@@ -243,27 +231,6 @@ class UsersFactory {
     }
 
     /**
-     * Get users by name
-     *
-     * @param string $name
-     * @param integer $limit
-     * @param integer $from
-     * @return array
-     */
-    public function getUsersByName(string $name, int $limit = 1, int $from = 1) : array {
-        $users = [];
-
-        // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "WHERE username LIKE ? AND id >= ?" . ($limit > 0 ? " LIMIT {$limit}" : ""), ["%{$name}%", $from]);
-
-        $data = $query->fetchAll();
-
-        foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
-
-        return $users;
-    }
-
-    /**
      * Get users ordered by a column from from highest to lowest.
      *
      * @param string $column
@@ -274,9 +241,7 @@ class UsersFactory {
         $users = [];
 
         // Users
-        $query = Bootstrap::getDatabase()->setTable("users")->select(["*"], "ORDER BY {$column} DESC" . ($limit > 0 ? " LIMIT {$limit}" : ""));
-
-        $data = $query->fetchAll();
+        $data = self::$provider->getUsersNotEqual("username", "", $limit, "{$column} DESC");
 
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
@@ -289,47 +254,43 @@ class UsersFactory {
      * @return void
      */
     public static function setupTable() : void {
-        Bootstrap::getConfig()->setIfNotExists("database.setup", true)->saveIfModified();
+        $config = new Config(Database::getConfigPath());
 
-        if (Bootstrap::getConfig()->get("database.setup", true)) {
-            $config = new Config(Database::getConfigPath());
+        $config->setIfNotExists("import.users", [
+            "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
+            "username" => "varchar(255)",
+            "firstname" => "varchar(255)",
+            "lastname" => "varchar(255)",
+            "password" => "varchar(255)",
+            "mail" => "varchar(255)",
+            "rank" => "int(11)",
+            "country" => "varchar(4)",
+            "gender" => "enum('M', 'F') DEFAULT 'M'",
+            "account_created" => "double(50, 0) DEFAULT 0",
+            "last_used" => "double(50, 0) DEFAULT 0",
+            "last_online" => "double(50, 0) DEFAULT 0",
+            "last_password" => "double(50, 0) DEFAULT 0",
+            "online" => "enum('0, '1') DEFAULT '0'",
+            "ip_reg" => "varchar(45) NOT NULL",
+            "ip_last" => "varchar(45) NOT NULL",
+            "language" => "varchar(255) DEFAULT 'en'",
+            "connection_id" => "text",
+            "birth_date" => "varchar(55)",
+            "facebook_id" => "text",
+            "facebook_token" => "text",
+            "facebook_account" => "boolean DEFAULT false"
+        ]);
 
-            $config->setIfNotExists("import.users", [
-                "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
-                "username" => "varchar(255)",
-                "firstname" => "varchar(255)",
-                "lastname" => "varchar(255)",
-                "password" => "varchar(255)",
-                "mail" => "varchar(255)",
-                "rank" => "int(11)",
-                "country" => "varchar(4)",
-                "gender" => "enum('M', 'F') DEFAULT 'M'",
-                "account_created" => "double(50, 0) DEFAULT 0",
-                "last_used" => "double(50, 0) DEFAULT 0",
-                "last_online" => "double(50, 0) DEFAULT 0",
-                "last_password" => "double(50, 0) DEFAULT 0",
-                "online" => "enum('0, '1') DEFAULT '0'",
-                "ip_reg" => "varchar(45) NOT NULL",
-                "ip_last" => "varchar(45) NOT NULL",
-                "language" => "varchar(255) DEFAULT 'en'",
-                "connection_id" => "text",
-                "birth_date" => "varchar(55)",
-                "facebook_id" => "text",
-                "facebook_token" => "text",
-                "facebook_account" => "boolean DEFAULT false"
-            ]);
+        $config->setIfNotExists("import.ranks", [
+            "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
+            "name" => "text",
+            "description" => "text",
+            "timestamp" => "double(50, 0) DEFAULT 0"
+        ]);
 
-            $config->setIfNotExists("import.ranks", [
-                "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
-                "name" => "text",
-                "description" => "text",
-                "timestamp" => "double(50, 0) DEFAULT 0"
-            ]);
+        $config->saveIfModified();
 
-            $config->saveIfModified();
-
-            Bootstrap::getDatabase()->setup($config);
-        }
+        Bootstrap::getSQL()->setup($config);
     }
 }
 

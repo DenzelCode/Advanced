@@ -184,10 +184,10 @@ class MySQL extends SQL{
      * @throws DatabaseException
      */
     public function import(array $import) : void {
-        foreach ($import as $key => $value) {
-            $query = $this->select()->table($key)->executeBool();
+        foreach ($import as $table => $columns) {
+            $query = $this->select()->table($table)->executeBool();
 
-            if (!$query && !$this->create()->table($key)->execute()) throw new DatabaseException(1, "exception.database.create_table", $key, $this->getLastError());
+            if (!$query && !$this->create()->table($table)->columns($columns)->execute()) throw new DatabaseException(1, "exception.database.create_table", $table, $this->getLastError());
         }
     }
 

@@ -88,7 +88,7 @@ class Response{
      * Write response
      *
      * @param [type] $data
-     * @return void
+     * @return mixed
      */
     public function write($data) {
         if (self::isJSON()) {

@@ -17,6 +17,7 @@
 
 namespace advanced\data;
 
+use advanced\Bootstrap;
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
@@ -402,6 +403,8 @@ class Database{
         }
 
         $query .= ")";
+    
+        echo($query);
 
         $create = $this->getPDO()->prepare($query);
 
@@ -634,9 +637,13 @@ class Database{
      * @throws DatabaseException
      */
     public function setup(Config $config) : void {
-        $this->import($config->get("import", []));
+        Bootstrap::getConfig()->setIfNotExists("database.setup", true)->saveIfModified();
 
-        $this->modify($config->get("modify", []));
+        if (Bootstrap::getConfig()->get("database.setup", true)) {
+            $this->import($config->get("import", []));
+
+            $this->modify($config->get("modify", []));
+        }
     }
 
     /**

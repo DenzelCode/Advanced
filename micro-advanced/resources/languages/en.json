@@ -22,7 +22,7 @@
             "error": "An error occurred on the database: {0}",
             "pdo_required": "Advanced require PDO extension",
             "connecting": "Error connecting to MySQL Server: {0}",
-            "needed": "You must set a Database to the Bootstrap to use this feature. Ex: Project::setDatabase(new Database($host, $port, $username, $password, $database))",
+            "needed": "You must set a Database to the Bootstrap to use this feature. Ex: Project::setSQL(new MySQL($host, $port, $username, $password, $database))",
             "create_table": "An error occurred creating the table {0}: {1}",
             "add_column": "An error ocurred addding a column for the table {0}: {1}",
             "modify_column": "An error ocurred modifing a column for the table {0}: {1}"

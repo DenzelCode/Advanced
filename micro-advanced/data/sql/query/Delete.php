@@ -51,7 +51,7 @@ class Delete extends Query{
      * @return Delete
      */
     public function setLimit(int $limit) : IQuery {
-        return parent::setTable($limit);
+        return parent::setLimit($limit);
     }
 
     /**
@@ -61,7 +61,7 @@ class Delete extends Query{
      * @return Delete
      */
     public function limit(int $limit) : IQuery {
-        return parent::setTable($limit);
+        return parent::limit($limit);
     }
 
     /**

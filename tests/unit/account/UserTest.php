@@ -18,9 +18,8 @@
 namespace tests\unit\account;
 
 use advanced\user\Auth;
-use advanced\user\User;
 use advanced\Bootstrap;
-use advanced\data\Database;
+use advanced\data\sql\MySQL;
 use advanced\http\router\Request;
 use advanced\project\Project;
 use Exception;
@@ -31,12 +30,12 @@ class UserTest extends TestCase {
     public function __construct() {
         parent::__construct();
 
-        Project::setDatabase(new Database("127.0.0.1", 3306, "root", "", "testing"));
+        Project::setSQL(new MySQL("127.0.0.1", 3306, "root", "", "testing"));
     }
 
     public function testCreateAccount() : void {
         $user = Bootstrap::getUsersFactory()->createUser([
-            "username" => "dsdsdsds",
+            "username" => "dsdxzzx",
             "password" => Auth::hash("testing"),
             "mail" => "testing@example.com",
             "account_created" => time(),

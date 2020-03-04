@@ -17,6 +17,7 @@
 
 namespace advanced\data\sql;
 
+use advanced\config\Config;
 use advanced\data\sql\query\AddColumns;
 use advanced\data\sql\query\Create;
 use advanced\data\sql\query\Delete;
@@ -68,5 +69,7 @@ interface ISQL{
 
     public function import(array $import) : void;
 
-    public function modify(array $update) : void;
+    public function modify(array $tables) : void;
+
+    public function setup(Config $config) : void;
 }

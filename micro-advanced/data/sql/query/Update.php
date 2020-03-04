@@ -51,7 +51,7 @@ class Update extends Query{
      * @return Update
      */
     public function table(string $table) : IQuery {
-        return parent::setTable($table);
+        return parent::setLimit($table);
     }
 
     /**
@@ -61,7 +61,7 @@ class Update extends Query{
      * @return Update
      */
     public function setLimit(int $limit) : IQuery {
-        return parent::setTable($limit);
+        return parent::setLimit($limit);
     }
 
     /**
@@ -71,7 +71,7 @@ class Update extends Query{
      * @return Update
      */
     public function limit(int $limit) : IQuery {
-        return parent::setTable($limit);
+        return parent::limit($limit);
     }
 
     /**

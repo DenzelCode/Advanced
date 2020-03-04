@@ -23,6 +23,7 @@ use advanced\http\router\RequestProvider;
 use project\Project;
 use advanced\http\router\Request;
 use advanced\user\Auth;
+use advanced\user\UsersFactory;
 
 class TemplateProvider{
 
@@ -47,7 +48,7 @@ class TemplateProvider{
     public function __construct() {
         self::$instance = $this;
 
-        self::setPath(self::PATH_PROJECT);
+        TemplateProvider::setProjectMode();
 
         self::setDefaultParameters();
     }
@@ -137,11 +138,11 @@ class TemplateProvider{
      * @return string
      */
     public static function getRootTemplate(string $template) : string {
-        TemplateProvider::setPath("advanced");
+        TemplateProvider::setProjectMode(false);
 
         $template = TemplateProvider::get($template);
 
-        TemplateProvider::setPath("project");
+        TemplateProvider::setProjectMode();
 
         return $template;
     }
@@ -153,11 +154,11 @@ class TemplateProvider{
      * @return string
      */
     public static function getRootTemplates(array $templates) : string {
-        TemplateProvider::setPath("advanced");
+        TemplateProvider::setProjectMode(false);
 
         $template = TemplateProvider::getByArray($templates);
 
-        TemplateProvider::setPath("project");
+        TemplateProvider::setProjectMode();
 
         return $template;
     }
@@ -208,11 +209,13 @@ class TemplateProvider{
     }
 
     /**
-     * @param string $path
+     * Enable/disable project mode.
+     *
+     * @param boolean $value
      * @return void
      */
-    public static function setPath(string $path) : void {
-        self::$path = $path;
+    public static function setProjectMode(bool $value = true) : void {
+        self::$path = $value ? self::PATH_PROJECT : self::PATH_ADVANCED;
     }
 
     /**
@@ -291,7 +294,8 @@ class TemplateProvider{
             "request" => Request::getInstance(),
             "url" => Request::getFullURL(),
             "database" => Bootstrap::getDatabase(),
-            "sql" => Bootstrap::getSQL()
+            "sql" => Bootstrap::getSQL(),
+            "usersFactory" => UsersFactory::getInstance()
         ];
     }
 
