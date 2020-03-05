@@ -49,8 +49,6 @@ class TemplateProvider{
         self::$instance = $this;
 
         TemplateProvider::setProjectMode();
-
-        self::setDefaultParameters();
     }
 
     /**
@@ -257,6 +255,8 @@ class TemplateProvider{
                 }
 
                 $data = ($cache ? $templateCache : $templatePath)->read($parameters) . "\n";
+
+                self::setDefaultParameters(true);
 
                 return self::filter($data);
 

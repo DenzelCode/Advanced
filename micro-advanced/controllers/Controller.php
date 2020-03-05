@@ -41,8 +41,6 @@ abstract class Controller {
         $this->response = Bootstrap::getResponse();
 
         $this->request = Request::getInstance();
-
-        TemplateProvider::setDefaultParameters(true);
     }
 
     /**
