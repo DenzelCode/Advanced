@@ -41,6 +41,8 @@ abstract class Controller {
         $this->response = Bootstrap::getResponse();
 
         $this->request = Request::getInstance();
+
+        TemplateProvider::setDefaultParameters(true);
     }
 
     /**
@@ -65,7 +67,7 @@ abstract class Controller {
      * @param integer $code
      * @return void
      */
-    public function setResponseCode(int $code) : void {
+    private function setResponseCode(int $code) : void {
         $this->response->setCode($code);
     }
 

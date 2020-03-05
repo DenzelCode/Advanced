@@ -50,13 +50,13 @@ class environment{
         
         advanced\session\SessionManager::init();
         
-        (new Bootstrap());
-
         if (file_exists(PROJECT . "Project.php")) {
             $project = new project\Project();
 
             $project->init();
         }
+
+        (new Bootstrap());
     }
 
 }
