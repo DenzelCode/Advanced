@@ -110,7 +110,7 @@ class TemplateProvider{
      * @return string|null
      */
     public static function getParameter(string $param) : ?string {
-        if (self::parameterExists($param)) return self::$params[$param]; else return null;
+        return self::$params[$param];
     }
 
     /**
@@ -238,6 +238,8 @@ class TemplateProvider{
         
         if ($create) $templatePath->create(Bootstrap::getMainLanguage()->get("template.default", null, str_replace("/", DIRECTORY_SEPARATOR, str_replace("\\", DIRECTORY_SEPARATOR, $templatePath->getPath()))));
 
+        self::setDefaultParameters();
+
         $parameters = [];
 
         if (file_exists(PROJECT . "Project.php")) $parameters["project"] = Project::getInstance();
@@ -256,8 +258,6 @@ class TemplateProvider{
 
                 $data = ($cache ? $templateCache : $templatePath)->read($parameters) . "\n";
 
-                self::setDefaultParameters(true);
-
                 return self::filter($data);
 
             default:
@@ -272,7 +272,7 @@ class TemplateProvider{
      * @return boolean
      */
     public static function parameterExists(string $param) : bool {
-        return in_array($param, array_keys(self::getParameters()));
+        return in_array($param, array_keys(self::getParameters())) || self::getParameter($param) != null;
     }
  
     /**
