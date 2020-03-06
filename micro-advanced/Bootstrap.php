@@ -54,13 +54,11 @@ class Bootstrap{
             "mainConfig" => ($config = new Config(ADVANCED . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config"))
         ];
 
-        if (!SessionManager::get("language")) SessionManager::set("language", substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2), true);
+        Language::init($config->get("language.default"));
 
-        if (!in_array(SessionManager::get("language"), $config->get("languages"))) Language::setLanguage(new Language(("en")));
-
-        self::$classes["mainLanguage"] = new Language(SessionManager::get("language"), Language::PATH_ADVANCED);
+        self::$classes["mainLanguage"] = new Language(Language::getCurrentLanguage(), Language::PATH_ADVANCED);
         
-        self::$classes["language"] = new Language(SessionManager::get("language"), Language::PATH_PROJECT);
+        self::$classes["language"] = new Language(Language::getCurrentLanguage(), Language::PATH_PROJECT);
 
         self::$classes["templateProvider"] = new TemplateProvider();
 

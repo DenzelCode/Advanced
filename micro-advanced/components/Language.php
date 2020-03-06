@@ -25,6 +25,8 @@ class Language{
     public const PATH_ADVANCED = "advanced";
     public const PATH_PROJECT = "project";
 
+    public const LANGUAGE_PATH = "resources" . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
+
     /**
      * @var string
      */
@@ -77,7 +79,7 @@ class Language{
      * @return string
      */
     public function getPath() : string {
-        return ($this->path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . "resources" . DIRECTORY_SEPARATOR . "languages" . DIRECTORY_SEPARATOR;
+        return ($this->path == self::PATH_ADVANCED ? ADVANCED : PROJECT) . self::LANGUAGE_PATH;
     }
 
     /**
@@ -109,11 +111,22 @@ class Language{
     /**
      * Change app language.
      *
-     * @param Language $language
+     * @param string $language
      * @return void
      */
-    public static function setLanguage(Language $language) {
+    public static function setCurrentLanguage(string $language) {
+        $language = new Language($language);
+
         SessionManager::set("language", $language->getName(), true);
+    }
+
+    /**
+     * Get app language
+     *
+     * @return string|null
+     */
+    public function getCurrentLanguage() : ?string {
+        return SessionManager::get("language");
     }
 
     /**
@@ -127,6 +140,12 @@ class Language{
         foreach ($params as $key => $value) $text = str_replace("{{$key}}", $value, $text);
         
         return $text;
+    }
+
+    public static function init(string $defaultLanguage = "en") : void {
+        $language = substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
+    
+        self::setCurrentLanguage(file_exists(ADVANCED . self::LANGUAGE_PATH) || !file_exists(PROJECT . self::LANGUAGE_PATH) ? $language : $defaultLanguage);
     }
 }
 

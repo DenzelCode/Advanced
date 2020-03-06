@@ -1,3 +1,6 @@
 {
-    "languages": ["en", "es"]
+    "language": {
+        "default": "en",
+        "list": ["en", "es"]
+    }
 }
