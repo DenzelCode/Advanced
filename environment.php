@@ -16,9 +16,18 @@
  */
 
 use advanced\Bootstrap;
-use advanced\utils\ExecutionTime;
+use advanced\exceptions\FileException;
+
+define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
+define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
+define("TESTS", MAIN . "tests" . DIRECTORY_SEPARATOR);
 
 class environment{
+
+    /**
+     * @var autoload
+     */
+    private static $autoload;
     
     /**
      * Run autoloads.
@@ -28,7 +37,23 @@ class environment{
     public function autoload() : void{
         require "autoload.php";
 
+        try {
+            self::$autoload = new autoload();
+
+            self::$autoload->addNamespace("advanced", ADVANCED);
+            self::$autoload->addNamespace("project", PROJECT);
+            self::$autoload->addNamespace("tests", TESTS);
+
+            self::$autoload->register();
+        } catch (FileException $e) {
+            die($e->getMessage());
+        }
+
         @include "vendor/autoload.php";
+    }
+
+    public static function getAutoload() : autoload {
+        return self::$autoload;
     }
 
     /**
@@ -38,9 +63,7 @@ class environment{
      * @return void
      */
     public static function init(string $dir) : void{
-        define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
-        define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
 
         self::autoload();
 

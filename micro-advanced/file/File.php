@@ -69,11 +69,12 @@ class File implements IFile{
      *
      * @param string $content
      * @return void
+     * @throws FileException
      */
     public function write(string $content) : void {
         $handle = fopen($this->path, $this->mode);
 
-        if (!$handle) throw new FileException(1, "exception.file.open", $this->path);
+        if (!$handle) throw new FileException(0, "exception.file.open", $this->path);
 
         if (!fwrite($handle, $content)) throw new FileException(1, "exception.file.write", $this->path);
 
@@ -86,13 +87,15 @@ class File implements IFile{
      * @param string $default
      * @param integer $permission
      * @return void
+     * @throws FileException
      */
     public function create(string $default = null, int $permission = 0777): void {
         if ($this->exists()) return;
 
         $this->directory->create($permission);
 
-        $handle = fopen($this->path, $this->mode);
+        if (!($handle = @fopen($this->path, $this->mode))) throw new FileException(0, "exception.file.open", $this->path);
+
         $fwrite = fwrite($handle, (string) $default);
 
         if (!$fwrite) throw new FileException(1, "exception.file.write", $this->path);

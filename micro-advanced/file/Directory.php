@@ -120,7 +120,7 @@ class Directory implements IFile {
 
             $str .= (empty($str) && \strpos($dir, ":") ? $dir : DIRECTORY_SEPARATOR . $dir);
 
-            if (!file_exists($str)) mkdir($str, $permission);
+            if (!file_exists($str)) @mkdir($str, $permission);
         }
     }
 }

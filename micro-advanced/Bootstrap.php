@@ -25,7 +25,6 @@ use advanced\components\Language;
 use advanced\data\Database;
 use advanced\data\sql\ISQL;
 use advanced\user\UsersFactory;
-use advanced\user\Auth;
 use advanced\project\Project;
 use advanced\session\SessionManager;
 
@@ -85,6 +84,8 @@ class Bootstrap{
     * @return Bootstrap
     */
     public static function getInstance() : Bootstrap {
+        if (!self::$instance) self::$instance = new Bootstrap();
+
         return self::$instance;
     }
 
