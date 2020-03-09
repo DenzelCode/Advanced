@@ -64,6 +64,7 @@ class environment{
      */
     public static function init(string $dir) : void{
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
+        define("PUBLIC", PROJECT . "public");
 
         self::autoload();
 
