@@ -127,7 +127,7 @@ class Update extends Query{
      * Set the column name and the value that you want to asign to the row bu array.
      *
      * @param array $fields
-     * @return void
+     * @return Update
      */
     public function fields(array $fields) : Update {
         return $this->setFieldsByArray($fields);
@@ -137,7 +137,7 @@ class Update extends Query{
      * Set the column name and the value that you want to asign to the row bu array.
      *
      * @param array $fields
-     * @return void
+     * @return Update
      */
     public function setFields(array $fields) : Update {
         return $this->setFieldsByArray($fields);
