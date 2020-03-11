@@ -84,7 +84,7 @@ class Config implements IConfig {
     /**
      * @return Config
      */
-    public function getInstance() : Config {
+    public function getInstance() : IConfig {
         return self::$instance;
     }
 
@@ -95,7 +95,7 @@ class Config implements IConfig {
      * @param mixed $value
      * @return Config
      */
-    public function set(string $key, $value): Config {
+    public function set(string $key, $value): IConfig {
         $values = &$this->data;
 
         foreach (($properties = explode(".", $key)) as $k => $segment) {
@@ -118,7 +118,7 @@ class Config implements IConfig {
      * @param mixed $value
      * @return Config
      */
-    public function setIfNotExists(string $key, $value) : Config {
+    public function setIfNotExists(string $key, $value) : IConfig {
         if (!$this->has($key)) $this->set($key, $value);
 
         return $this;
