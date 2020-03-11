@@ -22,6 +22,7 @@ use advanced\http\Response;
 use advanced\http\router\Request;
 use advanced\body\template\TemplateProvider;
 use advanced\components\Language;
+use advanced\config\IConfig;
 use advanced\data\Database;
 use advanced\data\sql\ISQL;
 use advanced\user\UsersFactory;
@@ -95,16 +96,16 @@ class Bootstrap{
     }
 
     /**
-    * @return Config
+    * @return IConfig
     */
-    public static function getConfig() : Config {
+    public static function getConfig() : IConfig {
         return self::$classes["config"];
     }
 
     /**
-    * @return Config
+    * @return IConfig
     */
-    public static function getMainConfig() : Config {
+    public static function getMainConfig() : IConfig {
         return self::$classes["mainConfig"];
     }
 

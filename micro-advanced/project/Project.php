@@ -21,6 +21,7 @@ use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\components\Language;
 use advanced\config\Config;
+use advanced\config\IConfig;
 use advanced\data\Database;
 use advanced\data\sql\ISQL;
 use advanced\data\sql\MySQL;
@@ -199,19 +200,19 @@ abstract class Project {
     /**
      * Get project config file.
      *
-     * @return Config|null
+     * @return IConfig|null
      */
-    public static function getConfig() : ?Config {
+    public static function getConfig() : ?IConfig {
         return self::$config;
     }
 
     /**
      * Set project config file.
      *
-     * @param Config|null $config
+     * @param IConfig|null $config
      * @return void
      */
-    public static function setConfig(?Config $config) {
+    public static function setConfig(?IConfig $config) {
         self::$config = $config;
     }
 
