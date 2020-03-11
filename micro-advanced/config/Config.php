@@ -19,13 +19,12 @@ namespace advanced\config;
 
 use advanced\config\provider\IProvider;
 use advanced\config\provider\JsonProvider;
-use advanced\config\provider\Provider;
 use advanced\file\File;
 
 /**
 * Config class
 */
-class Config {
+class Config implements IConfig {
 
     public const PROVIDER_JSON = "json";
     public const PROVIDER_YAML = "yaml";
