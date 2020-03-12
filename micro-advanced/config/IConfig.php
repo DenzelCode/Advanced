@@ -46,14 +46,14 @@ interface IConfig {
      *
      * @return void
      */
-    public function saveIfModified() : void;
+    public function saveIfModified() : bool;
 
     /**
      * Save file.
      *
      * @return void
      */
-    public function save() : void;
+    public function save() : bool;
 
     /**
      * Get config field.
