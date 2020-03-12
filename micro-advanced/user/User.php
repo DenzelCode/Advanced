@@ -19,10 +19,9 @@ namespace advanced\user;
 
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
-use advanced\user\Auth;
+use advanced\user\auth\Auth;
 use advanced\mailer\Mailer;
 use advanced\mailer\Receipient;
-use Exception;
 
 /**
  * User class
@@ -44,7 +43,6 @@ class User extends AbstractUser {
         UsersFactory::setupTable();
 
         if (!$this->exists()) {
-            echo "XDD";
             $config = Bootstrap::getMainConfig();
 
             $min = $config->get("sign_up.min_characters", 4);

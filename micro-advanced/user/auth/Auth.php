@@ -1,16 +1,19 @@
 <?php
 
-namespace advanced\user;
+namespace advanced\user\auth;
 
 use advanced\Bootstrap;
 use advanced\user\User;
 use advanced\http\router\Request;
 use advanced\session\SessionManager;
+use advanced\user\Guest;
+use advanced\user\IUser;
+use advanced\user\UsersFactory;
 
 /**
 * Auth class
 */
-class Auth {
+class Auth implements IAuth {
 
     /**
      * @var Auth

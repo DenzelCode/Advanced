@@ -19,10 +19,9 @@ namespace advanced\body\template;
 
 use advanced\Bootstrap;
 use advanced\file\File;
-use advanced\http\router\RequestProvider;
 use project\Project;
 use advanced\http\router\Request;
-use advanced\user\Auth;
+use advanced\user\auth\Auth;
 use advanced\user\UsersFactory;
 
 class TemplateProvider{
