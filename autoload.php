@@ -112,7 +112,7 @@ class autoload {
 	 * @throws FileException
      */
     protected function requireFile($file) : bool {
-        if (file_exists($file)) require $file;
+        if (file_exists($file)) require_once $file;
 		
         throw new FileException(0, "exception.file.not_exist", $file);
     }
