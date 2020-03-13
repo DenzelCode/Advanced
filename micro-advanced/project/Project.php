@@ -17,7 +17,6 @@
 
 namespace advanced\project;
 
-use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\components\Language;
 use advanced\config\Config;
