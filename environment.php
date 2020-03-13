@@ -93,6 +93,6 @@ class environment{
      * @return string
      */
     public static function getVersion() : string {
-        return environment::REQUIRED_PHP_VERSION;
+        return self::REQUIRED_PHP_VERSION;
     }
 }
