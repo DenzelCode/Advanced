@@ -5,6 +5,7 @@
     },
 
     "exception": {
+        "created": "Exception message created on language file {0}.",
         "exception": "Error: {0} file {1} on line {2}",
         "version": "Incompatible PHP version ({0}), Advanced requires at least PHP {1}",
 

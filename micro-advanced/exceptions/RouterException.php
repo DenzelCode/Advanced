@@ -17,9 +17,14 @@
 
  namespace advanced\exceptions;
 
+use advanced\Bootstrap;
+
 /**
  * RouterException class
  */	
 class RouterException extends AdvancedException {
     
+    public function getLanguage(): \advanced\components\Language {
+        return Bootstrap::getMainLanguage();
+    }
 }

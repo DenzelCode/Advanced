@@ -18,6 +18,7 @@
 namespace advanced\exceptions;
 
 use advanced\Bootstrap;
+use advanced\components\Language;
 
 /**
 * AdvancedException class
@@ -77,8 +78,14 @@ abstract class AdvancedException extends \Exception {
 
         foreach ($this->getParameters() as $parameter) $arguments[] = $parameter;
 
-        $return = @call_user_func_array([ Bootstrap::getMainLanguage(), "get" ], $arguments);
+        $language = $this->getLanguage();
+
+        $language->getConfig()->setIfNotExists($this->message_code, Bootstrap::getMainLanguage()->get("exception.created", $language->getName()))->saveIfModified();
+
+        $return = @call_user_func_array([ $language, "get" ], $arguments);
 
         return $return ?? $this->message_code;
     }
+
+    abstract function getLanguage() : Language;
 }

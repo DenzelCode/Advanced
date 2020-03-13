@@ -17,9 +17,14 @@
 
  namespace advanced\exceptions;
 
+use advanced\Bootstrap;
+
 /**
 * DatabaseException class
 */	
 class DatabaseException extends AdvancedException {
     
+    public function getLanguage(): \advanced\components\Language {
+        return Bootstrap::getMainLanguage();
+    }
 }

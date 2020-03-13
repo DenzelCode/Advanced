@@ -18,6 +18,7 @@
 namespace advanced\components;
 
 use advanced\config\Config;
+use advanced\config\IConfig;
 use advanced\session\SessionManager;
 
 class Language{
@@ -38,7 +39,7 @@ class Language{
     private $path;
 
     /**
-     * @var Config
+     * @var IConfig
      */
     private $config;
 
@@ -106,6 +107,13 @@ class Language{
         $value = $this->config->get($key, $default);
 
         return is_string($value) ? self::filter($value, $params) : $value;
+    }
+
+    /**
+     * @return IConfig
+     */
+    public function getConfig() : IConfig {
+        return $this->config;
     }
 
     /**
