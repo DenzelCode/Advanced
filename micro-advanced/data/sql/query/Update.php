@@ -21,7 +21,7 @@ use PDOStatement;
 
 /**
  * Update class
- */
+ */ 
 class Update extends Query{
 
     /**
@@ -51,7 +51,7 @@ class Update extends Query{
      * @return Update
      */
     public function table(string $table) : IQuery {
-        return parent::setLimit($table);
+        return parent::table($table);
     }
 
     /**
@@ -162,12 +162,12 @@ class Update extends Query{
     public function convertToQuery() : string {
         $query = "UPDATE {$this->table} ";
 
-        foreach ($this->fields as $i => $field) $query .= $i != (count($this->fields) == 1) ? "SET {$field} = ? " : ($i == 0 ? "SET {$field} = ?, " : ($i != (count($this->fields) != 1) ? "{$field} = ?, " : "{$field} = ?"));
+        foreach ($this->fields as $i => $field) $query .= (count($this->fields) == 1) ? "SET {$field} = ? " : ($i == 0 ? "SET {$field} = ?, " : ($i != (count($this->fields) - 1) ? "{$field} = ?, " : "{$field} = ?"));
 
         $query .= !empty($this->where) ? " WHERE {$this->where}" : "";
 
         $query .= $this->limit > 0 ? " LIMIT {$this->limit}" : "";
-        
+
         return $query;
     }
 }
