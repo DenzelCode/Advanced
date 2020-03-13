@@ -39,6 +39,10 @@
         }
     },
 
+    "error": {
+        "not_string": "(El parametro {0} no es un string)"
+    },
+
     "template": {
         "not_exists": "Plantilla {0} no existente",
         "default": "Nueva plantilla creada en el archivo {0}",

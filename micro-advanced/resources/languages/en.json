@@ -39,6 +39,10 @@
         }
     },
 
+    "error": {
+        "not_string": "(Parameter {0} is not an string)"
+    },
+
     "template": {
         "not_exists": "Template {0} does not exists",
         "default": "New template created on file {0}",

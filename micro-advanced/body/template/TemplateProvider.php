@@ -123,7 +123,11 @@ class TemplateProvider{
      * @return string
      */
     public static function filter(string $data) : string {
-        foreach (self::getParameters() as $key => $param) if (is_string($param["value"]) && !$param["prefix"]) $data = str_replace($key, $param["value"], $data); else if (is_string($param["value"]) && $param["prefix"]) $data = str_replace("{@" . $key . "}", $param["value"], $data);
+        foreach (self::getParameters() as $key => $param) {
+            foreach (self::getParameters() as $k => $v) if ($k != $key) $param["value"] = is_string($v["value"]) && $v["prefix"] ? str_replace($k, $v["value"], $data) : (is_string($v["value"]) ? str_replace("{@" . $k . "}", $v["value"], $data) : Bootstrap::getLanguage()->get("error.parameter_not_string", "{@" . $k . "}"));
+
+            $data = is_string($param["value"]) && $param["prefix"] ? str_replace($key, $param["value"], $data) : (is_string($param["value"]) ? str_replace("{@" . $key . "}", $param["value"], $data) : Bootstrap::getLanguage()->get("error.parameter_not_string", "{@" . $key . "}"));
+        }
 
         return $data;
     }
