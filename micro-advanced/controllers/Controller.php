@@ -53,7 +53,7 @@ abstract class Controller {
         TemplateProvider::setParameters([
             "title" => Bootstrap::getMainLanguage()->get("general.description"),
             "name" => Bootstrap::getConfig()->get('web.name'),
-            "cdn" => str_replace("{@url}", Request::getFullURL(), Bootstrap::getConfig()->get('web.cdn'))
+            "cdn" => "{@url}/" + Bootstrap::getConfig()->get('web.cdn')
         ]);
 
         return TemplateProvider::getRootTemplate('main/index');
