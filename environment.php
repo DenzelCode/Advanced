@@ -18,12 +18,6 @@
 use advanced\Bootstrap;
 use advanced\exceptions\FileException;
 
-error_reporting(E_ALL);
-
-define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
-define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
-define("TESTS", MAIN . "tests" . DIRECTORY_SEPARATOR);
-
 class environment{
 
     public const VERSION = "2.0.2";
@@ -69,6 +63,11 @@ class environment{
      * @return void
      */
     public static function init(string $dir) : void{
+        error_reporting(E_ALL);
+
+        define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
+        define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
+        define("TESTS", MAIN . "tests" . DIRECTORY_SEPARATOR);
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
         define("PUBLIC", PROJECT . "public");
 
