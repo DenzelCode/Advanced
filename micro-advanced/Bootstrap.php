@@ -28,6 +28,7 @@ use advanced\data\sql\ISQL;
 use advanced\user\UsersFactory;
 use advanced\project\Project;
 use advanced\session\SessionManager;
+use environment;
 
 /**
 * Bootstrap class
@@ -201,5 +202,14 @@ class Bootstrap{
      */
     public static function getClass(string $name) {
         return self::$classes[$name];
+    }
+
+    /**
+     * Get Advanced version.
+     *
+     * @return string
+     */
+    public static function getVersion() : string {
+        return environment::REQUIRED_PHP_VERSION;
     }
 }

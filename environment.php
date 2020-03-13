@@ -18,11 +18,16 @@
 use advanced\Bootstrap;
 use advanced\exceptions\FileException;
 
+error_reporting(E_ALL);
+
 define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
 define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
 define("TESTS", MAIN . "tests" . DIRECTORY_SEPARATOR);
 
 class environment{
+
+    public const VERSION = "2.0.2";
+    public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**
      * @var autoload
@@ -34,12 +39,13 @@ class environment{
      *
      * @return void
      */
-    public function autoload() : void{
+    private static function autoload() : void{
         require "autoload.php";
 
         try {
             self::$autoload = new autoload();
 
+            self::$autoload->addNamespace("", MAIN);
             self::$autoload->addNamespace("advanced", ADVANCED);
             self::$autoload->addNamespace("project", PROJECT);
             self::$autoload->addNamespace("tests", TESTS);
@@ -68,9 +74,7 @@ class environment{
 
         self::autoload();
 
-        $version = "7.2.0";
-
-        if (!(version_compare(PHP_VERSION, $version) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, $version));
+        if (!(version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, self::REQUIRED_PHP_VERSION));
         
         advanced\session\SessionManager::init();
 
@@ -83,4 +87,12 @@ class environment{
         }
     }
 
+    /**
+     * Get Advanced version.
+     *
+     * @return string
+     */
+    public static function getVersion() : string {
+        return environment::REQUIRED_PHP_VERSION;
+    }
 }
