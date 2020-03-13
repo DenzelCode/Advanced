@@ -125,7 +125,7 @@ class Language{
      *
      * @return string|null
      */
-    public function getCurrentLanguage() : ?string {
+    public static function getCurrentLanguage() : ?string {
         return SessionManager::get("language");
     }
 

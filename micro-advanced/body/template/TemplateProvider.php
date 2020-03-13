@@ -123,10 +123,25 @@ class TemplateProvider{
      * @return string
      */
     public static function filter(string $data) : string {
+        error_reporting(E_ALL);
         foreach (self::getParameters() as $key => $param) {
-            foreach (self::getParameters() as $k => $v) if ($k != $key) $param["value"] = is_string($v["value"]) && $v["prefix"] ? str_replace($k, $v["value"], $data) : (is_string($v["value"]) ? str_replace("{@" . $k . "}", $v["value"], $data) : Bootstrap::getLanguage()->get("error.parameter_not_string", "{@" . $k . "}"));
+            foreach (self::getParameters() as $k => $v) {
+                if ($key == $k) break;
 
-            $data = is_string($param["value"]) && $param["prefix"] ? str_replace($key, $param["value"], $data) : (is_string($param["value"]) ? str_replace("{@" . $key . "}", $param["value"], $data) : Bootstrap::getLanguage()->get("error.parameter_not_string", "{@" . $key . "}"));
+                if  (!is_string($param["value"])) break; 
+
+                $prefix = $v["prefix"] == true ? "{@" . $k . "}" : $k;
+
+                $value = is_string($v["value"]) ? $v["value"] : Bootstrap::getMainLanguage()->get("error.parameter_not_string", null, $prefix);
+
+                $param["value"] = str_replace($prefix, $value, $param["value"]);
+            }
+
+            $prefix = $param["prefix"] == true ? "{@" . $key . "}" : $key;
+
+            $value = is_string($param["value"]) ? $param["value"] : Bootstrap::getMainLanguage()->get("error.parameter_not_string", null, $prefix);
+
+            $data = str_replace($prefix, $value, $data);
         }
 
         return $data;
@@ -263,7 +278,7 @@ class TemplateProvider{
 
                 return self::filter($data);
 
-            default:
+            case false:
                 return Bootstrap::getMainLanguage()->get("template.not_exists", null, $template);
         }
     }

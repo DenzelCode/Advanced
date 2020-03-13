@@ -40,7 +40,7 @@
     },
 
     "error": {
-        "not_string": "(El parametro {0} no es un string)"
+        "parameter_not_string": "(El parametro {0} no es un string)"
     },
 
     "template": {
