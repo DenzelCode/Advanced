@@ -23,7 +23,5 @@ use advanced\Bootstrap;
  * ResponseException class
  */	
 class ResponseException extends AdvancedException {
-    public function getLanguage(): \advanced\components\Language {
-        return Bootstrap::getMainLanguage();
-    }
+    
 }

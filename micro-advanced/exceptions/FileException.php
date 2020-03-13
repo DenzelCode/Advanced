@@ -17,12 +17,11 @@
 
  namespace advanced\exceptions;
 
+use advanced\Bootstrap;
+
 /**
  * FileException class
  */	
 class FileException extends AdvancedException {
     
-    public function getLanguage(): \advanced\components\Language {
-        return Bootstrap::getMainLanguage();
-    }
 }

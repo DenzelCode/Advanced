@@ -23,8 +23,6 @@ use advanced\Bootstrap;
 * MailerException class
 */	
 class MailerException extends AdvancedException {
- 
-    public function getLanguage(): \advanced\components\Language {
-        return Bootstrap::getMainLanguage();
-    }
+    
 }
+
