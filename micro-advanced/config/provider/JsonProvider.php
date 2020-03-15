@@ -51,7 +51,7 @@ class JsonProvider implements IProvider {
      * Decode data.
      *
      * @param string $data
-     * @return array
+     * @return array|null
      */
     public function decode(string $data): ?array {
         return json_decode($data, true);
