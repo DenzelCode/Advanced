@@ -25,6 +25,7 @@ use advanced\components\Language;
 use advanced\config\IConfig;
 use advanced\data\Database;
 use advanced\data\sql\ISQL;
+use advanced\exceptions\AdvancedException;
 use advanced\exceptions\ConfigException;
 use advanced\user\UsersFactory;
 use advanced\project\Project;
@@ -69,20 +70,19 @@ class Bootstrap{
         
         self::$classes["language"] = new Language(Language::getCurrentLanguage(), Language::PATH_PROJECT);
 
-        /*
-        $handler = function ($exception) {
-            if (!$exception instanceof \Exception) {
-                die($exception);
+        
+        // $handler = function ($exception) {
+        //     if (!$exception instanceof \Exception) {
+        //         die($exception);
                 
-                return;
-            }
+        //         return;
+        //     }
 
-            die($this->getMainLanguage()->get("exception.exception", null, ($exception instanceof AdvancedException ? $exception->getTranslatedMessage() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
-        };
+        //     die($this->getMainLanguage()->get("exception.exception", null, ($exception instanceof AdvancedException ? $exception->getTranslatedMessage() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
+        // };
 
-        set_exception_handler($handler);
-        set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
-        */
+        // set_exception_handler($handler);
+        // set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
     }
 
     /**
