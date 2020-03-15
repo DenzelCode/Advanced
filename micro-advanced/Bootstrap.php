@@ -25,6 +25,7 @@ use advanced\components\Language;
 use advanced\config\IConfig;
 use advanced\data\Database;
 use advanced\data\sql\ISQL;
+use advanced\exceptions\ConfigException;
 use advanced\user\UsersFactory;
 use advanced\project\Project;
 use advanced\session\SessionManager;
@@ -51,10 +52,16 @@ class Bootstrap{
 
         self::$classes = [
             "request" => new Request($_SERVER["REQUEST_URI"]),
-            "response" => new Response(),
-            "config" => new Config(Project::getConfigPath()),
-            "mainConfig" => ($config = new Config(ADVANCED . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config"))
+            "response" => new Response() 
         ];
+
+        try {
+            self::$classes["config"] = new Config(Project::getConfigPath());
+
+            self::$classes["mainConfig"] = ($config = new Config(ADVANCED . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config"));
+        } catch (ConfigException $e) {
+            die($e->getMessage());
+        }
 
         Language::init($config->get("language.default"));
 
