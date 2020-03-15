@@ -37,7 +37,7 @@ class TemplateProvider{
     /**
      * @var TemplateProvider
      */
-    private static $instance;
+    private static $instance = null;
 
     /**
      * @var string
@@ -54,6 +54,8 @@ class TemplateProvider{
      * @return TemplateProvider
      */
     public static function getInstance() : TemplateProvider {
+        if (!self::$instance) self::$instance = $this;
+
         return self::$instance;
     }
 
