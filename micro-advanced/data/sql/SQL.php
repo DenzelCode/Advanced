@@ -53,80 +53,113 @@ abstract class SQL implements ISQL{
     abstract public function run() : void;
 
     /**
+     * Generate a select query.
+     *
+     * @param string|null $table
      * @return Select
      */
-    public function select() : Select {
-        return (new Select($this));
+    public function select(?string $table = null) : Select {
+        return (new Select($this, $table));
     }
 
     /**
+     * Generate an insert query.
+     *
+     * @param string|null $table
      * @return Insert
      */
-    public function insert() : Insert {
-        return (new Insert($this));
+    public function insert(?string $table = null) : Insert {
+        return (new Insert($this, $table));
     }
 
     /**
+     * Generate an update query.
+     *
+     * @param string|null $table
      * @return Update
      */
-    public function update() : Update {
-        return (new Update($this));
+    public function update(?string $table = null) : Update {
+        return (new Update($this, $table));
     }
 
     /**
+     * Generate a delete query.
+     *
+     * @param string|null $table
      * @return Delete
      */
-    public function delete() : Delete {
-        return (new Delete($this));
+    public function delete(?string $table = null) : Delete {
+        return (new Delete($this, $table));
     }
 
     /**
+     * Generate a create query.
+     *
+     * @param string|null $table
      * @return Create
      */
-    public function create() : Create {
-        return (new Create($this));
+    public function create(?string $table = null) : Create {
+        return (new Create($this, $table));
     }
     
     /**
+     * Generate a drop query.
+     *
+     * @param string|null $table
      * @return Drop
      */
-    public function drop() : Drop {
-        return (new Drop($this));
+    public function drop(?string $table = null) : Drop {
+        return (new Drop($this, $table));
     }
 
     /**
+     * Generate a query to show table columns.
+     *
+     * @param string|null $table
      * @return ShowColumns
      */
-    public function showColumns() : ShowColumns {
-        return (new ShowColumns($this));
+    public function showColumns(?string $table = null) : ShowColumns {
+        return (new ShowColumns($this, $table));
     }
 
     /**
+     * Generate a query to add columns into a table. 
+     *
+     * @param string|null $table
      * @return AddColumns
      */
-    public function addColumns() : AddColumns {
-        return (new AddColumns($this));
+    public function addColumns(?string $table = null) : AddColumns {
+        return (new AddColumns($this, $table));
     }
 
-     /**
+    /**
+     * Generate a query to modify columns from a table.
+     *
+     * @param string|null $table
      * @return ModifyColumns
      */
-    public function modifyColumns() : ModifyColumns {
-        return (new ModifyColumns($this));
+    public function modifyColumns(?string $table = null) : ModifyColumns {
+        return (new ModifyColumns($this, $table));
     }
 
     /**
+     * Generate a query to drop columns from a table.
+     *
+     * @param string|null $table
      * @return DropColumns
      */
-    public function dropColumns() : DropColumns {
-        return (new DropColumns($this));
+    public function dropColumns(?string $table = null) : DropColumns {
+        return (new DropColumns($this, $table));
     }
 
     /**
+     * Generate a query to truncate a table.
+     *
+     * @param string|null $table
      * @return Truncate
      */
-    public function truncate() : Truncate {
-        return (new Truncate($this));
+    public function truncate(?string $table = null) : Truncate {
+        return (new Truncate($this, $table));
     }
 
     /**
@@ -149,6 +182,8 @@ abstract class SQL implements ISQL{
     }
 
     /**
+     * Get last executed prepared statement.
+     *
      * @return PDOStatement|null
      */
     public function getLastStatement() : ?PDOStatement {
@@ -156,6 +191,8 @@ abstract class SQL implements ISQL{
     }
 
     /**
+     * Get last query error.
+     *
      * @return string
      */
     public function getLastError() : string {

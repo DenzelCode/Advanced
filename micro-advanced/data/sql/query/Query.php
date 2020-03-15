@@ -55,8 +55,10 @@ abstract class Query implements IQuery{
     /**
      * @param ISQL $sql
      */
-    public function __construct(ISQL $sql) {
+    public function __construct(ISQL $sql, string $table = null) {
         $this->sql = $sql;
+
+        $this->table = $table;
     }
 
     /**

@@ -52,6 +52,8 @@ class Join implements IJoin {
     protected $using = [];
 
     /**
+     * Initialize join.
+     *
      * @param Select $query
      * @param string $table
      */
@@ -62,6 +64,8 @@ class Join implements IJoin {
     }
 
     /**
+     * Add on argument to query.
+     *
      * @param string $on
      * @return Join
      */
@@ -72,6 +76,8 @@ class Join implements IJoin {
     }
 
     /**
+     * Add alias into the join table.
+     *
      * @param string $as
      * @return Join
      */
@@ -82,6 +88,8 @@ class Join implements IJoin {
     }
 
     /**
+     * Add using argument into the using.
+     *
      * @param array $columns
      * @return Join
      */
@@ -91,13 +99,54 @@ class Join implements IJoin {
         return $this;
     }
 
-
     /**
+     * Join table.
+     *
      * @param string $table
-     * @return IJoin
+     * @return Join
      */
     public function join(string $table) : IJoin {
         return $this->query->join($table);
+    }
+
+    /**
+     * Left join table.
+     *
+     * @param string $table
+     * @return LeftJoin
+     */
+    public function leftJoin(string $table) : IJoin {
+        return $this->query->leftJoin($table);
+    }
+
+    /**
+     * Inner join table.
+     *
+     * @param string $table
+     * @return InnerJoin
+     */
+    public function innerJoin(string $table) : IJoin {
+        return $this->query->innerJoin($table);
+    }
+
+    /**
+     * Right join table.
+     *
+     * @param string $table
+     * @return RightJoin
+     */
+    public function rightJoin(string $table) : IJoin {
+        return $this->query->rightJoin($table);
+    }
+
+    /**
+     * Full join table.
+     *
+     * @param string $table
+     * @return FullJoin
+     */
+    public function fullJoin(string $table) : IJoin {
+        return $this->query->fullJoin($table);
     }
 
     /**
