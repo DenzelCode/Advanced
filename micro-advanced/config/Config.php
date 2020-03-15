@@ -19,6 +19,7 @@ namespace advanced\config;
 
 use advanced\config\provider\IProvider;
 use advanced\config\provider\JsonProvider;
+use advanced\exceptions\ConfigException;
 use advanced\file\File;
 
 /**
@@ -35,7 +36,7 @@ class Config implements IConfig {
     private $initialData = [];
 
     /**
-     * @var array
+     * @var array|null
      */
     private $data = [];
 
@@ -250,6 +251,8 @@ class Config implements IConfig {
         $this->file->create(!$default ? $this->provider->encode([]) : $this->provider->prettyPrint($default));
 
         $this->data = $this->provider->decode($this->file->read());
+
+        if ($this->data == null) throw new ConfigException(0, "exception.config.invalid_format", $this->file->getPath());
 
         $this->initialData = $this->data;
 

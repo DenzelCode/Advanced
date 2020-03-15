@@ -15,9 +15,7 @@
  * 
  */
 
- namespace advanced\exceptions;
-
-use advanced\Bootstrap;
+namespace advanced\exceptions;
 
 /**
  * FileException class

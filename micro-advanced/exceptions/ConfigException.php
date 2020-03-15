@@ -15,13 +15,11 @@
  * 
  */
 
-namespace advanced\config\provider;
+namespace advanced\exceptions;
 
-interface IProvider {
+/**
+ * ConfigException class
+ */	
+class ConfigException extends AdvancedException {
     
-    public function getName() : string;
-    public function getExtension() : string;
-    public function encode(array $data) : string;
-    public function decode(string $data) : ?array;
-    public function prettyPrint(array $data) : string;
 }

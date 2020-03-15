@@ -17,7 +17,7 @@
 
 namespace advanced\config\provider;
 
-class YamlProvider implements Provider {
+class YamlProvider implements IProvider {
 
     public function getName(): string {
         return "Yaml";
@@ -31,7 +31,7 @@ class YamlProvider implements Provider {
         return json_encode($data);
     }
 
-    public function decode(string $data): array {
+    public function decode(string $data): ?array {
         return json_decode($data);
     }
 

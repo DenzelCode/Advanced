@@ -15,7 +15,7 @@
  * 
  */
 
- namespace advanced\exceptions;
+namespace advanced\exceptions;
 
 use advanced\Bootstrap;
 

@@ -5,7 +5,7 @@
     },
 
     "exception": {
-        "created": "Exception message created on language file {0}.",
+        "created": "Exception message created on language file {0}",
         "exception": "Error: {0} en el archivo {1} en la linea {2}",
         "version": "Version de PHP incompatible ({0}), Advanced requiere PHP {1} o mayor",
         
@@ -17,6 +17,10 @@
             "characters": "El nombre de usuario debe tener de {0} a {1} caracteres",
             "invalid_name": "Nombre de usuario inválido, elimina los caracteres especiales",
             "invalid_email": "Correo electrónico inválido"
+        },
+
+        "config": {
+            "invalid_format": "El archivo de configuracion {0} tiene un formato invalido"
         },
 
         "database": {

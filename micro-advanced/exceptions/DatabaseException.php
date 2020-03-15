@@ -17,8 +17,6 @@
 
  namespace advanced\exceptions;
 
-use advanced\Bootstrap;
-
 /**
 * DatabaseException class
 */	
