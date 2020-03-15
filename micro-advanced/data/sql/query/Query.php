@@ -165,7 +165,7 @@ abstract class Query implements IQuery{
     *
     * @return string
     */
-    public abstract function convertToQuery() : string;
+    public abstract function toQuery() : string;
 
     /**
      * @return string
