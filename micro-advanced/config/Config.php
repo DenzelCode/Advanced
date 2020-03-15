@@ -252,7 +252,7 @@ class Config implements IConfig {
 
         $this->data = $this->provider->decode($this->file->read());
 
-        if ($this->data == null) throw new ConfigException(0, "exception.config.invalid_format", $this->file->getPath());
+        if ($this->data === null) throw new ConfigException(0, "exception.config.invalid_format", $this->file->getPath());
 
         $this->initialData = $this->data;
 
