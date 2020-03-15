@@ -54,7 +54,7 @@ class TemplateProvider{
      * @return TemplateProvider
      */
     public static function getInstance() : TemplateProvider {
-        if (!self::$instance) self::$instance = $this;
+        if (!self::$instance) self::$instance = new TemplateProvider();
 
         return self::$instance;
     }
