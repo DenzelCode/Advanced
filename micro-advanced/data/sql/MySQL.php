@@ -186,9 +186,9 @@ class MySQL extends SQL{
      */
     public function import(array $import) : void {
         foreach ($import as $table => $columns) {
-            $query = $this->select()->table($table)->executeBool();
+            $query = $this->select($table)->executeBool();
 
-            if (!$query && !$this->create()->table($table)->columns($columns)->execute()) throw new DatabaseException(1, "exception.database.create_table", $table, $this->getLastError());
+            if (!$query && !$this->create($table)->columns($columns)->execute()) throw new DatabaseException(1, "exception.database.create_table", $table, $this->getLastError());
         }
     }
 
@@ -201,16 +201,16 @@ class MySQL extends SQL{
      */
     public function modify(array $tables) : void {
         foreach ($tables as $table => $columns) {
-            $query = $this->select()->table($table)->executeBool();
+            $query = $this->select($table)->executeBool();
 
             if (!$query) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
     
             $colms = [];
 
-            foreach ($this->showColumns()->table($table)->execute()->fetchAll() as $column) $colms[] = $colms["Field"];
+            foreach ($this->showColumns($table)->execute()->fetchAll() as $column) $colms[] = $colms["Field"];
 
             foreach ($columns as $column => $type) {
-                $execute = in_array($column, $colms) ? $this->addColumns()->table($table)->column($column, $type) : $this->modifyColumns()->table($table)->column($column, $type);
+                $execute = in_array($column, $colms) ? $this->addColumns($table)->column($column, $type) : $this->modifyColumns($table)->column($column, $type);
 
                 if (!$execute) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
             }

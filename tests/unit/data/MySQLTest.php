@@ -50,7 +50,7 @@ class MySQLTest extends TestCase {
     public function testCreateTable() : void {
         $sql = Project::getSQL();
 
-        $query = $sql->create()->table("test")->columns([
+        $query = $sql->create("test")->columns([
             "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
             "name" => "varchar(255)"
         ]);
@@ -61,7 +61,7 @@ class MySQLTest extends TestCase {
     public function testInsert() : void {
         $sql = Project::getSQL();
 
-        $query = $sql->insert()->table("test")->fields([
+        $query = $sql->insert("test")->fields([
             "name" => "Testing"
         ]);
 
@@ -71,7 +71,7 @@ class MySQLTest extends TestCase {
     public function testSelect() : void {
         $sql = Project::getSQL();
 
-        $query = $sql->select()->table("test")->where("name = ?", ["Testing"])->execute();
+        $query = $sql->select("test")->where("name = ?", ["Testing"])->execute();
 
         $data = $query->fetch();
 
@@ -83,7 +83,7 @@ class MySQLTest extends TestCase {
 
         $find = "Testing";
 
-        $execute = $sql->update()->table("test")->field("name", "Replacement")->where("name = ?", [$find])->execute();
+        $execute = $sql->update("test")->field("name", "Replacement")->where("name = ?", [$find])->execute();
 
         $this->assertTrue($execute);
     }
@@ -93,7 +93,7 @@ class MySQLTest extends TestCase {
 
         $find = "Replacement";
 
-        $execute = $sql->delete()->table("test")->where("name = ?", [$find])->execute();
+        $execute = $sql->delete("test")->where("name = ?", [$find])->execute();
 
         $this->assertTrue($execute);
     }
@@ -101,7 +101,7 @@ class MySQLTest extends TestCase {
     public function testAddColumns() : void {
         $sql = Project::getSQL();
 
-        $execute = $sql->addColumns()->table("test")->column("last_name", "varchar(255)")->execute();
+        $execute = $sql->addColumns("test")->column("last_name", "varchar(255)")->execute();
 
         $this->assertTrue($execute);
     }
@@ -109,7 +109,7 @@ class MySQLTest extends TestCase {
     public function testDropColumns() : void {
         $sql = Project::getSQL();
 
-        $execute = $sql->dropColumns()->table("test")->column("last_name")->execute();
+        $execute = $sql->dropColumns("test")->column("last_name")->execute();
 
         $this->assertTrue($execute);
     }
@@ -117,7 +117,7 @@ class MySQLTest extends TestCase {
     public function testShowColumns() : void {
         $sql = Project::getSQL();
 
-        $execute = $sql->showColumns()->table("test")->execute();
+        $execute = $sql->showColumns("test")->execute();
 
         $this->assertIsArray($execute->fetchAll());
     }
@@ -125,7 +125,7 @@ class MySQLTest extends TestCase {
     public function testTruncate() : void {
         $sql = Project::getSQL();
 
-        $execute = $sql->truncate()->table("test")->execute();
+        $execute = $sql->truncate("test")->execute();
 
         $this->assertTrue($execute);
     }
@@ -133,7 +133,7 @@ class MySQLTest extends TestCase {
     public function testDropTable() : void {
         $sql = Project::getSQL();
 
-        $execute = $sql->drop()->table("test")->execute();
+        $execute = $sql->drop("test")->execute();
 
         $this->assertTrue($execute);
     }
