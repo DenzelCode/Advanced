@@ -17,7 +17,7 @@
 
 namespace advanced\data\sql\query\join;
 
-use advanced\data\sql\query\Query;
+use advanced\data\sql\query\IQuery;
 use advanced\data\sql\query\Select;
 use PDOStatement;
 
@@ -101,11 +101,13 @@ class Join implements IJoin {
     }
 
     /**
-     * @param string $where
-     * @param array $execute
-     * @return Query
+     * Set the WHERE SQL parameter.
+     *
+     * @param string $where Set where example: "name = ?" or "name = ? AND last = ?".
+     * @param mixed $execute Set values example "Denzel" or ["Denzel", "Code"].
+     * @return IQuery
      */
-    public function where(string $where, array $execute = []) : Query {
+    public function where(string $where, $execute = []) : IQuery {
         return $this->query->where($where, $execute);
     }
 
@@ -133,11 +135,11 @@ class Join implements IJoin {
     public function toQuery(): string {
         $query = "{$this->getPreffix()} {$this->table}";
 
-        $query .= !empty($this->on) ? " AS ($this->on)" : "";
+        $query .= !empty($this->as) ? " AS ($this->as)" : "";
 
         $query .= !empty($this->on) ? " ON ($this->on)" : "";
 
-        $query .= !empty($this->on) ? " USING (" . join(", ", $this->using) . ")" : "";
+        $query .= !empty($this->using) ? " USING (" . join(", ", $this->using) . ")" : "";
 
         return $query;
     }

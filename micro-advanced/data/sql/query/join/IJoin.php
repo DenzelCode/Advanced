@@ -33,7 +33,7 @@ interface IJoin{
 
     public function join() : IJoin;
 
-    public function where(string $where, array $execute = []) : IQuery;
+    public function where(string $where, $execute = []) : IQuery;
 
     public function execute() : PDOStatement;
 
