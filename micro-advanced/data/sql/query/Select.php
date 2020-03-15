@@ -198,6 +198,24 @@ class Select extends Query{
     }
 
     /**
+     * Fetch all the results.
+     *
+     * @return array
+     */
+    public function fetchAll() : array {
+        return $this->execute()->fetchAll();
+    }
+
+    /**
+     * Fetch the first result false if is a bad query.
+     *
+     * @return mixed
+     */
+    public function fetch() {
+        return $this->execute()->fetch();
+    }
+
+    /**
      * Execute the Query and return an PDOStatement Object so you can fetch results.
      *
      * @return PDOStatement
