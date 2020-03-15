@@ -9,7 +9,9 @@ Get started with Advanced and see what else it can provide you.
 
 [Get started](https://github.com/DenzelCode/Advanced/wiki/Get-started)
 
-
+## Discussion/Help
+- [Discord](https://discord.gg/T7PsB5z)
+- [StackOverflow](https://stackoverflow.com/tags/advanced-framework)
 
 ## Installation
 Composer:
