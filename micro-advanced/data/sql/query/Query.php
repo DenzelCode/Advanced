@@ -171,6 +171,6 @@ abstract class Query implements IQuery{
      * @return string
      */
     public function __toString() {
-        return $this->convertToQuery();
+        return $this->toQuery();
     }
 }
