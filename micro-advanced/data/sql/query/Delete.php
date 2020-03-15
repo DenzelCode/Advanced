@@ -65,13 +65,13 @@ class Delete extends Query{
     }
 
     /**
-     * Add WHERE parameter to the query.
+     * Set the WHERE SQL parameter.
      *
-     * @param string $where
-     * @param array $execute
+     * @param string $where Set where example: "name = ?" or "name = ? AND last = ?".
+     * @param mixed $execute Set values example "Denzel" or ["Denzel", "Code"].
      * @return Delete
      */
-    public function where(string $where, array $execute = []) : IQuery {
+    public function where(string $where, $execute = []) : IQuery {
         return parent::where($where, $execute);
     }
 
@@ -80,7 +80,7 @@ class Delete extends Query{
      *
      * @return string
      */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "DELETE FROM {$this->table}";
 
         $query .= !empty($this->where) ? " WHERE {$this->where}" : "";

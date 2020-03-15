@@ -39,5 +39,5 @@ interface IJoin{
 
     public function getPreffix() : string;
 
-    public function convertToQuery() : string;
+    public function toQuery() : string;
 }

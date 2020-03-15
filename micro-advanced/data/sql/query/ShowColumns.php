@@ -77,7 +77,7 @@ class ShowColumns extends Query{
     *
     * @return string
     */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "SHOW COLUMNS FROM {$this->table}";
 
         $query .= !empty($this->like) ? "LIKE ?" : "";

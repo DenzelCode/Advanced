@@ -120,7 +120,7 @@ class Insert extends Query{
     *
     * @return string
     */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "INSERT INTO {$this->table} (";
 
         foreach ($this->fields as $i => $field) $query .= $i != (count($this->fields) - 1) ? "{$field}, " : $field;

@@ -115,12 +115,14 @@ abstract class Query implements IQuery{
     /**
      * Set the WHERE SQL parameter.
      *
-     * @param string $where
-     * @param array $execute
+     * @param string $where Set where example: "name = ?" or "name = ? AND last = ?".
+     * @param mixed $execute Set values example "Denzel" or ["Denzel", "Code"].
      * @return IQuery
      */
-    public function where(string $where, array $execute = []) : IQuery {
-        $this->where = $where;
+    public function where(string $where, $execute = []) : IQuery {
+        $this->where = [];
+
+        if (is_array($execute)) $this->where = $where; else $this->where[] = $execute;
 
         $this->execute = $execute;
 

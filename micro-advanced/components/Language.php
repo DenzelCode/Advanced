@@ -43,6 +43,10 @@ class Language{
      */
     private $config;
 
+    /**
+     * @param string $language
+     * @param string $path
+     */
     public function __construct(string $language, string $path = self::PATH_ADVANCED) {
         $this->language = $language;
 
@@ -150,6 +154,12 @@ class Language{
         return $text;
     }
 
+    /**
+     * Init current language.
+     *
+     * @param string $defaultLanguage
+     * @return void
+     */
     public static function init(string $defaultLanguage = "en") : void {
         $language = substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
     

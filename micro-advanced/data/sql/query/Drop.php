@@ -47,7 +47,7 @@ class Drop extends Query{
     *
     * @return string
     */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "DROP TABLE {$this->table}";
         
         return $query;

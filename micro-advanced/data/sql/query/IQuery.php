@@ -33,7 +33,7 @@ interface IQuery{
      */
     public function where(string $where, array $execute = []) : IQuery;
 
-    public function convertToQuery() : string;
+    public function toQuery() : string;
 
     /**
      * Execute the query.

@@ -62,8 +62,6 @@ class Bootstrap{
         
         self::$classes["language"] = new Language(Language::getCurrentLanguage(), Language::PATH_PROJECT);
 
-        self::$classes["templateProvider"] = new TemplateProvider();
-
         /*
         $handler = function ($exception) {
             if (!$exception instanceof \Exception) {
@@ -81,8 +79,10 @@ class Bootstrap{
     }
 
     /**
-    * @return Bootstrap
-    */
+     * Instance Bootstrap.
+     * 
+     * @return Bootstrap
+     */
     public static function getInstance() : Bootstrap {
         if (!self::$instance) self::$instance = new Bootstrap();
 
@@ -90,66 +90,62 @@ class Bootstrap{
     }
 
     /**
-    * @return Request
-    */
+     * Get request object, access to route arguments and more.
+     * 
+     * @return Request
+     */
     public static function getRequest() : Request {
         return self::$classes["request"];
     }
 
     /**
-    * @return IConfig
-    */
+     * Get project config.
+     * 
+     * @return IConfig
+     */
     public static function getConfig() : IConfig {
         return self::$classes["config"];
     }
 
     /**
-    * @return IConfig
-    */
+     * Get Advanced config.
+     * 
+     * @return IConfig
+     */
     public static function getMainConfig() : IConfig {
         return self::$classes["mainConfig"];
     }
 
     /**
-    * @return TemplateProvider
-    */
-    public static function getTemplateProvider() : TemplateProvider {
-        self::$classes["templateProvider"]->setPath("project");
-        
-        return self::$classes["templateProvider"];
-    }
-
-    /**
-    * @return TemplateProvider
-    */
-    public static function getMainTemplateProvider() : TemplateProvider {
-        self::$classes["templateProvider"]->setPath("advanced");
-        
-        return self::$classes["templateProvider"];
-    }
-
-    /**
-    * @return Language
-    */
+     * Get project language.
+     * 
+     * @return Language
+     */
     public static function getLanguage() : Language {
         return self::$classes["language"];
     }
 
     /**
-    * @return Language
-    */
+     * Get Advanced language.
+     * 
+     * @return Language
+     */
     public static function getMainLanguage() : Language {
         return self::$classes["mainLanguage"];
     }
 
     /**
-    * @return Response
-    */
+     * Get response.
+     * 
+     * @return Response
+     */
     public static function getResponse() : Response {
         return self::$classes["response"];
     }
 
     /**
+     * Set SQL connection (OLD).
+     * 
      * @return Database
      */
     public static function setDatabase(Database $database) : void {
@@ -157,6 +153,8 @@ class Bootstrap{
     }
 
     /**
+     * Get SQL connection (OLD).
+     * 
      * @return Database
      */
     public static function getDatabase(): ?Database {
@@ -164,6 +162,8 @@ class Bootstrap{
     }
 
     /**
+     * Set SQL connection.
+     * 
      * @param ISQL $sql
      * @return void
      */
@@ -172,6 +172,8 @@ class Bootstrap{
     }
 
     /**
+     * Get SQL connection.
+     * 
      * @return ISQL|null
      */
     public static function getSQL(): ?ISQL {
@@ -179,6 +181,8 @@ class Bootstrap{
     }
 
     /**
+     * Get users factory.
+     * 
      * @return UsersFactory
      */
     public static function getUsersFactory() : UsersFactory {
@@ -188,6 +192,8 @@ class Bootstrap{
     }
 
     /**
+     * Set a class in the list of classes.
+     * 
      * @param string $name
      * @param mixed $object
      * @return void
@@ -197,6 +203,8 @@ class Bootstrap{
     }
 
     /**
+     * Get a class in the list of classes.
+     * 
      * @param string $name
      * @return mixed
      */

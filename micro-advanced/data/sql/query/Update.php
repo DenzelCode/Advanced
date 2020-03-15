@@ -75,13 +75,13 @@ class Update extends Query{
     }
 
     /**
-     * Add WHERE parameter to the query.
+     * Set the WHERE SQL parameter.
      *
-     * @param string $where
-     * @param array $execute
+     * @param string $where Set where example: "name = ?" or "name = ? AND last = ?".
+     * @param mixed $execute Set values example "Denzel" or ["Denzel", "Code"].
      * @return Update
      */
-    public function where(string $where, array $execute = []) : IQuery {
+    public function where(string $where, $execute = []) : IQuery {
         return parent::where($where, $execute);
     }
 
@@ -159,7 +159,7 @@ class Update extends Query{
     *
     * @return string
     */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "UPDATE {$this->table} ";
 
         foreach ($this->fields as $i => $field) $query .= (count($this->fields) == 1) ? "SET {$field} = ? " : ($i == 0 ? "SET {$field} = ?, " : ($i != (count($this->fields) - 1) ? "{$field} = ?, " : "{$field} = ?"));

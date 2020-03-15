@@ -47,7 +47,7 @@ class Truncate extends Query{
     *
     * @return string
     */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "TRUNCATE TABLE {$this->table}";
         
         return $query;

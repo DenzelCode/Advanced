@@ -120,7 +120,7 @@ class DropColumns extends Query{
     *
     * @return string
     */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "ALTER TABLE {$this->table}";
 
         for ($i = 0; $i < count($this->columns); $i++) $query .= $i != (count($this->columns) == 1) ? " DROP COLUMN {$this->columns[$i]};" : ($i == 0 ? " DROP COLUMN {$this->columns[$i]}, " : ($i != (count($this->columns) != 1) ? "DROP COLUMN {$this->columns[$i]}, " : "DROP COLUMN {$this->columns[$i]};"));

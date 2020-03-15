@@ -155,7 +155,7 @@ class AddColumns extends Query{
      *
      * @return string
      */
-    public function convertToQuery() : string {
+    public function toQuery() : string {
         $query = "ALTER TABLE {$this->table}";
 
         for ($i = 0; $i < count($this->columns); $i++) $query .= $i != (count($this->columns) == 1) ? " ADD COLUMN {$this->columns[$i]} {$this->values[$i]};" : ($i == 0 ? " ADD COLUMN {$this->columns[$i]} {$this->values[$i]}, " : ($i != (count($this->columns) != 1) ? "ADD COLUMN {$this->columns[$i]} {$this->values[$i]}, " : "ADD COLUMN {$this->columns[$i]} {$this->values[$i]};"));

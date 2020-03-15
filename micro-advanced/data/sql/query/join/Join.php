@@ -130,7 +130,7 @@ class Join implements IJoin {
      *
      * @return string
      */
-    public function convertToQuery(): string {
+    public function toQuery(): string {
         $query = "{$this->getPreffix()} {$this->table}";
 
         $query .= !empty($this->on) ? " AS ($this->on)" : "";
