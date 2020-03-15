@@ -31,5 +31,5 @@
             "timestamp": "double(50, 0) DEFAULT 0"
         }
     },
-    "update": []
+    "modify": []
 }
