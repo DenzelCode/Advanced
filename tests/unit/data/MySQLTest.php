@@ -71,7 +71,7 @@ class MySQLTest extends TestCase {
     public function testSelect() : void {
         $sql = Project::getSQL();
 
-        $query = $sql->select("test")->where("name = ?", ["Testing"])->execute();
+        $query = $sql->select("test")->where("name = ?", "Testing")->execute();
 
         $data = $query->fetch();
 
@@ -83,7 +83,7 @@ class MySQLTest extends TestCase {
 
         $find = "Testing";
 
-        $execute = $sql->update("test")->field("name", "Replacement")->where("name = ?", [$find])->execute();
+        $execute = $sql->update("test")->field("name", "Replacement")->where("name = ?", $find)->execute();
 
         $this->assertTrue($execute);
     }
@@ -93,7 +93,7 @@ class MySQLTest extends TestCase {
 
         $find = "Replacement";
 
-        $execute = $sql->delete("test")->where("name = ?", [$find])->execute();
+        $execute = $sql->delete("test")->where("name = ?", $find)->execute();
 
         $this->assertTrue($execute);
     }

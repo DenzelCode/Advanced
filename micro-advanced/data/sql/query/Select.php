@@ -212,7 +212,9 @@ class Select extends Query{
      * @return array
      */
     public function fetch() : array {
-        return ($this->execute()->fetch() ?? []);
+        $data = $this->execute()->fetch();
+
+        return $data == false ? [] : $data;
     }
 
     /**

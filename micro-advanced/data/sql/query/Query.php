@@ -35,6 +35,9 @@ abstract class Query implements IQuery{
      */
     protected $table = null;
 
+    /**
+     * @var array
+     */
     protected $execute = [];
 
     /**
@@ -122,11 +125,9 @@ abstract class Query implements IQuery{
      * @return IQuery
      */
     public function where(string $where, $execute = []) : IQuery {
-        $this->where = [];
+        $this->where = $where;
 
-        if (is_array($execute)) $this->where = $where; else $this->where[] = $execute;
-
-        $this->execute = $execute;
+        if (is_array($execute)) $this->execute = $execute; else $this->execute[] = $execute;
 
         return $this;
     }

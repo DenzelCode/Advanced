@@ -20,13 +20,18 @@ use advanced\exceptions\FileException;
 
 class environment{
 
-    public const VERSION = "2.0.2.9";
+    public const VERSION = "2.0.3";
     public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**
      * @var autoload
      */
     private static $autoload;
+
+    /**
+     * @var boolean
+     */
+    private static $initialized = false;
     
     /**
      * Run autoloads.
@@ -60,9 +65,12 @@ class environment{
      * Init application.
      *
      * @param string $dir
+     * @param boolean $test
      * @return void
      */
-    public static function init(string $dir) : void{
+    public static function init(string $dir, bool $test = false) : void{
+        if (self::$initialized) return;
+
         error_reporting(E_ALL);
 
         define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
@@ -71,19 +79,21 @@ class environment{
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
         define("PUBLIC", PROJECT . "public");
 
-        self::autoload();
+        if (!$test) self::autoload();
 
-        if (!(version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, self::REQUIRED_PHP_VERSION));
-        
         advanced\session\SessionManager::init();
 
         (new Bootstrap());
+
+        if (!(version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, self::REQUIRED_PHP_VERSION));
         
         if (file_exists(PROJECT . "Project.php")) {
             $project = new project\Project();
 
             $project->init();
         }
+
+        self::$initialized = true;
     }
 
     /**

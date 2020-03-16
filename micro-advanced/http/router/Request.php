@@ -82,7 +82,7 @@ class Request{
         if (!file_exists($controller)) {
             self::$controller = "main";
 
-            self::$method = $route[0];
+            self::$method = !empty($route[0]) ? $route[0] : "index";
 
             $i = 1;
         }

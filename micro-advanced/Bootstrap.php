@@ -20,7 +20,6 @@ namespace advanced;
 use advanced\config\Config;
 use advanced\http\Response;
 use advanced\http\router\Request;
-use advanced\body\template\TemplateProvider;
 use advanced\components\Language;
 use advanced\config\IConfig;
 use advanced\data\Database;
@@ -29,7 +28,6 @@ use advanced\exceptions\AdvancedException;
 use advanced\exceptions\ConfigException;
 use advanced\user\UsersFactory;
 use advanced\project\Project;
-use advanced\session\SessionManager;
 use environment;
 
 /**
@@ -52,7 +50,7 @@ class Bootstrap{
         self::$instance = $this;
 
         self::$classes = [
-            "request" => new Request($_SERVER["REQUEST_URI"]),
+            "request" => new Request(empty($_SERVER["REQUEST_URI"]) ? "" : $_SERVER["REQUEST_URI"]),
             "response" => new Response() 
         ];
 
