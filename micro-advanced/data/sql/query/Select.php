@@ -203,7 +203,7 @@ class Select extends Query{
      * @return array
      */
     public function fetchAll() : array {
-        return $this->fetchAll();
+        return $this->execute()->fetchAll();
     }
 
     /**
@@ -212,7 +212,7 @@ class Select extends Query{
      * @return array
      */
     public function fetch() : array {
-        return ($this->fetch() ?? []);
+        return ($this->execute()->fetch() ?? []);
     }
 
     /**
