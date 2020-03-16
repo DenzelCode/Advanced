@@ -21,7 +21,7 @@ use advanced\body\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\http\Response;
-use advanced\user\Auth;
+use advanced\user\auth\Auth;
 use advanced\http\router\Request;
 
 /**
