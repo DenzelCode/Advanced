@@ -203,16 +203,16 @@ class Select extends Query{
      * @return array
      */
     public function fetchAll() : array {
-        return $this->execute()->fetchAll();
+        return $this->fetchAll();
     }
 
     /**
      * Fetch the first result false if is a bad query.
      *
-     * @return mixed
+     * @return array
      */
-    public function fetch() {
-        return $this->execute()->fetch();
+    public function fetch() : array {
+        return ($this->fetch() ?? []);
     }
 
     /**

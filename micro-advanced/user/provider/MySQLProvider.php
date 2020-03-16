@@ -41,7 +41,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getAll(IUser $user) : array {
-        $fetch = $this->sql->select("users")->where((!empty($user->getName()) && !empty($user->getId()) ? "id = ? AND username = ?" : (!empty($user->getName()) ? "username = ?" : "id = ?")), (!empty($user->getName()) && !empty($user->getId()) ? [$user->getId(), $user->getName()] : (!empty($user->getName()) ? [$user->getName()] : [$user->getId()])))->execute()->fetch();
+        $fetch = $this->sql->select("users")->where((!empty($user->getName()) && !empty($user->getId()) ? "id = ? AND username = ?" : (!empty($user->getName()) ? "username = ?" : "id = ?")), (!empty($user->getName()) && !empty($user->getId()) ? [$user->getId(), $user->getName()] : (!empty($user->getName()) ? [$user->getName()] : [$user->getId()])))->fetch();
 
         return !$fetch ? [] : $fetch;
     }
@@ -79,7 +79,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUserBy(string $field, $value) : array {
-        $fetch = $this->sql->select("users")->where("{$field} = ?", [$value])->limit(1)->execute()->fetch();
+        $fetch = $this->sql->select("users")->where("{$field} = ?", [$value])->limit(1)->fetch();
 
         return !$fetch ? [] : $fetch;
     }
@@ -92,7 +92,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersBy(string $field, $value, int $limit = 0, ?string $orderBy = null) : array {
-        $fetchAll = $this->sql->select("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->execute()->fetchAll();
+        $fetchAll = $this->sql->select("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->fetchAll();
 
         return !$fetchAll ? [] : $fetchAll;
     }
@@ -105,7 +105,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersNotEqual(string $field, $value, int $limit = 0, ?string $orderBy = null) : array {
-        $fetchAll = $this->sql->select("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->execute()->fetchAll();
+        $fetchAll = $this->sql->select("users")->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->fetchAll();
 
         return !$fetchAll ? [] : $fetchAll;
     }
@@ -118,7 +118,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersByMultiple(string $fields, array $values, int $limit = 0, ?string $orderBy = null) : array {
-        $fetchAll = $this->sql->select("users")->where($fields, $values)->orderBy($orderBy)->limit($limit)->execute()->fetch();
+        $fetchAll = $this->sql->select("users")->where($fields, $values)->orderBy($orderBy)->limit($limit)->fetch();
 
         return !$fetchAll ? [] : $fetchAll;
     }

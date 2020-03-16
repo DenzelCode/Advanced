@@ -207,7 +207,7 @@ class MySQL extends SQL{
     
             $colms = [];
 
-            foreach ($this->showColumns($table)->execute()->fetchAll() as $column) $colms[] = $colms["Field"];
+            foreach ($this->showColumns($table)->fetchAll() as $column) $colms[] = $colms["Field"];
 
             foreach ($columns as $column => $type) {
                 $execute = in_array($column, $colms) ? $this->addColumns($table)->column($column, $type) : $this->modifyColumns($table)->column($column, $type);

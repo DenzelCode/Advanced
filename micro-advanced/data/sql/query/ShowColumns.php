@@ -61,6 +61,24 @@ class ShowColumns extends Query{
     }
 
     /**
+     * Fetch all the results.
+     *
+     * @return array
+     */
+    public function fetchAll() : array {
+        return $this->fetchAll();
+    }
+
+    /**
+     * Fetch the first result false if is a bad query.
+     *
+     * @return array
+     */
+    public function fetch() : array {
+        return ($this->fetch() ?? []);
+    }
+
+    /**
      * @param string $like
      * @return ShowColumns
      */
