@@ -83,7 +83,7 @@ class Router{
     private static function getPrivateMethods(string $object_name) : array {
         $private_methods = [];
 
-        $class_methods = (new ReflectionClass($object_name))->getMethods(ReflectionMethod::IS_PRIVATE);
+        $class_methods = (new ReflectionClass($object_name))->getMethods(ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED);
 
         foreach ($class_methods as $method) $private_methods[] = $method->getName();
 

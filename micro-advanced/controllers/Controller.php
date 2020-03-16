@@ -65,7 +65,7 @@ abstract class Controller {
      * @param integer $code
      * @return void
      */
-    private function setResponseCode(int $code) : void {
+    protected function setResponseCode(int $code) : void {
         $this->response->setCode($code);
     }
 
@@ -74,7 +74,7 @@ abstract class Controller {
      *
      * @return Response
      */
-    private function getResponse() : Response {
+    protected function getResponse() : Response {
         return $this->response;
     }
 
@@ -83,7 +83,7 @@ abstract class Controller {
      *
      * @return Request
      */
-    private function getRequest() : Request {
+    protected function getRequest() : Request {
         return $this->request;
     }
 }
