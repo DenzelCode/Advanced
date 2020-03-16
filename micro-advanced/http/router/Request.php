@@ -167,7 +167,7 @@ class Request{
      * @return string
      */
     public static function getURL() : string {
-        return (string) $_SERVER["HTTP_HOST"];
+        return (string) !empty($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
     }
 
     /**
@@ -213,9 +213,9 @@ class Request{
      * @return string
      */
     public static function getIp() : string {
-        if (isset($_SERVER)) {
-            if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) $userIP = $_SERVER["HTTP_CF_CONNECTING_IP"]; else if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) $userIP = $_SERVER["HTTP_X_FORWARDED_FOR"]; else if (isset($_SERVER["HTTP_CLIENT_IP"])) $userIP = $_SERVER["HTTP_CLIENT_IP"]; else $userIP = $_SERVER["REMOTE_ADDR"];
-        } else if (getenv("HTTP_CF_CONNECTING_IP")) $userIP = getenv("HTTP_CF_CONNECTING_IP"); else if (getenv("HTTP_X_FORWARDED_FOR")) $userIP = getenv("HTTP_X_FORWARDED_FOR"); else if (getenv("HTTP_CLIENT_IP")) $userIP = getenv("HTTP_CLIENT_IP"); else $userIP = getenv("REMOTE_ADDR");
+        $userIP = "127.0.0.1";
+
+        if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) $userIP = $_SERVER["HTTP_CF_CONNECTING_IP"]; else if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) $userIP = $_SERVER["HTTP_X_FORWARDED_FOR"]; else if (isset($_SERVER["HTTP_CLIENT_IP"])) $userIP = $_SERVER["HTTP_CLIENT_IP"]; else if (isset($_SERVER["REMOTE_ADDR"])) $userIP = $_SERVER["REMOTE_ADDR"];
 
         if (filter_var($userIP, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) $userIP = hexdec(substr($userIP, 0, 2)). "." . hexdec(substr($userIP, 2, 2)). "." . hexdec(substr($userIP, 5, 2)). "." . hexdec(substr($userIP, 7, 2));
 

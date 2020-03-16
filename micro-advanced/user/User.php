@@ -20,7 +20,7 @@ namespace advanced\user;
 use advanced\Bootstrap;
 use advanced\exceptions\UserException;
 use advanced\user\auth\Auth;
-use advanced\mailer\Mailer;
+use advanced\mailer\Mail;
 use advanced\mailer\Receipient;
 
 /**
@@ -74,7 +74,7 @@ class User extends AbstractUser {
      * @return void
      */
     public function sendMail(string $server, string $subject, string $body) : void {
-        Mailer::sendMail($server, $subject, $body, new Receipient($this->getName(), $this->getMail()));
+        Mail::sendMail($server, $subject, $body, null, new Receipient($this->getName(), $this->getMail()));
     }
     
     /**

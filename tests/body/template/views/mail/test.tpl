@@ -1,0 +1,1 @@
+New template created on file /Applications/XAMPP/xamppfiles/framework/tests/body/template/views/mail/test.tpl

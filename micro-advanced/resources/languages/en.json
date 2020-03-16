@@ -3,26 +3,21 @@
         "guest": "Guest",
         "description": "Create more by doing less"
     },
-
     "exception": {
         "created": "Exception message created on language file {0}",
         "exception": "Error: {0} file {1} on line {2}",
         "version": "Incompatible PHP version ({0}), Advanced requires at least PHP {1}",
-
         "user": {
             "characters": "Username must have from {0} to {1} characters",
             "invalid_name": "Invalid username, try deleting characters or removing special characters",
             "invalid_email": "Invalid email address"
         },
-
         "router": {
             "method_not_exists": "Method {0} does not exists"
         },
-
         "config": {
             "invalid_format": "Config file {0} has an invalid format"
         },
-
         "database": {
             "error": "An error occurred on the database: {0}",
             "pdo_required": "Advanced require PDO extension",
@@ -32,46 +27,38 @@
             "add_column": "An error ocurred addding a column for the table {0}: {1}",
             "modify_column": "An error ocurred modifing a column for the table {0}: {1}"
         },
-
         "file": {
             "not_exist": "File {0} does not exists",
             "open": "An error occurred opening the file {0}",
             "write": "An error occurred writing the file {0}"
         },
-        
         "mailer": {
             "error": "An error occurred sending the mail: {0}"
         }
     },
-
     "error": {
         "parameter_not_string": "(Parameter {0} is not a string)"
     },
-
     "template": {
         "not_exists": "Template {0} does not exists",
         "default": "New template created on file {0}",
         "undefined": "Undefined",
-
         "welcome": {
             "description": "Advanced Micro Framework - Create more by doing less"
         }
     },
-
     "time": {
         "ago": {
             "just_now": "Just now",
             "ago": "ago",
-
             "singular": {
                 "month": "month",
                 "week": "week",
                 "day": "day",
                 "hour": "hour",
                 "minute": "minute",
-                "second": "second" 
+                "second": "second"
             },
-
             "plural": {
                 "month": "months",
                 "week": "weeks",
@@ -82,6 +69,5 @@
             }
         }
     },
-
     "execution_time": "This process delayed {0}s for its execution"
 }

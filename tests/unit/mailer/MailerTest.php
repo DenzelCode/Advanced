@@ -12,20 +12,21 @@
  * @copyright Copyright (c) 2019 Advanced microFramework
  * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
- * 
+ *  
  */
 
 namespace tests\unit\data;
 
 use advanced\body\template\TemplateProvider;
-use advanced\mailer\Mailer;
+use advanced\mailer\Mail;
 use advanced\mailer\Receipient;
+use advanced\mailer\ReplyTo;
 use tests\TestCase;
 
 class MailerTest extends TestCase {
     
     public function testSendMail() : void {
-        $send = Mailer::sendMail("default", "Testing", TemplateProvider::get("mail/test"), new Receipient("Denzel Code", "denzelcodedev@gmail.com"));
+        $send = Mail::sendMail("default", "Testing", TemplateProvider::get("mail/test"), new ReplyTo("Testing", "test@example.com"), new Receipient("Denzel Code", "denzelcodedev@gmail.com"));
         
         $this->assertTrue($send);
     }

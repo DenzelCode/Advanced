@@ -17,6 +17,19 @@
 
 namespace advanced\mailer;
 
-class Receipient extends Person {
+interface IPerson {
 
+    /**
+     * Get person name.
+     * 
+     * @return string
+     */
+    public function getName() : string;
+
+    /**
+     * Get person mail.
+     * 
+     * @return string
+     */
+    public function getMail() : string;
 }

@@ -647,6 +647,8 @@ class Database{
     }
 
     /**
+     * Get config path.
+     * 
      * @return string
      */
     public static function getConfigPath() : string {
@@ -654,6 +656,8 @@ class Database{
     }
 
     /**
+     * Set config path.
+     * 
      * @param string $configPath
      * @return void
      */

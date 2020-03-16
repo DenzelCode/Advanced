@@ -163,6 +163,8 @@ class MySQL extends SQL{
     }
 
     /**
+     * Get config path.
+     * 
      * @return string
      */
     public static function getConfigPath() : string {
@@ -170,6 +172,8 @@ class MySQL extends SQL{
     }
 
     /**
+     * Set config path.
+     * 
      * @param string $configPath
      * @return void
      */

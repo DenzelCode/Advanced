@@ -111,7 +111,7 @@ class TemplateProvider{
      * @return string|null
      */
     public static function getParameter(string $param) : ?string {
-        return self::$params[$param];
+        return !empty(self::$params[$param]) ? self::$params[$param] : null;
     }
 
     /**

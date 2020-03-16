@@ -17,6 +17,6 @@
 
 namespace advanced\mailer;
 
-class Receipient extends Person {
+class ReplyTo extends Person {
 
 }
