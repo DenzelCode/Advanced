@@ -161,7 +161,7 @@ class Language{
      * @return void
      */
     public static function init(string $defaultLanguage = "en") : void {
-        $language = substr(empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $defaultLanguage : $_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
+        $language = empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $defaultLanguage : substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
     
         self::setCurrentLanguage(file_exists(ADVANCED . self::LANGUAGE_PATH) || !file_exists(PROJECT . self::LANGUAGE_PATH) ? $language : $defaultLanguage);
     }
