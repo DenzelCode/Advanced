@@ -22,7 +22,7 @@ use advanced\controllers\Controller;
 use advanced\exceptions\UserException;
 use advanced\http\Post;
 use advanced\http\router\Request;
-use advanced\user\Auth;
+use advanced\user\auth\Auth;
 
 /**
 * authController class
