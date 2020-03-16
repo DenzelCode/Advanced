@@ -33,8 +33,6 @@ class authController extends Controller {
      * Initialize controller.
      */
     public function index(string $method = Request::ALL) : string {
-        parent::__construct();
-
         $this->setResponseCode(403);
 
         return "Error 403";
