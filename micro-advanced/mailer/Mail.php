@@ -269,15 +269,16 @@ class Mail {
      * @param IPerson $replyTo
      * @param Recipient|Recipient[]                                                                                                                                                                                                                                                                                                                                                                                                                                                 $recipients
      * @param Attachment|Attachment[] $attachments
+     * @param boolean $html
      * @return boolean
      * @throws MailerException
      */
-    public static function sendMail(string $server = "default", string $subject, string $body, $replyTo = null, $recipients = null, $attachments = null) : bool {
+    public static function sendMail(string $server = "default", string $subject, string $body, $replyTo = null, $recipients = null, $attachments = null, bool $html = true) : bool {
         $recipients = (is_null($recipients) ? [] : ($recipients instanceof Receipient ? [$recipients] : (is_array($recipients) ? $recipients : [])));
 
         $attachments = (is_null($attachments) ? [] : ($attachments instanceof Attachment ? [$attachments] : (is_array($attachments) ? $attachments : [])));
 
-        return (new Mail($server))->setSubject($subject)->setBody($body)->setReplyTo($replyTo)->addRecipients($recipients)->addAttachments($attachments)->send();
+        return (new Mail($server))->setSubject($subject)->setBody($body)->setReplyTo($replyTo)->addRecipients($recipients)->addAttachments($attachments)->setHTML($html)->send();
     }
 
     /**
