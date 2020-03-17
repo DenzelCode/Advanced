@@ -121,7 +121,7 @@ class File implements IFile{
      * @return void
      */
     public function setName(string $name): void {
-        rename($this->directory->getPath() . $this->name, $this->directory->getPath() . $name);
+        rename($this->path, $this->directory->getPath() . DIRECTORY_SEPARATOR . $name);
 
         $this->name = $name;
     }
@@ -173,6 +173,15 @@ class File implements IFile{
      */
     public function exists(): bool {
         return file_exists($this->path);
+    }
+
+    /**
+     * Delete a file
+     *
+     * @return void
+     */
+    public function delete(): bool {
+        return @unlink($this->directory->getPath() . DIRECTORY_SEPARATOR . $this->name);
     }
 
     /**

@@ -252,9 +252,21 @@ class TemplateProvider{
      * @return string
      */
     public static function get(string $template, bool $cache = true, bool $create = true) : string {
-        $templatePath = new File(self::getPath() . "views" . DIRECTORY_SEPARATOR . $template .  ".tpl");
+        $templateName = self::getPath() . "views" . DIRECTORY_SEPARATOR . $template;
+
+        $templatePath = new File($templateName . ".atpl");
 
         $templateCache = new File(self::getPath() . "cache" . DIRECTORY_SEPARATOR . $template .  ".php");
+
+        if (!$templatePath->exists() && ($oldTemplate = new File($templateName . ".tpl"))->exists()) {
+            $names = explode(".", $oldTemplate->getName());
+
+            $names[(count($names) - 1)] = "atpl";
+
+            $oldTemplate->setName(implode(".", $names));
+
+            $templateCache->delete();
+        }
         
         if ($create) $templatePath->create(Bootstrap::getMainLanguage()->get("template.default", null, str_replace("/", DIRECTORY_SEPARATOR, str_replace("\\", DIRECTORY_SEPARATOR, $templatePath->getPath()))));
 
@@ -281,7 +293,7 @@ class TemplateProvider{
                 return self::filter($data);
 
             case false:
-                return Bootstrap::getMainLanguage()->get("template.not_exists", null, $template);
+                return Bootstrap::getMainLanguage()->get("template.not_exists", null, $template->getPath());
         }
     }
 

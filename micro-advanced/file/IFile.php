@@ -25,4 +25,11 @@ interface IFile {
      * @return boolean
      */
     public function exists(): bool;
+
+    /**
+     * Delete the file.
+     *
+     * @return boolean
+     */
+    public function delete(): bool;
 }

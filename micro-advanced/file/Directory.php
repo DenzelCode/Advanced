@@ -123,4 +123,11 @@ class Directory implements IFile {
             if (!file_exists($str)) @mkdir($str, $permission);
         }
     }
+    
+
+    public function delete(): bool {
+        $class_func = array(__CLASS__, __FUNCTION__);
+        
+        return is_file($this->path) ? @unlink($this->path) : array_map($class_func, glob($this->path.'/*')) == @rmdir($this->path);
+    }
 }
