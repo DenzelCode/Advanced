@@ -242,10 +242,12 @@ class Mail {
     /**
      * Set the body into HTML.
      *
-     * @return void
+     * @return Mail
      */
-    public function setHTML(bool $html = true) : void {
+    public function setHTML(bool $html = true) : Mail {
         $this->html = $html;
+
+        return $this;
     }
 
     /**
