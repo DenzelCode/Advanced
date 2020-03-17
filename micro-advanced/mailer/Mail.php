@@ -60,6 +60,11 @@ class Mail {
     private $server;
 
     /**
+     * @var boolean
+     */
+    private $html = true;
+
+    /**
      * @var Config
      */
     private $config;
@@ -109,7 +114,7 @@ class Mail {
             if ($this->replyTo instanceof IPerson) $mail->addReplyTo($this->replyTo->getMail(), $this->replyTo->getName()); else $mail->addReplyTo($this->config->get("server.{$this->server}.address"), $this->config->get("server.{$this->server}.name"));
 
             $mail->Subject = $this->subject;
-            $mail->isHTML(true);
+            $mail->isHTML($this->html);
             $mail->msgHTML($this->body);
 
             foreach ($this->recipients as $receipient) $mail->addAddress($receipient->getMail(), $receipient->getName());
@@ -223,6 +228,24 @@ class Mail {
         $this->body = $body;
 
         return $this;
+    }
+
+    /**
+     * Check if the body is HTML.
+     *
+     * @return boolean
+     */
+    public function isHTML() : bool {
+        return $this->html;
+    }
+
+    /**
+     * Set the body into HTML.
+     *
+     * @return void
+     */
+    public function setHTML(bool $html = true) : void {
+        $this->html = $html;
     }
 
     /**
