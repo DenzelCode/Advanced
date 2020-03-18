@@ -270,7 +270,7 @@ class UsersFactory {
             "last_used" => "double(50, 0) DEFAULT 0",
             "last_online" => "double(50, 0) DEFAULT 0",
             "last_password" => "double(50, 0) DEFAULT 0",
-            "online" => "enum('0, '1') DEFAULT '0'",
+            "online" => "enum('0', '1') DEFAULT '0'",
             "ip_reg" => "varchar(45) NOT NULL",
             "ip_last" => "varchar(45) NOT NULL",
             "language" => "varchar(255) DEFAULT 'en'",
