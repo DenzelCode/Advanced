@@ -17,6 +17,7 @@
 
 namespace advanced\http\router;
 
+use advanced\Bootstrap;
 use advanced\exceptions\RouterException;
 use advanced\http\Response;
 use ReflectionClass;
@@ -67,7 +68,7 @@ class Router{
 
         if ($parameter && $parameter->getName() == "method" && strtolower($parameter->getDefaultValue()) != "*" && strtolower($parameter->getDefaultValue()) != strtolower(Request::GENERAL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ALL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ANY) && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) $set404($request);
 
-        Response::setCode(Response::HTTP_OK);
+        Bootstrap::getResponse(Response::HTTP_OK);
         
         $execute = $request->getArguments();
 
