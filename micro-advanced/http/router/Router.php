@@ -47,7 +47,6 @@ class Router{
         $set404 = function (Request $request) {
             Response::setCode(404);
             
-            $request->setController("main");
             $request->setMethod("error404");
         };
 
