@@ -82,7 +82,7 @@ class Response{
     public const HTTP_NOT_EXTENDED = 510;
     public const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-    private static $json = false;
+    private $json = false;
         
     /**
      * Write response
@@ -106,19 +106,19 @@ class Response{
      * @param integer $code
      * @return Response
      */
-    public static function setCode(int $code) : Response {
+    public function setCode(int $code) : Response {
         http_response_code($code);
 
-        return new Response();
+        return $this;
     }
 
     /**
      * Set app header.
      *
-     * @param [type] $header
+     * @param string $header
      * @return void
      */
-    public static function setHeader($header) {
+    public function setHeader(string $header) {
         header("Content-Type: {$header}");
     }
 
@@ -128,10 +128,10 @@ class Response{
      * @param boolean $value
      * @return Response
      */
-    public static function setJSON(bool $value = true) : Response {
-        self::$json = $value;
+    public function setJSON(bool $value = true) : Response {
+        $this->json = $value;
 
-        return new Response();
+        return $this;
     }
 
     /**
@@ -139,8 +139,8 @@ class Response{
      *
      * @return boolean
      */
-    public static function isJSON() : bool {
-        return self::$json;
+    public function isJSON() : bool {
+        return $this->json;
     }
 
     /**
@@ -149,7 +149,7 @@ class Response{
      * @param string $url
      * @return void
      */
-    public static function redirect(string $url) : void {
+    public function redirect(string $url) : void {
         header("Location: {$url}");
 
         exit;
