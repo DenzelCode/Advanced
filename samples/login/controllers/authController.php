@@ -186,4 +186,14 @@ class authController extends Controller {
 
         return $this->response->setJSON()->write($response);
     }
+
+    /**
+     * Error 404
+     *
+     * @param string $method
+     * @return string
+     */
+    public function error404(string $method = Request::ALL) : string {
+        return "Error 404";
+    }
 }

@@ -59,6 +59,8 @@ abstract class Controller {
         return TemplateProvider::getRootTemplate('main/index');
     }
 
+    abstract public function error404(string $method = Request::ALL) : string;
+
     /**
      * Set response code.
      *
