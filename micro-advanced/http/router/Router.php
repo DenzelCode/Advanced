@@ -1,18 +1,18 @@
 <?php
 /**
- * 
+ *
  * Advanced microFramework
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * 
+ *
  * @copyright Copyright (c) 2019 Advanced microFramework
  * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
- * 
+ *
  */
 
 namespace advanced\http\router;
@@ -46,8 +46,8 @@ class Router{
         }
 
         $set404 = function (Request $request) {
-            Response::setCode(404);
-            
+            Bootstrap::getResponse()->setCode(Response::HTTP_NOT_FOUND);
+
             $request->setMethod("error404");
         };
 
@@ -58,18 +58,18 @@ class Router{
         if (in_array($request->getMethod(), self::getPrivateMethods($object_name))) $set404($request);
 
         $parameters = (new ReflectionMethod($object_name, $request->getMethod()))->getParameters();
-        
+
         $parameter = (empty($parameters[0]) ? null : $parameters[0]);
 
         $request->setRequestMethod(strtolower($_SERVER["REQUEST_METHOD"]));
 
-        if ($parameter && $parameter->getName() == "method" && !self::checkMethods(explode("|", $parameter->getDefaultValue()))) 
+        if ($parameter && $parameter->getName() == "method" && !self::checkMethods(explode("|", $parameter->getDefaultValue())))
             throw new RouterException(0, "exception.router.method_not_exists", $parameter->getDefaultValue());
 
         if ($parameter && $parameter->getName() == "method" && strtolower($parameter->getDefaultValue()) != "*" && strtolower($parameter->getDefaultValue()) != strtolower(Request::GENERAL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ALL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ANY) && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) $set404($request);
 
-        Bootstrap::getResponse(Response::HTTP_OK);
-        
+        Bootstrap::getResponse()->setCode(Response::HTTP_OK);
+
         $execute = $request->getArguments();
 
         array_unshift($execute, $request->getRequestMethod());
