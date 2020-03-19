@@ -24,6 +24,8 @@ interface IUser{
 
     public function get(string $data);
 
+    public function getAll() : array;
+
     public function set(array $values);
 
     public function getId() : int;

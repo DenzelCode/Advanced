@@ -100,5 +100,8 @@ class Guest implements IUser {
         return Request::getIp();
     }
 
+    public function getAll(): array {
+        return (is_array($this->data) ? $this->data : []);
+    }
 }
 
