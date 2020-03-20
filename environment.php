@@ -57,6 +57,11 @@ class environment{
         @include "vendor/autoload.php";
     }
 
+    /**
+     * Get autoloader.
+     *
+     * @return autoload
+     */
     public static function getAutoload() : autoload {
         return self::$autoload;
     }
