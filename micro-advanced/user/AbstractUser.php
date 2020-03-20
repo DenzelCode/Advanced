@@ -38,6 +38,8 @@ abstract class AbstractUser implements IUser {
     protected $authData = [];
 
     /**
+     * Get user id.
+     * 
      * @return int
      */
     public function getId() : int {
@@ -45,6 +47,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user name.
+     * 
      * @return string
      */
     public function getName() : string {
@@ -52,6 +56,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user first name.
+     * 
      * @return string
      */
     public function getFirstName() : string {
@@ -59,6 +65,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user last name.
+     * 
      * @return string
      */
     public function getLastName() : string {
@@ -66,6 +74,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user full name.
+     * 
      * @return string
      */
     public function getFullName() : string {
@@ -73,6 +83,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user gender.
+     * 
      * @return string
      */
     public function getGender() : string {
@@ -80,6 +92,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user email.
+     * 
      * @return string
      */
     public function getMail() : string {
@@ -87,6 +101,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get user hashed password.
+     * 
      * @return string
      */
     public function getPassword() : string {
@@ -94,6 +110,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get register IP.
+     * 
      * @return string
      */
     public function getRegisterIp() : string {
@@ -101,6 +119,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get last IP.
+     * 
      * @return string
      */
     public function getLastIp() : string {
@@ -108,6 +128,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get timestamp of the account creation date.
+     * 
      * @return int
      */
     public function getAccountCreated() : int {
@@ -115,6 +137,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get data.
+     * 
      * @param string $data
      * @return mixed
      */
@@ -123,6 +147,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Delete account.
+     * 
      * @return bool
      */
     abstract public function delete() : bool;
@@ -137,27 +163,48 @@ abstract class AbstractUser implements IUser {
     abstract public function authenticate(?string $password = null, bool $cookie = false) : bool;
 
     /**
+     * Create account.
+     * 
      * @return boolean
      */
     abstract public function create() : bool;
 
     /**
+     * Chekck if account exists.
+     * 
      * @return bool
      */
     abstract public function exists() : bool;
 
     /**
+     * Set a user object value.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return void
+     */
+    public function set(string $key, $value) : bool {
+        return $this->setByArray([ $key => $value ]);
+    }
+
+    /**
+     * Set user object values by array.
+     * 
      * @param array $data
      * @return void
      */
-    abstract public function set(array $data) : void;
+    abstract public function setByArray(array $data) : bool;
 
     /**
+     * Get all data as array.
+     * 
      * @return array
      */
     abstract public function getAll() : array;
 
     /**
+     * Check if an email is valid.
+     * 
      * @param string $mail
      * @return boolean
      */
@@ -166,30 +213,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
-     * @return array
-     */
-    public function getData() : array {
-        return $this->data;
-    }
-
-    /**
-     * @param array $data
-     * @return void
-     */
-    public function setDataArray(array $data) {
-        foreach ($data as $key => $value) $this->data[$key] = $value;
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
-    public function setData(string $name, $value) {
-        $this->data[$name] = $value;
-    }
-
-    /**
+     * Get authentication data.
+     * 
      * @param string $data
      * @return mixed
      */
@@ -198,6 +223,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Set authentication data.
+     * 
      * @param string $name
      * @param mixed $value
      * @return void
@@ -207,21 +234,27 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Get authentication data as array.
+     * 
      * @return array
      */
-    public function getAuthDataArray() : array {
+    public function getAuthDataAsArray() : array {
         return $this->authData;
     }
 
     /**
+     * Set authentication data by array.
+     * 
      * @param array $authData
      * @return void
      */
-    public function setAuthDataArray(array $authData = []) {
+    public function setAuthDataByArray(array $authData = []) {
         foreach ($authData as $key => $value) $this->authData[$key] = $value;
     }
 
     /**
+     * Check if a username is valid.
+     * 
      * @param string $name
      * @return boolean
      */
@@ -238,6 +271,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Check if a name is valid.
+     * 
      * @param string $name
      * @return boolean
      */
@@ -246,6 +281,8 @@ abstract class AbstractUser implements IUser {
     }
 
     /**
+     * Generate a random token.
+     * 
      * @param integer $length
      * @return string
      */

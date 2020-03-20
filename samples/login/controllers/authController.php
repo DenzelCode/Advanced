@@ -75,13 +75,13 @@ class authController extends Controller {
             $pop["username"] = $user->getName();
 
             // authenticate account
-            $auth = $user->authenticate((bool) $pop["remember"], $pop);
+            $auth = $user->authenticate($pop["password"], $pop["remember"]);
 
             if ($auth) {
                 // Update user
                 $ip = Request::getIp();
 
-                $user->set([
+                $user->setByArray([
                     "ip_last" => $ip,
                     "last_used" => time()
                 ]);

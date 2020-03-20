@@ -40,6 +40,10 @@ class Guest implements IUser {
         $data = [
             "id" => 0,
             "username" => Bootstrap::getMainLanguage()->get("general.guest"),
+            "firstname" => Bootstrap::getMainLanguage()->get("general.guest"),
+            "password" => "",
+            "mail" => "guest@example.com",
+            "lastname" => "",
             "rank" => 1,
             "gender" => "M",
             "ip_last" => Request::getIp(),
@@ -49,57 +53,137 @@ class Guest implements IUser {
 
         foreach ((!empty($signup["user"]) ? $signup["user"] : []) as $key => $value) $data[$key] = $value;
 
-        $this->set($data);
+        $this->setByArray($data);
     }
 
-    public function set(array $values) {
+    /**
+     * Set guest data value.
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return boolean
+     */
+    public function set(string $key, $value): bool {
+        return $this->setByArray([ $key => $value ]);
+    }
+
+    /**
+     * Set guest data by array.
+     *
+     * @param array $values
+     * @return boolean
+     */
+    public function setByArray(array $values) : bool {
         foreach ($values as $key => $value) $this->data[$key] = $value;
+
+        return true;
     }
 
+    /**
+     * Get user data.
+     *
+     * @param string $key
+     * @return void
+     */
     public function get(string $key) {
         return $this->data[$key];
     }
 
+    /**
+     * Get guest id.
+     *
+     * @return integer
+     */
     public function getId() : int {
-        return 0;
+        return $this->data["id"];
     }
 
+    /**
+     * Get guest name.
+     *
+     * @return string
+     */
     public function getName() : string {
-        return "Guest";
+        return $this->data["username"];
     }
 
+    /**
+     * Get guest first name.
+     *
+     * @return string
+     */
     public function getFirstName() : string {
-        return "Guest";
+        return $this->data["firstname"];
     }
 
+    /**
+     * Get last name.
+     *
+     * @return string
+     */
     public function getLastName() : string {
-        return "";
+        return $this->data["lastname"];
     }
 
+    /**
+     * Get full name.
+     *
+     * @return string
+     */
     public function getFullName() : string {
-        return "Guest";
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 
+    /**
+     * Get gender.
+     *
+     * @return string
+     */
     public function getGender() : string {
-        return "M";
+        return $this->data["gender"];
     }
 
+    /**
+     * Get mail.
+     *
+     * @return string
+     */
     public function getMail() : string {
-        return "guest@example.com";
+        return $this->data["mail"];
     }
 
+    /**
+     * Get password.
+     *
+     * @return string
+     */
     public function getPassword() : string {
-        return "";
+        return $this->data["password"];
     }
 
+    /**
+     * Get IP of registration
+     *
+     * @return string
+     */
     public function getRegisterIp() : string {
-        return Request::getIp();
+        return $this->data["ip_reg"];
     }
 
+    /**
+     * Get last IP.
+     *
+     * @return string
+     */
     public function getLastIp() : string {
-        return Request::getIp();
+        return $this->data["ip_last"];
     }
 
+    /**
+     * Get all data as array.
+     *
+     * @return array
+     */
     public function getAll(): array {
         return (is_array($this->data) ? $this->data : []);
     }

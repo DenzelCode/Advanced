@@ -58,8 +58,6 @@ class User extends AbstractUser {
             } else if (!$this->create()) throw new UserException(3, "exception.database.error", Bootstrap::getSQL()->getLastError());
         }
 
-        $name = strtolower($this->getName());
-
         $fetch = UsersFactory::getProvider()->getAll($this);
 
         if ($fetch) $this->data = $fetch;
@@ -130,6 +128,8 @@ class User extends AbstractUser {
     }
 
     /**
+     * Check if user exists.
+     * 
      * @return boolean
      */
     public function exists() : bool {
@@ -139,16 +139,20 @@ class User extends AbstractUser {
     }
 
     /**
+     * Set user object values by array.
+     * 
      * @param array $data
      * @return void
      */
-    public function set(array $data) : void {
-        UsersFactory::getProvider()->set($this, $data);
-
+    public function setByArray(array $data) : bool {
         foreach ($data as $key => $value) $this->data[$key] = $value;
+
+        return UsersFactory::getProvider()->set($this, $data);
     }
 
     /**
+     * Get all data.
+     * 
      * @return array
      */
     public function getAll() : array {
