@@ -19,6 +19,7 @@ namespace advanced\user;
 
 use advanced\user\Guest;
 use advanced\Bootstrap;
+use advanced\user\auth\Auth;
 use advanced\user\provider\IProvider;
 
 /**
@@ -253,6 +254,16 @@ abstract class AbstractUser implements IUser {
         for ($i = 0; $i < $length; $i++) $token .= $characters[mt_rand(0, strlen($characters) - 1)];
 
         return $token;
+    }
+
+    /**
+     * Verify if the password match with user password.
+     *
+     * @param string $password
+     * @return boolean
+     */
+    public function verify(string $password) : bool {
+        return Auth::verify($password, $this->getPassword());
     }
 }
 

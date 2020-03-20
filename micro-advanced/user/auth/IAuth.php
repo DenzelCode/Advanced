@@ -61,6 +61,13 @@ interface IAuth {
      */
     public static function hash(string $password) : string;
 
+    /**
+     * Verify if a password match with the hash.
+     *
+     * @param string $password
+     * @param string $hash
+     * @return boolean
+     */
     public static function verify(string $password, string $hash) : bool;
 }
 
