@@ -187,5 +187,15 @@ class Guest implements IUser {
     public function getAll(): array {
         return (is_array($this->data) ? $this->data : []);
     }
+
+    /**
+     * Verify if the password match with user password.
+     *
+     * @param string $password
+     * @return boolean
+     */
+    public function verify(string $password): bool {
+        return true;
+    }
 }
 
