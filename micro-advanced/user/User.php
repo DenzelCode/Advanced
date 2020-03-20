@@ -100,12 +100,12 @@ class User extends AbstractUser {
     /**
      * Authenticate account.
      *
+     * @param string|null $password
      * @param boolean $cookie
-     * @param array $data
      * @return boolean
      */
-    public function authenticate(bool $cookie = false, array $data = []) : bool {
-        foreach ($data as $key => $value) $this->authData[$key] = $value;
+    public function authenticate(?string $password = null, bool $cookie = false) : bool {
+        if ($password) $this->authData["password"] = $password;
 
         if ($this->exists()) {
             if (empty($this->authData)) return false;

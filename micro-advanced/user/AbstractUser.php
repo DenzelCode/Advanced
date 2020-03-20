@@ -128,11 +128,13 @@ abstract class AbstractUser implements IUser {
     abstract public function delete() : bool;
 
     /**
+     * Authenticate account.
+     *
+     * @param string|null $password
      * @param boolean $cookie
-     * @param array $data
      * @return boolean
      */
-    abstract public function authenticate(bool $cookie = false, array $data = []) : bool;
+    abstract public function authenticate(?string $password = null, bool $cookie = false) : bool;
 
     /**
      * @return boolean
