@@ -60,5 +60,7 @@ interface IAuth {
      * @return void
      */
     public static function hash(string $password) : string;
+
+    public static function verify(string $password, string $hash) : bool;
 }
 

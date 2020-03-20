@@ -42,8 +42,9 @@ class Auth implements IAuth {
      */
     public static function attempt(array $data, User $user) : bool {
         // test: || substr($user->getPassword(), 0, 1) != "$" && $user->getPassword() != $data["password"] || strtolower($data["username"]) != strtolower($user->getName())
+        if (!Bootstrap::getSQL()) return false;
 
-        if (!password_verify($data["password"], $user->getPassword())) return false;
+        if (!$user->verify($data["password"])) return false;
 
         self::create([
             "user_id" => $user->getId(),
@@ -169,6 +170,17 @@ class Auth implements IAuth {
      */
     public static function hash(string $password) : string {
         return password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    /**
+     * Verify if a password match with the hash.
+     *
+     * @param string $password
+     * @param string $hash
+     * @return boolean
+     */
+    public static function verify(string $password, string $hash) : bool {
+        return password_verify($password, $hash);
     }
 }
 
