@@ -33,9 +33,9 @@ abstract class AbstractUser implements IUser {
     protected static $provider;
 
     /**
-     * @var array
+     * @var string|null
      */
-    protected $authData = [];
+    protected $password = null;
 
     /**
      * Get user id.
@@ -210,46 +210,6 @@ abstract class AbstractUser implements IUser {
      */
     public static function isValidMail(string $mail) : bool {
         return filter_var($mail, FILTER_VALIDATE_EMAIL);
-    }
-
-    /**
-     * Get authentication data.
-     * 
-     * @param string $data
-     * @return mixed
-     */
-    public function getAuthData(string $data) {
-        return $this->authData[$data];
-    }
-
-    /**
-     * Set authentication data.
-     * 
-     * @param string $name
-     * @param mixed $value
-     * @return void
-     */
-    public function setAuthData(string $name, $value) {
-        $this->authData[$name] = $value;
-    }
-
-    /**
-     * Get authentication data as array.
-     * 
-     * @return array
-     */
-    public function getAuthDataAsArray() : array {
-        return $this->authData;
-    }
-
-    /**
-     * Set authentication data by array.
-     * 
-     * @param array $authData
-     * @return void
-     */
-    public function setAuthDataByArray(array $authData = []) {
-        foreach ($authData as $key => $value) $this->authData[$key] = $value;
     }
 
     /**

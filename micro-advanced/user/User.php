@@ -32,13 +32,13 @@ class User extends AbstractUser {
      * Create a user instance.
      *
      * @param array $data
-     * @param array $authData
+     * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
      * @throws UserException
      */
-    public function __construct(array $data, array $authData = []) {
+    public function __construct(array $data, ?string $password = null) {
         $this->data = $data;
 
-        $this->authData = $authData;
+        $this->password = $password;
 
         UsersFactory::setupTable();
 
@@ -103,16 +103,12 @@ class User extends AbstractUser {
      * @return boolean
      */
     public function authenticate(?string $password = null, bool $cookie = false) : bool {
-        if ($password) $this->authData["password"] = $password;
+        if ($password) $this->password = $password;
 
         if ($this->exists()) {
-            if (empty($this->authData)) return false;
+            if (empty($this->password)) return false;
 
-            $this->authData["cookie"] = $cookie;
-
-            $auth = Auth::attempt($this->authData, $this);
-
-            return $auth;
+            return Auth::attempt($this->password, $this, $cookie);
         }
 
         return false;

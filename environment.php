@@ -77,6 +77,7 @@ class environment{
         if (self::$initialized) return;
 
         error_reporting(E_ALL);
+        ini_set("display_errors", 1);
 
         define("MAIN", __DIR__ . DIRECTORY_SEPARATOR);
         define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);

@@ -36,21 +36,21 @@ class Auth implements IAuth {
     /**
      * Use this method to know if the password matches with the user.
      *
-     * @param array $data
+     * @param string $password
      * @param User $user
+     * @param boolean $cookie True if you wanna remember the password.
      * @return boolean
      */
-    public static function attempt(array $data, User $user) : bool {
-        // test: || substr($user->getPassword(), 0, 1) != "$" && $user->getPassword() != $data["password"] || strtolower($data["username"]) != strtolower($user->getName())
+    public static function attempt(string $password, User $user, bool $cookie = false) : bool {
         if (!Bootstrap::getSQL()) return false;
 
-        if (!$user->verify($data["password"])) return false;
+        if (!$user->verify($password)) return false;
 
         self::create([
             "user_id" => $user->getId(),
             "username" => $user->getName(),
             "hash" => $user->getPassword(),
-            "cookie" => $data["cookie"]
+            "cookie" => $cookie
         ]);
 
         return true;

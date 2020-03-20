@@ -79,10 +79,8 @@ class authController extends Controller {
 
             if ($auth) {
                 // Update user
-                $ip = Request::getIp();
-
                 $user->setByArray([
-                    "ip_last" => $ip,
+                    "ip_last" => Request::getIp(),
                     "last_used" => time()
                 ]);
 
