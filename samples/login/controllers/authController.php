@@ -168,7 +168,7 @@ class authController extends Controller {
 
                 // Create user with data $data (keys are the columns from the database)
 
-                $user = Bootstrap::getUsersFactory()->createUser($data, $pop);
+                $user = Bootstrap::getUsersFactory()->createUser($data, $pop["password"]);
 
                 // Authenticate the account and log in
 

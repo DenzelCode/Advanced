@@ -132,11 +132,11 @@ class UsersFactory {
      * Create user object.
      *
      * @param array $data
-     * @param array $authData
+     * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
      * @return User
      */
-    public function createUser(array $data, array $authData = []) : User {
-        $user = new self::$userObject($data, $authData);
+    public function createUser(array $data, ?string $password = null) : User {
+        $user = new self::$userObject($data, $password);
 
         return $user;
     }
@@ -145,13 +145,13 @@ class UsersFactory {
      * Get user by username.
      *
      * @param string $name
-     * @param array $authData
+     * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
      * @return User|null
      */
-    public function getUser(string $name, array $authData = []) : ?User {
+    public function getUser(string $name, ?string $password = null) : ?User {
         $return = null;
 
-        if (($data = self::$provider->getUserBy("username", $name))) return $this->createUser($data, $authData);
+        if (($data = self::$provider->getUserBy("username", $name))) return $this->createUser($data, $password);
 
         return $return;
     }
@@ -160,13 +160,13 @@ class UsersFactory {
      * Get user by ID.
      *
      * @param integer $id
-     * @param array $authData
+     * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
      * @return User|null
      */
-    public function getUserById(int $id, array $authData = []) : ?User {
+    public function getUserById(int $id, ?string $password = null) : ?User {
         $return = null;
 
-        if (($data = self::$provider->getUserBy("id", $id))) return $this->createUser($data, $authData);
+        if (($data = self::$provider->getUserBy("id", $id))) return $this->createUser($data, $password);
 
         return $return;
     }
@@ -175,13 +175,13 @@ class UsersFactory {
      * Get user by mail.
      *
      * @param string $mail
-     * @param array $authData
+     * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
      * @return User|null
      */
-    public function getUserByMail(string $mail, array $authData = []) : ?User {
+    public function getUserByMail(string $mail, ?string $password = null) : ?User {
         $return = null;
 
-        if (($data = self::$provider->getUserBy("mail", $mail))) return $this->createUser($data, $authData);
+        if (($data = self::$provider->getUserBy("mail", $mail))) return $this->createUser($data, $password);
 
         return $return;
     }
