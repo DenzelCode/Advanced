@@ -244,7 +244,7 @@ class Request{
      * @return UploadFile|null
      */
     public function file(string $file) : ?UploadFile {
-        if (!file_exists($_FILES[$file]["tmp_name"]) || !is_uploaded_file($_FILES[$file]["tmp_name"])) return null;
+        if (empty($_FILES) || !file_exists($_FILES[$file]["tmp_name"]) || !is_uploaded_file($_FILES[$file]["tmp_name"])) return null;
 
         return new UploadFile($_FILES[$file]);
     }
