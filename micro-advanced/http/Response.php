@@ -18,6 +18,7 @@
 namespace advanced\http;
 
 class Response{
+
     public const HTTP_CONTINUE = 100;
     public const HTTP_SWITCHING_PROTOCOLS = 101;
     public const HTTP_PROCESSING = 102;
@@ -83,6 +84,26 @@ class Response{
     public const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
     /**
+     * @var Response
+     */
+    private static $instance;
+
+    public function __construct() {
+        self::$instance = $this;
+    }
+
+    /**
+     * Get an instance of a Response.
+     *
+     * @return Response
+     */
+    public function getInstance() : Response {
+        if (!self::$instance) self::$instance = new Response();
+
+        return self::$instance;
+    }
+
+    /**
      * Returns a JSON string and set JSON type on header.
      *
      * @param array $data
@@ -95,7 +116,7 @@ class Response{
     }
 
     /**
-     * Ser response code.
+     * Set response code.
      *
      * @param integer $code
      * @return Response

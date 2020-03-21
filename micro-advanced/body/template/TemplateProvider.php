@@ -324,7 +324,7 @@ class TemplateProvider{
             "authUser" => Auth::getUser(),
             "config" => Bootstrap::getConfig(),
             "request" => Request::getInstance(),
-            "url" => Request::getFullURL(),
+            "url" => Request::getInstance()->getFullURL(),
             "database" => Bootstrap::getDatabase(),
             "sql" => Bootstrap::getSQL(),
             "usersFactory" => UsersFactory::getInstance()

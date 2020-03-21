@@ -18,6 +18,7 @@
 namespace advanced\http\router;
 
 use advanced\controllers\Controller;
+use advanced\file\UploadFile;
 
 class Request{
 
@@ -35,22 +36,22 @@ class Request{
     /**
      * @var string
      */
-    private static $controller = "main";
+    private $controller = "main";
 
     /**
      * @var string
      */
-    private static $method = "index";
+    private $method = "index";
 
     /**
      * @var string
      */
-    private static $requestMethod = "get";
+    private $requestMethod = "get";
 
     /**
      * @var array
      */
-    private static $arguments = [];
+    private $arguments = [];
 
     /**
      * @var Request
@@ -58,9 +59,11 @@ class Request{
     private static $instance;
 
     /**
-     * @param string $url
+     * Initialize a Request.
+     * 
+     * @param string|null $url
      */
-    public function __construct(string $url = null) {
+    public function __construct(?string $url = null) {
         self::$instance = $this;
 
         $url = urldecode($url);
@@ -69,54 +72,63 @@ class Request{
 
         array_shift($route);
 
-        self::$controller = (empty($route[0]) ? "main" : strtolower($route[0]));
+        $this->controller = (empty($route[0]) ? "main" : strtolower($route[0]));
 
-        self::$method = (empty($route[1]) ? "index" : $route[1]);
+        $this->method = (empty($route[1]) ? "index" : $route[1]);
 
         if (count($route) && $route[0] == "index" || count($route) && $route[0] == "index.php") self::$controller = "main";
 
-        if (!file_exists(($controller = self::getFile(ADVANCED)))) $controller = self::getFile(PROJECT);
+        $controller = (file_exists(self::getControllerFile(ADVANCED)) ? self::getControllerFile(ADVANCED) : self::getControllerFile(PROJECT));
 
-        $i = 2;
+        $i = file_exists($controller) ? 2 : 1;
 
         if (!file_exists($controller)) {
-            self::$controller = "main";
+            $this->controller = "main";
 
-            self::$method = !empty($route[0]) ? $route[0] : "index";
-
-            $i = 1;
+            $this->method = !empty($route[0]) ? $route[0] : "index";
         }
 
         for ($i; $i < count($route); $i++) self::$arguments[$i] = $route[$i];
     }
 
     /**
+     * Get an instance of a Request.
+     * 
      * @return Request
      */
     public static function getInstance() : Request {
+        if (!self::$instance) self::$instance = new Request();
+
         return self::$instance;
     }
 
     /**
-    * @return string
-    */
-    public static function getController() : string {
-        return self::$controller;
+     * Get current controller.
+     *
+     * @return string
+     */
+    public function getController() : string {
+        return $this->controller;
     }
 
     /**
-     * @param string $data
+     * Change current controller.
+     * 
+     * @param string $controller
      * @return void
      */
-    public static function setController(string $data) {
-        return self::$controller = $data;
+    public function setController(string $controller) {
+        return $this->controller = $controller;
     }
 
     /**
-    * @return string
-    */
-    public static function getObjectName(string $preffix) : string {
-        return "{$preffix}\\controllers\\" . self::getController() . "Controller";
+     * Get controller namespace.
+     *
+     * @param string $preffix
+     * @return string
+     */
+    public function getControllerNamespace(string $preffix) : string {
+        return "{$preffix}\\controllers\\" . $this->controller . "Controller";
     }
 
     /**
@@ -125,86 +137,138 @@ class Request{
      * @param string $preffix
      * @return Controller
      */
-    public static function getObject(string $preffix) : Controller {
-        $obj = self::getObjectName($preffix);
+    public function getControllerObject(string $preffix) : Controller {
+        $obj = $this->getControllerNamespace($preffix);
         
         return new $obj();
     }
 
     /**
-     * Get file.
+     * Get controller file.
      *
      * @param string $preffix
      * @return string
      */
-    public static function getFile(string $preffix) : string {
-        return $preffix . "controllers" . DIRECTORY_SEPARATOR . self::$controller . "Controller.php";
+    public function getControllerFile(string $preffix) : string {
+        return $preffix . "controllers" . DIRECTORY_SEPARATOR . $this->controller . "Controller.php";
     }
 
     /**
-    * @return string|null
-    */
-    public static function getMethod() : ?string {
-        return self::$method;
+     * Get current controller method.
+     *
+     * @return string|null
+     */
+    public function getMethod() : ?string {
+        return $this->method;
     }
 
     /**
+     * Set current controller method.
+     * 
      * @param string $data
      * @return void
      */
-    public static function setMethod(string $data = null) {
-        return self::$method = $data;
+    public function setMethod(string $data = null) {
+        return $this->method = $data;
     }
 
     /**
+     * Get secure type. http:// or https://
+     * 
      * @return string
      */
-    public static function getSecure() : string {
+    public function getSecure() : string {
         return (string) (!empty($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on") ? "https://" : "http://");
     }
 
     /**
+     * Get app host.
+     *
      * @return string
      */
-    public static function getURL() : string {
+    public function getHost() : string {
         return (string) !empty($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
     }
 
     /**
+     * Get controller method arguments.
+     *
      * @return array
      */
-    public static function getArguments() : array {
-        return self::$arguments;
+    public function getArguments() : array {
+        return $this->arguments;
     }
 
     /**
+     * Set controller method arguments.
+     *
      * @param array $data
      * @return void
      */
-    public static function setArguments(array $data) {
-        return self::$arguments = $data;
+    public function setArguments(array $data) {
+        return $this->arguments = $data;
     }
 
     /**
-    * @return string|null
-    */
-    public static function getRequestMethod() : ?string {
-        return self::$requestMethod;
+     * Get request method.
+     *
+     * @return string|null
+     */
+    public function getRequestMethod() : ?string {
+        return $this->requestMethod;
     }
 
     /**
+     * Set request method.
+     *
      * @param string $method
      * @return void
      */
-    public static function setRequestMethod(string $method = null) {
-        return self::$requestMethod = $method;
+    public function setRequestMethod(string $method = null) : void {
+        $this->requestMethod = $method;
     }
 
     /**
-    * @return string
-    */
-    public static function getFullURL() : string {
-        return self::getSecure() . self::getURL();
+     * Get full app URL. example: https://example.com
+     *
+     * @return string
+     */
+    public function getFullURL() : string {
+        return $this->getSecure() . $this->getHost();
+    }
+
+    /**
+     * Get uploaded file.
+     *
+     * @param string $file Type the name of the file uploader.
+     * @return UploadFile|null
+     */
+    public function file(string $file) : ?UploadFile {
+        if (!file_exists($_FILES[$file]["tmp_name"]) || !is_uploaded_file($_FILES[$file]["tmp_name"])) return null;
+
+        return new UploadFile($_FILES[$file]);
+    }
+
+    /**
+     * Get uploaded files.
+     *
+     * @param string $file Type the name of the file uploader.
+     * @return UploadFile[]
+     */
+    public function files(string $file) : array {
+        $arranged = [];
+
+        for ($i = 0; $i < count($_FILES["name"]); $i++) {
+            $arranged[$i] = [];
+
+            foreach (array_keys($_FILES) as $key) $arranged[$i][$key] = $_FILES[$key][$i];
+        }
+
+        $files = [];
+
+        foreach ($arranged as $f) $files[] = new UploadFile($f);
+
+        return $files;
     }
 
     /**
@@ -212,7 +276,7 @@ class Request{
      *
      * @return string
      */
-    public static function getIp() : string {
+    public function getIp() : string {
         $userIP = "127.0.0.1";
 
         if (isset($_SERVER["HTTP_CF_CONNECTING_IP"])) $userIP = $_SERVER["HTTP_CF_CONNECTING_IP"]; else if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) $userIP = $_SERVER["HTTP_X_FORWARDED_FOR"]; else if (isset($_SERVER["HTTP_CLIENT_IP"])) $userIP = $_SERVER["HTTP_CLIENT_IP"]; else if (isset($_SERVER["REMOTE_ADDR"])) $userIP = $_SERVER["REMOTE_ADDR"];
@@ -223,5 +287,4 @@ class Request{
 
         return $userIP;
     }
-
 }

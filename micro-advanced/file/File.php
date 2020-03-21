@@ -127,6 +127,8 @@ class File implements IFile{
     }
 
     /**
+     * Get file path.
+     * 
      * @return string
      */
     public function getPath() : string {
@@ -164,6 +166,15 @@ class File implements IFile{
      */
     public function setPermission(int $permission): void {
         chmod($this->path, $permission);
+    }
+
+    /**
+     * Get file size
+     *
+     * @return integer
+     */
+    public function getSize(): int {
+        return filesize($this->path);
     }
 
     /**

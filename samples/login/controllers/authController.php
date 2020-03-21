@@ -56,10 +56,10 @@ class authController extends Controller {
             "remember" => null
         ]);
 
-        $user = Bootstrap::getUsersFactory()->getUser((string) $pop["username"], $pop);
+        $user = Bootstrap::getUsersFactory()->getUser((string) $pop["username"]);
 
         // Get user by mail
-        if (!$user) $user = Bootstrap::getUsersFactory()->getUserByMail((string) $pop["username"], $pop);
+        if (!$user) $user = Bootstrap::getUsersFactory()->getUserByMail((string) $pop["username"]);
 
         $language = Bootstrap::getLanguage();
 
@@ -80,7 +80,7 @@ class authController extends Controller {
             if ($auth) {
                 // Update user
                 $user->setByArray([
-                    "ip_last" => Request::getIp(),
+                    "ip_last" => $this->request->getIp(),
                     "last_used" => time()
                 ]);
 
@@ -119,7 +119,7 @@ class authController extends Controller {
 
         $accountsLimit = Bootstrap::getConfig()->get("sign_up.accounts_limit");
 
-        $ip = Request::getIp();
+        $ip = $this->request->getIp();
 
         if ($accountsLimit) $usersByIp = Bootstrap::getUsersFactory()->getUsersByIp($ip);
 

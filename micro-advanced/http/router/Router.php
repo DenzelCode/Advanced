@@ -39,19 +39,31 @@ class Router{
      * @throws RouterException
      */
     public static function run(Request $request, string $preffix = "advanced") : void {
-        if ($preffix == "advanced" && !file_exists($request->getFile("advanced"))){
+        if ($preffix == "advanced" && !file_exists($request->getControllerFile("advanced"))){
             self::run($request, "project");
 
             return;
         }
 
+        self::check404($request, $preffix);
+
+        Bootstrap::getResponse()->setCode(Response::HTTP_OK);
+
+        $execute = $request->getArguments();
+
+        array_unshift($execute, $request->getRequestMethod());
+
+        echo @call_user_func_array([ $request->getControllerObject($preffix), $request->getMethod() ], $execute);
+    }
+
+    private static function check404(Request $request, string $preffix) : void {
         $set404 = function (Request $request) {
             Bootstrap::getResponse()->setCode(Response::HTTP_NOT_FOUND);
 
             $request->setMethod("error404");
         };
 
-        $object_name = $request->getObjectName($preffix);
+        $object_name = $request->getControllerNamespace($preffix);
 
         if (!method_exists($object_name, $request->getMethod())) $set404($request);
 
@@ -67,14 +79,6 @@ class Router{
             throw new RouterException(0, "exception.router.method_not_exists", $parameter->getDefaultValue());
 
         if ($parameter && $parameter->getName() == "method" && strtolower($parameter->getDefaultValue()) != "*" && strtolower($parameter->getDefaultValue()) != strtolower(Request::GENERAL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ALL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ANY) && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) $set404($request);
-
-        Bootstrap::getResponse()->setCode(Response::HTTP_OK);
-
-        $execute = $request->getArguments();
-
-        array_unshift($execute, $request->getRequestMethod());
-
-        echo @call_user_func_array([ $request->getObject($preffix), $request->getMethod() ], $execute);
     }
 
     /**
