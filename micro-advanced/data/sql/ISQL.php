@@ -37,27 +37,27 @@ use PDOStatement;
  */
 interface ISQL{
 
-    public function select() : Select;
+    public function select(?string $table = null) : Select;
 
-    public function insert() : Insert;
+    public function insert(?string $table = null) : Insert;
 
-    public function update() : Update;
+    public function update(?string $table = null) : Update;
 
-    public function delete() : Delete;
+    public function delete(?string $table = null) : Delete;
 
-    public function create() : Create;
+    public function create(?string $table = null) : Create;
 
-    public function truncate() : Truncate;
+    public function truncate(?string $table = null) : Truncate;
 
-    public function drop() : Drop;
+    public function drop(?string $table = null) : Drop;
 
-    public function showColumns() : ShowColumns;
+    public function showColumns(?string $table = null) : ShowColumns;
 
-    public function addColumns() : AddColumns;
+    public function addColumns(?string $table = null) : AddColumns;
 
-    public function modifyColumns() : ModifyColumns;
+    public function modifyColumns(?string $table = null) : ModifyColumns;
 
-    public function dropColumns() : DropColumns;
+    public function dropColumns(?string $table = null) : DropColumns;
 
     public function prepare(Query $query) : PDOStatement;
 
