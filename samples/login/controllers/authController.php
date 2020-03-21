@@ -90,7 +90,7 @@ class authController extends Controller {
             } else $response["message"] = $language->get("form.login.invalid_password");
         }
 
-        return $this->response->setJSON()->write($response);
+        return $this->response->json($response);
     }
 
     /**
@@ -182,7 +182,7 @@ class authController extends Controller {
             }
         }
 
-        return $this->response->setJSON()->write($response);
+        return $this->response->json($response);
     }
 
     /**

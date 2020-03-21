@@ -82,22 +82,16 @@ class Response{
     public const HTTP_NOT_EXTENDED = 510;
     public const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-    private $json = false;
-        
     /**
-     * Write response
+     * Returns a JSON string and set JSON type on header.
      *
-     * @param [type] $data
-     * @return mixed
+     * @param array $data
+     * @return string
      */
-    public function write($data) {
-        if (self::isJSON()) {
-            self::setHeader('text/json');
-            
-            return json_encode($data);
-        }
-
-        return $data;
+    public function json(array $data) : string {
+        $this->setHeader('text/json');
+        
+        return json_encode($data);
     }
 
     /**
@@ -120,27 +114,6 @@ class Response{
      */
     public function setHeader(string $header) {
         header("Content-Type: {$header}");
-    }
-
-    /**
-     * Activate the JSON mode.
-     *
-     * @param boolean $value
-     * @return Response
-     */
-    public function setJSON(bool $value = true) : Response {
-        $this->json = $value;
-
-        return $this;
-    }
-
-    /**
-     * Check if JSON mode is on.
-     *
-     * @return boolean
-     */
-    public function isJSON() : bool {
-        return $this->json;
     }
 
     /**
