@@ -46,8 +46,8 @@ class Guest implements IUser {
             "lastname" => "",
             "rank" => 1,
             "gender" => "M",
-            "ip_last" => Request::getIp(),
-            "ip_reg" => Request::getIp(),
+            "ip_last" => Request::getInstance()->getIp(),
+            "ip_reg" => Request::getInstance()->getIp(),
             "display_name" => Bootstrap::getMainLanguage()->get("general.guest")
         ];
 
