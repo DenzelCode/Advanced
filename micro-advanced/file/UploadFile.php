@@ -19,6 +19,11 @@ namespace advanced\file;
 
 class UploadFile {
 
+    public const KB = 1024;
+    public const MB = 1048576;
+    public const GB = 1073741824;
+    public const TB = 1099511627776;
+
     /**
      * @var array
      */
