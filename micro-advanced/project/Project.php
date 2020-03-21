@@ -79,6 +79,11 @@ abstract class Project {
     protected static $configPath = PROJECT . "resources" . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "config";
 
     /**
+     * @var string
+     */
+    protected static $publicDirectory = PROJECT . "public";
+
+    /**
      * Initialize project.
      *
      * @return void
@@ -130,6 +135,15 @@ abstract class Project {
      */
     public static function getConfigDirectory() : string {
         return self::$configDirectory;
+    }
+
+    /**
+     * Get public directory.
+     *
+     * @return string
+     */
+    public static function getPublicDirectory() : string {
+        return self::$publicDirectory;
     }
 
     /**
