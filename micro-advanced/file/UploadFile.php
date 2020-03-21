@@ -49,12 +49,25 @@ class UploadFile {
     }
 
     /**
+     * Get file name without extension.
+     *
+     * @return string
+     */
+    public function getNameWithoutExtension() : string {
+        $name = explode(".", $this->getName());
+
+        unset($name[(count($name) - 1)]);
+
+        return implode(".", $name);
+    }
+
+    /**
      * Get file extension.
      *
      * @return string
      */
     public function getExtension() : string {
-        return end(explode(".", $this->file["name"]));
+        return end(explode(".", $this->getName()));
     }
 
     /**

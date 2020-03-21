@@ -115,6 +115,19 @@ class File implements IFile{
     }
 
     /**
+     * Get file name without extension.
+     *
+     * @return string
+     */
+    public function getNameWithoutExtension() : string {
+        $name = explode(".", $this->getName());
+
+        unset($name[(count($name) - 1)]);
+
+        return implode(".", $name);
+    }
+
+    /**
      * Set file name.
      *
      * @param string $name
@@ -124,6 +137,15 @@ class File implements IFile{
         rename($this->path, $this->directory->getPath() . DIRECTORY_SEPARATOR . $name);
 
         $this->name = $name;
+    }
+
+    /**
+     * Get file extension.
+     *
+     * @return string
+     */
+    public function getExtension() : string {
+        return end(explode(".", $this->getName()));
     }
 
     /**
