@@ -70,7 +70,7 @@ class Auth implements IAuth {
 
         if (!$user) return false;
 
-        $auth_code = md5($user->getPassword() . Request::getIP());
+        $auth_code = md5($user->getPassword() . Request::getInstance()->getIP());
 
         if (self::get("auth_code") == $auth_code) return true;
 
