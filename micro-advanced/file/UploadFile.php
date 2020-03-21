@@ -49,6 +49,15 @@ class UploadFile {
     }
 
     /**
+     * Get file extension.
+     *
+     * @return string
+     */
+    public function getExtension() : string {
+        return end(explode(".", $this->file["name"]));
+    }
+
+    /**
      * Get file temporary name.
      *
      * @return string
