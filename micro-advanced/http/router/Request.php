@@ -54,6 +54,11 @@ class Request{
     private $arguments = [];
 
     /**
+     * @var string
+     */
+    private $url;
+
+    /**
      * @var Request
      */
     private static $instance;
@@ -68,7 +73,9 @@ class Request{
 
         $url = urldecode($url);
 
-        $route = explode("/", substr($url, 0, ($str = strrpos($url, "?")) ? $str : strlen($url)));
+        $this->url = $url;
+
+        $route = explode("/", substr($this->url, 0, ($str = strrpos($this->url, "?")) ? $str : strlen($this->url)));
 
         array_shift($route);
 
@@ -235,6 +242,15 @@ class Request{
      */
     public function getFullURL() : string {
         return $this->getSecure() . $this->getHost();
+    }
+
+    /**
+     * Get current request URL. example: /index
+     *
+     * @return string
+     */
+    public function getURL() : string {
+        return $this->url;
     }
 
     /**
