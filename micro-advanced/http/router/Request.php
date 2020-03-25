@@ -76,9 +76,9 @@ class Request{
 
         $this->method = (empty($route[1]) ? "index" : $route[1]);
 
-        if (count($route) && $route[0] == "index" || count($route) && $route[0] == "index.php") self::$controller = "main";
+        if (count($route) && $route[0] == "index" || count($route) && $route[0] == "index.php") $this->controller = "main";
 
-        $controller = (file_exists(self::getControllerFile(ADVANCED)) ? self::getControllerFile(ADVANCED) : self::getControllerFile(PROJECT));
+        $controller = (file_exists($this->getControllerFile(ADVANCED)) ? $this->getControllerFile(ADVANCED) : $this->getControllerFile(PROJECT));
 
         $i = file_exists($controller) ? 2 : 1;
 
@@ -88,7 +88,7 @@ class Request{
             $this->method = !empty($route[0]) ? $route[0] : "index";
         }
 
-        for ($i; $i < count($route); $i++) self::$arguments[$i] = $route[$i];
+        for ($i; $i < count($route); $i++) $this->arguments[$i] = $route[$i];
     }
 
     /**

@@ -124,7 +124,11 @@ class Directory implements IFile {
         }
     }
     
-
+    /**
+     * Delete directory.
+     *
+     * @return boolean
+     */
     public function delete(): bool {
         $class_func = array(__CLASS__, __FUNCTION__);
         
