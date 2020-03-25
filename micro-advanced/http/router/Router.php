@@ -53,7 +53,13 @@ class Router{
 
         array_unshift($execute, $request->getRequestMethod());
 
-        echo @call_user_func_array([ $request->getControllerObject($preffix), $request->getMethod() ], $execute);
+        try {
+            $method = $request->getMethod();
+        } catch(\TypeError $e) {
+            $method = "error404";
+        }
+
+        echo @call_user_func_array([ $request->getControllerObject($preffix), $method ], $execute);;
     }
 
     private static function check404(Request $request, string $preffix) : void {
@@ -75,13 +81,15 @@ class Router{
 
         $request->setRequestMethod(strtolower($_SERVER["REQUEST_METHOD"]));
 
-        if ($parameter && $parameter->getName() == "method" && !self::checkMethods(explode("|", $parameter->getDefaultValue())))
+        if ($parameter && $parameter->getName() == "method" && !self::checkRequestMethods(explode("|", $parameter->getDefaultValue())))
             throw new RouterException(0, "exception.router.method_not_exists", $parameter->getDefaultValue());
 
         if ($parameter && $parameter->getName() == "method" && strtolower($parameter->getDefaultValue()) != "*" && strtolower($parameter->getDefaultValue()) != strtolower(Request::GENERAL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ALL) && strtolower($parameter->getDefaultValue()) != strtolower(Request::ANY) && !in_array($request->getRequestMethod(), explode("|", strtolower($parameter->getDefaultValue())))) $set404($request);
     }
 
     /**
+     * Get private class methods.
+     * 
      * @return array
      */
     private static function getPrivateMethods(string $object_name) : array {
@@ -95,10 +103,12 @@ class Router{
     }
 
     /**
+     * Check if request methods exist.
+     * 
      * @param array $methods
      * @return boolean
      */
-    private static function checkMethods(array $methods) : bool {
+    private static function checkRequestMethods(array $methods) : bool {
         $methods = array_map("strtolower", $methods);
 
         $main = array_map("strtolower", self::$http_methods);
