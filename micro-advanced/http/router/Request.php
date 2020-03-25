@@ -56,7 +56,7 @@ class Request{
     /**
      * @var string
      */
-    private $url;
+    private $uri;
 
     /**
      * @var Request
@@ -66,16 +66,16 @@ class Request{
     /**
      * Initialize a Request.
      * 
-     * @param string|null $url
+     * @param string|null $uri
      */
-    public function __construct(?string $url = null) {
+    public function __construct(?string $uri = null) {
         self::$instance = $this;
 
-        $url = urldecode($url);
+        $uri = urldecode($uri);
 
-        $this->url = $url;
+        $this->uri = $uri;
 
-        $route = explode("/", substr($this->url, 0, ($str = strrpos($this->url, "?")) ? $str : strlen($this->url)));
+        $route = explode("/", substr($this->uri, 0, ($str = strrpos($this->uri, "?")) ? $str : strlen($this->uri)));
 
         array_shift($route);
 
@@ -245,12 +245,12 @@ class Request{
     }
 
     /**
-     * Get current request URL. example: /index
+     * Get current request URI. example: /index
      *
      * @return string
      */
-    public function getURL() : string {
-        return $this->url;
+    public function getURI() : string {
+        return $this->uri;
     }
 
     /**
