@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * Advanced microFramework
@@ -23,12 +24,13 @@ use advanced\http\Response;
 use ReflectionClass;
 use ReflectionMethod;
 
-class Router{
+class Router
+{
 
     /**
      * @var array
      */
-    private static $http_methods = ["GET", "POST", "DELETE", "PUT", "CONNECT","TRACE", "HEAD", "*", "general", "any", "all"];
+    private static $http_methods = ["GET", "POST", "DELETE", "PUT", "CONNECT", "TRACE", "HEAD", "*", "general", "any", "all"];
 
     /**
      * Run Router from request.
@@ -38,8 +40,9 @@ class Router{
      * @return void
      * @throws RouterException
      */
-    public static function run(Request $request, string $preffix = "advanced") : void {
-        if ($preffix == "advanced" && !file_exists($request->getControllerFile("advanced"))){
+    public static function run(Request $request, string $preffix = "advanced"): void
+    {
+        if ($preffix == "advanced" && !file_exists($request->getControllerFile("advanced"))) {
             self::run($request, "project");
 
             return;
@@ -54,15 +57,21 @@ class Router{
         array_unshift($execute, $request->getRequestMethod());
 
         try {
-            $method = $request->getMethod();
-        } catch(\TypeError $e) {
-            $method = "error404";
+            echo @call_user_func_array([$request->getControllerObject($preffix), $request->getMethod()], $execute);
+        } catch (\TypeError $e) {
+            echo @call_user_func_array([$request->getControllerObject($preffix), "error404"], $execute);
         }
-
-        echo @call_user_func_array([ $request->getControllerObject($preffix), $method ], $execute);;
     }
 
-    private static function check404(Request $request, string $preffix) : void {
+    /**
+     * Check if it is an error 404.
+     *
+     * @param Request $request
+     * @param string $preffix
+     * @return void
+     */
+    private static function check404(Request $request, string $preffix): void
+    {
         $set404 = function (Request $request) {
             Bootstrap::getResponse()->setCode(Response::HTTP_NOT_FOUND);
 
@@ -92,7 +101,8 @@ class Router{
      * 
      * @return array
      */
-    private static function getPrivateMethods(string $object_name) : array {
+    private static function getPrivateMethods(string $object_name): array
+    {
         $private_methods = [];
 
         $class_methods = (new ReflectionClass($object_name))->getMethods(ReflectionMethod::IS_PRIVATE | ReflectionMethod::IS_PROTECTED);
@@ -108,7 +118,8 @@ class Router{
      * @param array $methods
      * @return boolean
      */
-    private static function checkRequestMethods(array $methods) : bool {
+    private static function checkRequestMethods(array $methods): bool
+    {
         $methods = array_map("strtolower", $methods);
 
         $main = array_map("strtolower", self::$http_methods);

@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * 
  * Advanced microFramework
@@ -22,9 +23,10 @@ use advanced\controllers\Controller;
 use advanced\http\router\Request;
 
 /**
-* mainController class
-*/
-class mainController extends Controller {
+ * mainController class
+ */
+class mainController extends Controller
+{
 
     /**
      * Create the URL /index or / and allow all methods request.
@@ -32,7 +34,8 @@ class mainController extends Controller {
      * @param string $method
      * @return string
      */
-    public function index(string $method = Request::ALL) : string {
+    public function index(string $method = Request::ALL): string
+    {
         return parent::index($method);
     }
 
@@ -43,7 +46,8 @@ class mainController extends Controller {
      * @param string $argument
      * @return string
      */
-    public function testing(string $method = Request::GET, string $argument = "default value") : string {
+    public function testing(string $method = Request::GET, int $argument = 1): string
+    {
         return "Testing URL: {$argument}";
     }
 
@@ -53,7 +57,8 @@ class mainController extends Controller {
      * @param string $method
      * @return string
      */
-    public function error404(string $method = Request::ALL) : string {
+    public function error404(string $method = Request::ALL): string
+    {
         return "Error 404";
     }
 }
