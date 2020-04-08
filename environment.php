@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  * Advanced microFramework
@@ -18,9 +19,10 @@
 use advanced\Bootstrap;
 use advanced\exceptions\FileException;
 
-class environment{
+class environment
+{
 
-    public const VERSION = "2.0.3.69";
+    public const VERSION = "2.0.3.70";
     public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**
@@ -32,13 +34,14 @@ class environment{
      * @var boolean
      */
     private static $initialized = false;
-    
+
     /**
      * Run autoloads.
      *
      * @return void
      */
-    private static function autoload() : void{
+    private static function autoload(): void
+    {
         require "autoload.php";
 
         try {
@@ -62,7 +65,8 @@ class environment{
      *
      * @return autoload
      */
-    public static function getAutoload() : autoload {
+    public static function getAutoload(): autoload
+    {
         return self::$autoload;
     }
 
@@ -73,7 +77,8 @@ class environment{
      * @param boolean $test
      * @return void
      */
-    public static function init(string $dir, bool $test = false) : void{
+    public static function init(string $dir, bool $test = false): void
+    {
         if (self::$initialized) return;
 
         error_reporting(E_ALL);
@@ -92,7 +97,7 @@ class environment{
         (new Bootstrap());
 
         if (!(version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, self::REQUIRED_PHP_VERSION));
-        
+
         if (file_exists(PROJECT . "Project.php")) {
             $project = new project\Project();
 
@@ -107,7 +112,8 @@ class environment{
      *
      * @return string
      */
-    public static function getVersion() : string {
+    public static function getVersion(): string
+    {
         return self::REQUIRED_PHP_VERSION;
     }
 }
