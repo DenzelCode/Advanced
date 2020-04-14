@@ -132,8 +132,6 @@ class Config implements IConfig {
      */
     public function saveIfModified() : void {
         if ($this->initialData != $this->data) $this->save();
-
-        $this->initialData = $this->data;
     }
 
     /**
@@ -143,6 +141,8 @@ class Config implements IConfig {
      */
     public function save() : void {
         $this->file->write($this->provider->prettyPrint($this->data));
+
+        $this->initialData = $this->data;
 
         self::$files[$this->file->getPath()] = $this->data;
     }
