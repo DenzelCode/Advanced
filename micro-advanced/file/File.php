@@ -52,14 +52,8 @@ class File implements IFile{
         $this->path = $file;
         $this->path = str_replace("\\", DIRECTORY_SEPARATOR, $this->path);
         $this->path = str_replace("/", DIRECTORY_SEPARATOR, $this->path);
-        
-        $directories = explode(DIRECTORY_SEPARATOR, $this->path);
 
-        $this->name = end($directories);
-
-        unset($directories[count($directories) - 1]);
-
-        $this->directory = new Directory(implode(DIRECTORY_SEPARATOR, $directories));
+        $this->directory = new Directory(dirname($this->path));
 
         $this->mode = $mode;
     }
