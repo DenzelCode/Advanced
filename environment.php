@@ -22,7 +22,7 @@ use advanced\exceptions\FileException;
 class environment
 {
 
-    public const VERSION = "2.0.3.70";
+    public const VERSION = "2.0.3.71";
     public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**
