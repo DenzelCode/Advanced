@@ -29,6 +29,11 @@
             "name": "text",
             "description": "text",
             "timestamp": "double(50, 0) DEFAULT 0"
+        },
+        "tests": {
+            "id": "int(11) PRIMARY KEY AUTO_INCREMENT",
+            "result": "varchar(255)",
+            "timestamp": "double(50, 0) DEFAULT 0"
         }
     }
 }

@@ -46,7 +46,7 @@ class Directory implements IFile {
      * @return void
      */
     public function setName(string $name): void {
-        rename($this->directory->getPath() . $this->name, $this->directory->getPath() . $name);
+        rename($this->path, dirname($this->path) . DIRECTORY_SEPARATOR . $name);
 
         $this->name = $name;
     }
