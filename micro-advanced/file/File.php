@@ -163,6 +163,8 @@ class File implements IFile{
         $this->path = $path;
 
         $this->name = end(explode(DIRECTORY_SEPARATOR, $this->path));
+
+        $this->directory = new Directory(dirname($this->path));
     }
 
     /**
