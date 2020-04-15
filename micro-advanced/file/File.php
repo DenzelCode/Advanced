@@ -66,11 +66,9 @@ class File implements IFile{
      * @throws FileException
      */
     public function write(string $content) : void {
-        $handle = fopen($this->path, $this->mode);
+        if (!($handle = @fopen($this->path, $this->mode))) throw new FileException(0, "exception.file.open", $this->path);
 
-        if (!$handle) throw new FileException(0, "exception.file.open", $this->path);
-
-        if (!fwrite($handle, $content)) throw new FileException(1, "exception.file.write", $this->path);
+        if (!fwrite($handle, (string) $content)) throw new FileException(1, "exception.file.write", $this->path);
 
         fclose($handle);
     }
@@ -88,13 +86,7 @@ class File implements IFile{
 
         $this->directory->create($permission);
 
-        if (!($handle = @fopen($this->path, $this->mode))) throw new FileException(0, "exception.file.open", $this->path);
-
-        $fwrite = fwrite($handle, (string) $default);
-
-        if (!$fwrite) throw new FileException(1, "exception.file.write", $this->path);
-
-        fclose($handle);
+        $this->write($default);
 
         $this->setPermission($permission);
     }

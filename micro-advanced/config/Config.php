@@ -33,7 +33,7 @@ class Config implements IConfig {
     /**
      * @var array
      */
-    private $initialData = [];
+    private $initial = [];
 
     /**
      * @var array|null
@@ -73,7 +73,7 @@ class Config implements IConfig {
 
         $this->data = $default;
 
-        $this->initialData = $default;
+        $this->initial = $default;
 
         $this->updateProvider($provider);
 
@@ -131,7 +131,7 @@ class Config implements IConfig {
      * @return void
      */
     public function saveIfModified() : void {
-        if ($this->initialData != $this->data) $this->save();
+        if ($this->initial != $this->data) $this->save();
     }
 
     /**
@@ -142,7 +142,7 @@ class Config implements IConfig {
     public function save() : void {
         $this->file->write($this->provider->prettyPrint($this->data));
 
-        $this->initialData = $this->data;
+        $this->initial = $this->data;
 
         self::$files[$this->file->getPath()] = $this->data;
     }
@@ -223,12 +223,12 @@ class Config implements IConfig {
      */
     public function updateProvider(string $provider) : void {
         switch ($provider) {
-            case "json":
+            case self::PROVIDER_JSON:
             default:
                 $this->provider = new JsonProvider();
                 break;
 
-            case "yaml":
+            case self::PROVIDER_YAML:
                 $this->provider = new JsonProvider();
                 break;
         }
@@ -254,7 +254,7 @@ class Config implements IConfig {
 
         if ($this->data === null) throw new ConfigException(0, "exception.config.invalid_format", $this->file->getPath());
 
-        $this->initialData = $this->data;
+        $this->initial = $this->data;
 
         self::$files[$this->file->getPath()] = $this->data;
     }
