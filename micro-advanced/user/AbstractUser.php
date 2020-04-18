@@ -79,7 +79,7 @@ abstract class AbstractUser implements IUser {
      * @return string
      */
     public function getFullName() : string {
-        return $this->getFirstName() . $this->getLastName();
+        return $this->getFirstName() . " " . $this->getLastName();
     }
 
     /**
@@ -261,8 +261,6 @@ abstract class AbstractUser implements IUser {
      * @param string $password
      * @return boolean
      */
-    public function verify(string $password) : bool {
-        return Auth::verify($password, $this->getPassword());
-    }
+    abstract public function verify(string $password): bool;
 }
 

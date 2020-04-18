@@ -49,7 +49,5 @@ interface IUser{
     public function getRegisterIp() : string;
 
     public function getLastIp() : string;
-
-    public function verify(string $password) : bool;
 }
 
