@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 
  * Advanced microFramework
@@ -19,13 +20,13 @@ namespace advanced\user;
 
 use advanced\user\Guest;
 use advanced\Bootstrap;
-use advanced\user\auth\Auth;
 use advanced\user\provider\IProvider;
 
 /**
  * User abstract class
  */
-abstract class AbstractUser implements IUser {
+abstract class AbstractUser implements IUser
+{
 
     /**
      * @var IProvider
@@ -42,7 +43,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return int
      */
-    public function getId() : int {
+    public function getId(): int
+    {
         return (int) $this->data['id'];
     }
 
@@ -51,7 +53,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getName() : string {
+    public function getName(): string
+    {
         return (string) $this->data['username'];
     }
 
@@ -60,7 +63,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getFirstName() : string {
+    public function getFirstName(): string
+    {
         return (string) $this->data['firstname'];
     }
 
@@ -69,7 +73,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getLastName() : string {
+    public function getLastName(): string
+    {
         return (string) $this->data['lastname'];
     }
 
@@ -78,7 +83,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getFullName() : string {
+    public function getFullName(): string
+    {
         return $this->getFirstName() . " " . $this->getLastName();
     }
 
@@ -87,7 +93,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getGender() : string {
+    public function getGender(): string
+    {
         return (string) $this->data['gender'];
     }
 
@@ -96,7 +103,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getMail() : string {
+    public function getMail(): string
+    {
         return (string) $this->data['mail'];
     }
 
@@ -105,7 +113,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getPassword() : string {
+    public function getPassword(): string
+    {
         return (string) $this->data['password'];
     }
 
@@ -114,7 +123,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getRegisterIp() : string {
+    public function getRegisterIp(): string
+    {
         return (string) $this->data['ip_reg'];
     }
 
@@ -123,7 +133,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return string
      */
-    public function getLastIp() : string {
+    public function getLastIp(): string
+    {
         return (string) $this->data['ip_last'];
     }
 
@@ -132,7 +143,8 @@ abstract class AbstractUser implements IUser {
      * 
      * @return int
      */
-    public function getAccountCreated() : int {
+    public function getAccountCreated(): int
+    {
         return (int) $this->data['account_created'];
     }
 
@@ -142,7 +154,8 @@ abstract class AbstractUser implements IUser {
      * @param string $data
      * @return mixed
      */
-    public function get(string $data) {
+    public function get(string $data)
+    {
         return $this->data[$data];
     }
 
@@ -151,7 +164,7 @@ abstract class AbstractUser implements IUser {
      * 
      * @return bool
      */
-    abstract public function delete() : bool;
+    abstract public function delete(): bool;
 
     /**
      * Authenticate account.
@@ -160,21 +173,21 @@ abstract class AbstractUser implements IUser {
      * @param boolean $cookie
      * @return boolean
      */
-    abstract public function authenticate(?string $password = null, bool $cookie = false) : bool;
+    abstract public function authenticate(?string $password = null, bool $cookie = false): bool;
 
     /**
      * Create account.
      * 
      * @return boolean
      */
-    abstract public function create() : bool;
+    abstract public function create(): bool;
 
     /**
      * Chekck if account exists.
      * 
      * @return bool
      */
-    abstract public function exists() : bool;
+    abstract public function exists(): bool;
 
     /**
      * Set a user object value.
@@ -183,8 +196,9 @@ abstract class AbstractUser implements IUser {
      * @param mixed $value
      * @return void
      */
-    public function set(string $key, $value) : bool {
-        return $this->setByArray([ $key => $value ]);
+    public function set(string $key, $value): bool
+    {
+        return $this->setByArray([$key => $value]);
     }
 
     /**
@@ -193,14 +207,14 @@ abstract class AbstractUser implements IUser {
      * @param array $data
      * @return void
      */
-    abstract public function setByArray(array $data) : bool;
+    abstract public function setByArray(array $data): bool;
 
     /**
      * Get all data as array.
      * 
      * @return array
      */
-    abstract public function getAll() : array;
+    abstract public function getAll(): array;
 
     /**
      * Check if an email is valid.
@@ -208,7 +222,8 @@ abstract class AbstractUser implements IUser {
      * @param string $mail
      * @return boolean
      */
-    public static function isValidMail(string $mail) : bool {
+    public static function isValidMail(string $mail): bool
+    {
         return filter_var($mail, FILTER_VALIDATE_EMAIL);
     }
 
@@ -218,7 +233,8 @@ abstract class AbstractUser implements IUser {
      * @param string $name
      * @return boolean
      */
-    public static function isValidName(string $name) : bool {
+    public static function isValidName(string $name): bool
+    {
         $config = Bootstrap::getConfig();
 
         if (!$config->has("sign_up")) $config->set("sign_up.min_characters", 4)->set("sign_up.max_characters", 32)->save();
@@ -236,7 +252,8 @@ abstract class AbstractUser implements IUser {
      * @param string $name
      * @return boolean
      */
-    public static function isValidDisplayName(string $name) : bool {
+    public static function isValidDisplayName(string $name): bool
+    {
         return !preg_match('/[\'^£$%&*()}{@#~?><>,|=_+¬-]/', $name);
     }
 
@@ -246,7 +263,8 @@ abstract class AbstractUser implements IUser {
      * @param integer $length
      * @return string
      */
-    public static function generateToken(int $length = 40) : string {
+    public static function generateToken(int $length = 40): string
+    {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+';
         $token = "";
 
@@ -263,4 +281,3 @@ abstract class AbstractUser implements IUser {
      */
     abstract public function verify(string $password): bool;
 }
-
