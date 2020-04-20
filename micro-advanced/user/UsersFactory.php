@@ -53,11 +53,9 @@ class UsersFactory {
     /**
      * Initialize factory.
      * 
-     * @throws UserException
+     * @throws DatabaseException
      */
     public function __construct() {
-        if (!Bootstrap::getSQL()) throw new UserException(0, "exception.database.needed");
-
         self::$instance = $this;
         
         self::$provider = new MySQLProvider(Bootstrap::getSQL());

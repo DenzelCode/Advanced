@@ -19,8 +19,8 @@ namespace advanced\user\provider;
 
 use advanced\Bootstrap;
 use advanced\data\sql\ISQL;
+use advanced\exceptions\DatabaseException;
 use advanced\user\IUser;
-use project\Project;
 
 /**
  * MySQLProvider class
@@ -32,7 +32,15 @@ class MySQLProvider implements IProvider{
      */
     protected $sql;
 
+    /**
+     * Initialize provider
+     *
+     * @param ISQL $sql
+     * @throws DatabaseException
+     */
     public function __construct(ISQL $sql) {
+        if (!Bootstrap::getSQL()) throw new DatabaseException(0, "exception.database.needed");
+
         $this->sql = $sql;
     }
 
