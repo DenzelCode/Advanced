@@ -110,7 +110,7 @@ class Response{
      * @return string
      */
     public function json(array $data) : string {
-        $this->setHeader('text/json');
+        $this->setContentType('text/json');
         
         return json_encode($data);
     }
@@ -128,12 +128,21 @@ class Response{
     }
 
     /**
+     * Get response code.
+     *
+     * @return integer
+     */
+    public function getCode() : int {
+        return http_response_code();
+    }
+
+    /**
      * Set app header.
      *
      * @param string $header
      * @return void
      */
-    public function setHeader(string $header) {
+    public function setContentType(string $header) {
         header("Content-Type: {$header}");
     }
 

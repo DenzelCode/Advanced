@@ -48,19 +48,25 @@ class Router
             return;
         }
 
-        self::check404($request, $preffix);
-
         Bootstrap::getResponse()->setCode(Response::HTTP_OK);
+
+        self::check404($request, $preffix);
 
         $execute = $request->getArguments();
 
         array_unshift($execute, $request->getRequestMethod());
 
         try {
-            echo @call_user_func_array([$request->getControllerObject($preffix), $request->getMethod()], $execute);
+            $method = $request->getMethod();
+
+            $body = @call_user_func_array([$request->getControllerObject($preffix), $method], $execute);
         } catch (\TypeError $e) {
-            echo @call_user_func_array([$request->getControllerObject($preffix), "error404"], $execute);
+            Bootstrap::getResponse()->setCode(Response::HTTP_NOT_FOUND);
+
+            $body = @call_user_func_array([$request->getControllerObject($preffix), "error404"], $execute); 
         }
+
+        print($body);
     }
 
     /**
