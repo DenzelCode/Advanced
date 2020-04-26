@@ -18,10 +18,7 @@
 namespace advanced\user;
 
 use advanced\Bootstrap;
-use advanced\exceptions\UserException;
 use advanced\user\User;
-use advanced\config\Config;
-use advanced\data\Database;
 use advanced\user\provider\IProvider;
 use advanced\user\provider\MySQLProvider;
 
@@ -59,8 +56,6 @@ class UsersFactory {
         self::$instance = $this;
         
         self::$provider = new MySQLProvider(Bootstrap::getSQL());
-
-        $this->setupTable();
     }
 
     /**
@@ -244,51 +239,6 @@ class UsersFactory {
         foreach ($data as $user) $users[$user["id"]] = $this->createUser($user);
 
         return $users;
-    }
-
-    /**
-     * Setup the users tables.
-     *
-     * @return void
-     */
-    public static function setupTable() : void {
-        $config = new Config(Database::getConfigPath());
-
-        $config->setIfNotExists("import.users", [
-            "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
-            "username" => "varchar(255)",
-            "firstname" => "varchar(255)",
-            "lastname" => "varchar(255)",
-            "password" => "varchar(255)",
-            "mail" => "varchar(255)",
-            "rank" => "int(11)",
-            "country" => "varchar(4)",
-            "gender" => "enum('M', 'F') DEFAULT 'M'",
-            "account_created" => "double(50, 0) DEFAULT 0",
-            "last_used" => "double(50, 0) DEFAULT 0",
-            "last_online" => "double(50, 0) DEFAULT 0",
-            "last_password" => "double(50, 0) DEFAULT 0",
-            "online" => "enum('0', '1') DEFAULT '0'",
-            "ip_reg" => "varchar(45) NOT NULL",
-            "ip_last" => "varchar(45) NOT NULL",
-            "language" => "varchar(255) DEFAULT 'en'",
-            "connection_id" => "text",
-            "birth_date" => "varchar(55)",
-            "facebook_id" => "text",
-            "facebook_token" => "text",
-            "facebook_account" => "boolean DEFAULT false"
-        ]);
-
-        $config->setIfNotExists("import.ranks", [
-            "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
-            "name" => "text",
-            "description" => "text",
-            "timestamp" => "double(50, 0) DEFAULT 0"
-        ]);
-
-        $config->saveIfModified();
-
-        Bootstrap::getSQL()->setup($config);
     }
 }
 
