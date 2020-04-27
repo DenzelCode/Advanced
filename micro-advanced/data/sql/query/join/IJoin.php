@@ -25,9 +25,9 @@ use PDOStatement;
  */
 interface IJoin{
 
-    public function on(string $data) : IJoin;
+    public function on(string $conditional) : IJoin;
 
-    public function as(string $data) : IJoin;
+    public function as(string $alias) : IJoin;
 
     public function using(array $columns) : IJoin;
 

@@ -66,11 +66,11 @@ class Join implements IJoin {
     /**
      * Add on argument to query.
      *
-     * @param string $on
+     * @param string $conditional
      * @return Join
      */
-    public function on(string $on) : Join {
-        $this->on = $on;
+    public function on(string $conditional) : Join {
+        $this->on = $conditional;
 
         return $this;
     }
@@ -78,11 +78,11 @@ class Join implements IJoin {
     /**
      * Add alias into the join table.
      *
-     * @param string $as
+     * @param string $alias
      * @return Join
      */
-    public function as(string $as) : Join {
-        $this->as = $as;
+    public function as(string $alias) : Join {
+        $this->as = $alias;
 
         return $this;
     }
