@@ -144,7 +144,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersBy(string $field, $value, int $limit = 0, ?string $orderBy = null) : array {
-        $fetchAll = $this->sql->table($this->table)->select()->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->fetchAll();
+        $fetchAll = $this->sql->table($this->table)->select()->where("{$field} = ?", $value)->orderBy($orderBy)->limit($limit)->fetchAll();
 
         return !$fetchAll ? [] : $fetchAll;
     }
@@ -157,7 +157,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersNotEqual(string $field, $value, int $limit = 0, ?string $orderBy = null) : array {
-        $fetchAll = $this->sql->table($this->table)->select()->where("{$field} = ?", [$value])->orderBy($orderBy)->limit($limit)->fetchAll();
+        $fetchAll = $this->sql->table($this->table)->select()->where("{$field} = ?", $value)->orderBy($orderBy)->limit($limit)->fetchAll();
 
         return !$fetchAll ? [] : $fetchAll;
     }
