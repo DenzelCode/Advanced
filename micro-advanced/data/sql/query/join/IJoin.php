@@ -33,6 +33,14 @@ interface IJoin{
 
     public function join() : IJoin;
 
+    public function leftJoin(string $table): IJoin;
+
+    public function innerJoin(string $table): IJoin;
+
+    public function rightJoin(string $table): IJoin;
+
+    public function fullJoin(string $table) : IJoin;
+
     public function where(string $where, $execute = []) : IQuery;
 
     public function execute() : PDOStatement;
