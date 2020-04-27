@@ -33,26 +33,6 @@ class Create extends Query{
      * @var array
      */
     private $types = [];
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Create
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify
-     *
-     * @param string $table
-     * @return Create
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
     
     /**
      * Set a column that you want to add.

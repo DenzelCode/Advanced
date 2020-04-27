@@ -30,6 +30,8 @@ use advanced\data\sql\query\Select;
 use advanced\data\sql\query\ShowColumns;
 use advanced\data\sql\query\Truncate;
 use advanced\data\sql\query\Update;
+use advanced\data\sql\table\ITable;
+use advanced\data\sql\table\Table;
 use PDOStatement;
 
 /**
@@ -53,117 +55,139 @@ abstract class SQL implements ISQL{
     abstract public function run() : void;
 
     /**
+     * Set the table to which you want to make a query.
+     *
+     * @param string $table
+     * @return ITable
+     */
+    public function table(string $table): ITable {
+        return new Table($this, $table);
+    }
+
+    /**
      * Generate a select query.
+     * Recommendation: Use $sql->table("table")->select(); instead.
      *
      * @param string|null $table
      * @return Select
      */
     public function select(?string $table = null) : Select {
-        return (new Select($this, $table));
+        return (new Select($this->table($table)));
     }
 
     /**
      * Generate an insert query.
+     * Recommendation: Use $sql->table("table")->insert(); instead.
      *
      * @param string|null $table
      * @return Insert
      */
     public function insert(?string $table = null) : Insert {
-        return (new Insert($this, $table));
+        return (new Insert($this->table($table)));
     }
 
     /**
      * Generate an update query.
+     * Recommendation: Use $sql->table("table")->update(); instead.
      *
      * @param string|null $table
      * @return Update
      */
     public function update(?string $table = null) : Update {
-        return (new Update($this, $table));
+        return (new Update($this->table($table)));
     }
 
     /**
      * Generate a delete query.
+     * Recommendation: Use $sql->table("table")->delete(); instead.
      *
      * @param string|null $table
      * @return Delete
      */
     public function delete(?string $table = null) : Delete {
-        return (new Delete($this, $table));
+        return (new Delete($this->table($table)));
     }
 
     /**
      * Generate a create query.
+     * Recommendation: Use $sql->table("table")->create(); instead.
      *
      * @param string|null $table
      * @return Create
      */
     public function create(?string $table = null) : Create {
-        return (new Create($this, $table));
+        return (new Create($this->table($table)));
     }
     
     /**
      * Generate a drop query.
+     * Recommendation: Use $sql->table("table")->drop(); instead.
      *
      * @param string|null $table
      * @return Drop
      */
     public function drop(?string $table = null) : Drop {
-        return (new Drop($this, $table));
+        return (new Drop($this->table($table)));
     }
 
     /**
      * Generate a query to show table columns.
+     * Recommendation: Use $sql->table("table")->showColumns(); instead.
      *
      * @param string|null $table
      * @return ShowColumns
      */
     public function showColumns(?string $table = null) : ShowColumns {
-        return (new ShowColumns($this, $table));
+        return (new ShowColumns($this->table($table)));
     }
 
     /**
      * Generate a query to add columns into a table. 
+     * Recommendation: Use $sql->table("table")->addColumns(); instead.
      *
      * @param string|null $table
      * @return AddColumns
      */
     public function addColumns(?string $table = null) : AddColumns {
-        return (new AddColumns($this, $table));
+        return (new AddColumns($this->table($table)));
     }
 
     /**
      * Generate a query to modify columns from a table.
+     * Recommendation: Use $sql->table("table")->modifyColumns(); instead.
      *
      * @param string|null $table
      * @return ModifyColumns
      */
     public function modifyColumns(?string $table = null) : ModifyColumns {
-        return (new ModifyColumns($this, $table));
+        return (new ModifyColumns($this->table($table)));
     }
 
     /**
      * Generate a query to drop columns from a table.
+     * Recommendation: Use $sql->table("table")->dropColumns(); instead.
      *
      * @param string|null $table
      * @return DropColumns
      */
     public function dropColumns(?string $table = null) : DropColumns {
-        return (new DropColumns($this, $table));
+        return (new DropColumns($this->table($table)));
     }
 
     /**
      * Generate a query to truncate a table.
+     * Recommendation: Use $sql->table("table")->truncate(); instead.
      *
      * @param string|null $table
      * @return Truncate
      */
     public function truncate(?string $table = null) : Truncate {
-        return (new Truncate($this, $table));
+        return (new Truncate($this->table($table)));
     }
 
     /**
      * Prepare the query.
+     * 
      * @param Query $query
      * @return PDOStatement
      */

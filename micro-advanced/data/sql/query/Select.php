@@ -51,26 +51,6 @@ class Select extends Query{
     private $order = null;
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Select
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Select
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
      * Set the ORDER BY attribute to the SQL query.
      *
      * @param string|null $table

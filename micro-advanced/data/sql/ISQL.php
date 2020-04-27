@@ -30,12 +30,15 @@ use advanced\data\sql\query\Select;
 use advanced\data\sql\query\ShowColumns;
 use advanced\data\sql\query\Truncate;
 use advanced\data\sql\query\Update;
+use advanced\data\sql\table\ITable;
 use PDOStatement;
 
 /**
  * ISQL interface
  */
 interface ISQL{
+
+    public function table(string $table): ITable;
 
     public function select(?string $table = null) : Select;
 

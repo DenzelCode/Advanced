@@ -23,26 +23,6 @@ namespace advanced\data\sql\query;
 class Truncate extends Query{
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Truncate
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Truncate
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
     * Generate the query string of the object.
     *
     * @return string

@@ -17,12 +17,14 @@
 
 namespace advanced\data\sql\query;
 
+use advanced\data\sql\table\ITable;
+
 /**
  * IQuery class
  */
 interface IQuery{
 
-    public function getTable() : ?string;
+    public function getTable() : ?ITable;
 
     /**
      * Add WHERE parameter to the query.
@@ -31,7 +33,7 @@ interface IQuery{
      * @param array $execute
      * @return IQuery
      */
-    public function where(string $where, array $execute = []) : IQuery;
+    public function where(string $where, $execute = []) : IQuery;
 
     public function toQuery() : string;
 

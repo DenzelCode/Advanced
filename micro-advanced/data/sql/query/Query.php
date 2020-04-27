@@ -18,6 +18,7 @@
 namespace advanced\data\sql\query;
 
 use advanced\data\sql\ISQL;
+use advanced\data\sql\table\ITable;
 use PDOStatement;
 
 /**
@@ -31,7 +32,7 @@ abstract class Query implements IQuery{
     protected $sql = null;
 
     /**
-     * @var string
+     * @var ITable
      */
     protected $table = null;
 
@@ -58,32 +59,10 @@ abstract class Query implements IQuery{
     /**
      * @param ISQL $sql
      */
-    public function __construct(ISQL $sql, string $table = null) {
-        $this->sql = $sql;
+    public function __construct(ITable $table = null) {
+        $this->sql = $table->getSQL();
 
         $this->table = $table;
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return IQuery
-     */
-    public function setTable(string $table) : IQuery {
-        $this->table = $table;
-
-        return $this;
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return IQuery
-     */
-    public function table(string $table) : IQuery {
-        return $this->setTable($table);
     }
 
     /**
@@ -111,9 +90,9 @@ abstract class Query implements IQuery{
     /**
      * Get the table that you want to modify.
      *
-     * @return string|null
+     * @return ITable
      */
-    public function getTable() : ?string {
+    public function getTable() : ?ITable {
         return $this->table;
     }
 

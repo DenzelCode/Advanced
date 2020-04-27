@@ -33,26 +33,6 @@ class ModifyColumns extends Query{
     private $values = [];
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return ModifyColumns
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return ModifyColumns
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
      * Set a column that you want to modify.
      *
      * @param string $column

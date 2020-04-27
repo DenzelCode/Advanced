@@ -25,26 +25,6 @@ use PDOStatement;
 class Delete extends Query{
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Delete
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Delete
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
      * Set the LIMIT attribute to the SQL query.
      *
      * @param int $limit

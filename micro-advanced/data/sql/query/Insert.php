@@ -36,26 +36,6 @@ class Insert extends Query{
     private $values = [];
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Insert
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return Insert
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
      * Set the column name and the value that you want to asign to the row.
      *
      * @param string $field

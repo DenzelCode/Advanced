@@ -25,26 +25,6 @@ class DropColumns extends Query{
     private $columns = [];
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return DropColumns
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return DropColumns
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
      * Set a column that you want to drop by string.
      *
      * @param string $column

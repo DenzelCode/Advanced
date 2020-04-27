@@ -30,26 +30,6 @@ class ShowColumns extends Query{
     private $like = null;
 
     /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return ShowColumns
-     */
-    public function setTable(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
-     * Set the table that you want to modify.
-     *
-     * @param string $table
-     * @return ShowColumns
-     */
-    public function table(string $table) : IQuery {
-        return parent::setTable($table);
-    }
-
-    /**
      * Execute the Query and return an PDOStatement Object so you can fetch results.
      *
      * @return PDOStatement
