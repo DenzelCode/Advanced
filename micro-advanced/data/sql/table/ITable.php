@@ -30,6 +30,7 @@ use advanced\data\sql\query\Select;
 use advanced\data\sql\query\ShowColumns;
 use advanced\data\sql\query\Truncate;
 use advanced\data\sql\query\Update;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * ISQL interface
@@ -39,6 +40,8 @@ interface ITable
     public function getName(): string;
 
     public function getSQL(): ISQL;
+
+    public function exists(): bool;
 
     public function select(): Select;
 

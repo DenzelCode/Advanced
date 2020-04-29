@@ -38,6 +38,8 @@ use PDOStatement;
  */
 interface ISQL{
 
+    public function isConnected(): bool;
+
     public function table(string $table): ITable;
 
     public function select(?string $table = null) : Select;

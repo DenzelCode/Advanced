@@ -177,6 +177,15 @@ class Table implements ITable {
         return (new Truncate($this));
     }
 
+    /**
+     * Check if the table exists.
+     *
+     * @return boolean
+     */
+    public function exists(): bool {
+        return $this->select()->executeBool();
+    }
+
     public function __toString() {
         return $this->name;
     }

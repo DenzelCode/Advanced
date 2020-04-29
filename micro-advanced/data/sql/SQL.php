@@ -45,6 +45,11 @@ abstract class SQL implements ISQL{
     protected $con;
 
     /**
+     * @var boolean
+     */
+    protected $connected = false;
+
+    /**
      * @var PDOStatement
      */
     protected $lastStatement;
@@ -62,6 +67,15 @@ abstract class SQL implements ISQL{
      */
     public function table(string $table): ITable {
         return new Table($this, $table);
+    }
+
+    /**
+     * Get if the SQL instance is connected.
+     *
+     * @return boolean
+     */
+    public function isConnected(): bool {
+       return $this->connected; 
     }
 
     /**

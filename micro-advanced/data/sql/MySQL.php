@@ -89,6 +89,8 @@ class MySQL extends SQL{
             $this->con = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database};charset=utf8mb4", $this->username, $this->password);
 
             foreach ($options as $key => $value) $this->con->setAttribute($key, $value);
+
+            $this->connected = true;
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
@@ -190,9 +192,9 @@ class MySQL extends SQL{
      */
     public function import(array $import) : void {
         foreach ($import as $table => $columns) {
-            $query = $this->select($table)->executeBool();
+            $table = $this->table($table);
 
-            if (!$query && !$this->create($table)->columns($columns)->execute()) throw new DatabaseException(1, "exception.database.create_table", $table, $this->getLastError());
+            if (!$table->exists() && !$table->create()->columns($columns)->execute()) throw new DatabaseException(1, "exception.database.create_table", $table, $this->getLastError());
         }
     }
 
@@ -205,18 +207,18 @@ class MySQL extends SQL{
      */
     public function modify(array $tables) : void {
         foreach ($tables as $table => $columns) {
-            $query = $this->select($table)->executeBool();
+            $table = $this->table($table);
 
-            if (!$query) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
+            if (!$table->exists()) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
     
             $colms = [];
 
-            foreach ($this->showColumns($table)->fetchAll() as $column) $colms[] = $colms["Field"];
+            foreach ($table->showColumns()->fetchAll() as $column) $colms[] = $colms["Field"];
 
             foreach ($columns as $column => $type) {
-                $execute = in_array($column, $colms) ? $this->addColumns($table)->column($column, $type) : $this->modifyColumns($table)->column($column, $type);
+                $execute = in_array($column, $colms) ? $table->addColumns()->column($column, $type) : $table->modifyColumns()->column($column, $type);
 
-                if (!$execute) throw new DatabaseException(2, "exception.database.modify_column", $table, $this->getLastError());
+                if (!$execute) throw new DatabaseException(2, "exception.database.modify_column", $table->getName(), $this->getLastError());
             }
         }
     }
