@@ -74,6 +74,17 @@ class File implements IFile{
     }
 
     /**
+     * Append content into a file.
+     *
+     * @param string $content
+     * @return void
+     * @throws FileException
+     */
+    public function append(string $content) : void {
+        $this->write($this->read() . $content);
+    }
+
+    /**
      * Create file and directories if not exists.
      *
      * @param string $default
