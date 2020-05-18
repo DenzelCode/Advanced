@@ -19,6 +19,7 @@ namespace advanced\http\router;
 
 use advanced\controllers\Controller;
 use advanced\file\UploadFile;
+use advanced\http\Post;
 
 class Request{
 
@@ -302,5 +303,17 @@ class Request{
         if ($userIP == "::1" || $userIP == "0.1.0.0" || empty($userIP)) $userIP = "127.0.0.1";
 
         return $userIP;
+    }
+
+    /**
+     * Get POST parameter/s.
+     *
+     * @param string|string[] $parameter Name/names of the POST parameters that you want to get.
+     * @param mixed $default Default value on the POST parameter.
+     * @param boolean $common True = $_POST, False = php://input.
+     * @return void
+     */
+    public function post($parameter, $default = null, bool $common = true) {
+        return (is_array($parameter) ? Post::get($parameter, $common) : Post::get([ $parameter => $default ], $common)[$parameter]);
     }
 }

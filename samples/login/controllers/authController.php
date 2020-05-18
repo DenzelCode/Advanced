@@ -50,7 +50,7 @@ class authController extends Controller {
 
         $response["type"] = "error";
 
-        $pop = Post::get([
+        $pop = $this->request->post([
             "username" => null,
             "password" => null,
             "remember" => null
@@ -105,7 +105,7 @@ class authController extends Controller {
 
         $response["type"] = "error";
 
-        $pop = Post::get([
+        $pop = $this->request->post([
             "username" => null,
             "password" => null,
             "mail" => null,

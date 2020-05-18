@@ -28,7 +28,7 @@ class Post{
      * Get parameters from the $_POST var or php://input.
      *
      * @param array $pop
-     * @param boolean $common
+     * @param boolean True = $_POST, False = php://input.
      * @return mixed
      */
     public static function get(array $pop, bool $common = true) {
