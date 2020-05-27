@@ -310,7 +310,5 @@ class Mail {
      */
     public static function setConfigPath(string $configPath) : void {
         self::$configPath = $configPath;
-
-        $this->config = new Config($configPath);
     }
 }
