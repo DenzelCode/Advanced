@@ -37,7 +37,7 @@ class MySQLProvider implements IProvider{
     /**
      * @var string
      */
-    protected static $table = "users";
+    protected $table = "users";
 
     /**
      * Initialize provider
@@ -49,6 +49,8 @@ class MySQLProvider implements IProvider{
         if (!Bootstrap::getSQL()) throw new DatabaseException(0, "exception.database.needed");
 
         $this->sql = $sql;
+
+        $this->setup();
     }
 
     /**
@@ -56,12 +58,10 @@ class MySQLProvider implements IProvider{
      *
      * @return void
      */
-    public static function setup(): void{
+    public function setup(): void{
         $config = new Config(Database::getConfigPath());
 
-        $table = self::$table;
-
-        $config->setIfNotExists("import.{$table}", [
+        $config->setIfNotExists("import.{$this->table}", [
             "id" => "int(11) PRIMARY KEY AUTO_INCREMENT",
             "username" => "varchar(255)",
             "firstname" => "varchar(255)",
