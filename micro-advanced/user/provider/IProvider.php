@@ -24,6 +24,8 @@ use advanced\user\IUser;
  */
 interface IProvider{
 
+    public function setup(): void;
+
     public function getAll(IUser $user) : array;
 
     public function set(IUser $user, array $data) : bool;

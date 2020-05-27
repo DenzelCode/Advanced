@@ -40,7 +40,7 @@ class User extends AbstractUser {
 
         $this->password = $password;
 
-        UsersFactory::setupTable();
+        UsersFactory::setup();
 
         if (!$this->exists()) {
             $config = Bootstrap::getMainConfig();

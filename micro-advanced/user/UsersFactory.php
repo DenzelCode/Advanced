@@ -58,6 +58,10 @@ class UsersFactory {
         self::$provider = new MySQLProvider(Bootstrap::getSQL());
     }
 
+    public static function setup(): void {
+        self::$provider->setup();
+    }
+
     /**
      * @return UsersFactory
      */
@@ -139,7 +143,7 @@ class UsersFactory {
      *
      * @param string $name
      * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
-     * @return User|null
+     * @return User
      */
     public function getUser(string $name, ?string $password = null) : ?User {
         $return = null;
@@ -154,7 +158,7 @@ class UsersFactory {
      *
      * @param integer $id
      * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
-     * @return User|null
+     * @return User
      */
     public function getUserById(int $id, ?string $password = null) : ?User {
         $return = null;
@@ -169,7 +173,7 @@ class UsersFactory {
      *
      * @param string $mail
      * @param string|null $password If you want to sign in using $user->authenticate(), put the non-hashed password here.
-     * @return User|null
+     * @return User
      */
     public function getUserByMail(string $mail, ?string $password = null) : ?User {
         $return = null;
