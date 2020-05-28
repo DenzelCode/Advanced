@@ -88,7 +88,7 @@ class environment
         define("ADVANCED", MAIN . "micro-advanced" . DIRECTORY_SEPARATOR);
         define("TESTS", MAIN . "tests" . DIRECTORY_SEPARATOR);
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
-        define("PUBLIC", PROJECT . "public");
+        define("PROJECT_PUBLIC", PROJECT . "public" . DIRECTORY_SEPARATOR);
 
         if (!$test) self::autoload();
 
