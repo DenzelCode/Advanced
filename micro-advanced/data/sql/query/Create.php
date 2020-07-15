@@ -85,6 +85,10 @@ class Create extends Query{
         
         return $this;
     }
+    
+    public function id(): Create {
+        return $this->setColumn("id", "int(11) PRIMARY KEY AUTO_INCREMENT");
+    }
 
     /**
      * Set the columns that you want to add by array.
