@@ -86,6 +86,11 @@ class Create extends Query{
         return $this;
     }
     
+    /**
+     * Create a column named "id" as primary key with auto increment.
+     *
+     * @return Create
+     */
     public function id(): Create {
         return $this->setColumn("id", "int(11) PRIMARY KEY AUTO_INCREMENT");
     }
