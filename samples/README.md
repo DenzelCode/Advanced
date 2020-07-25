@@ -1,1 +1,3 @@
-## Drag a folder from here into the root directory and rename it into project (delete the default project directory)
+# Advanced Login and Register example.
+
+Drag a folder from here into the root directory and rename it into project (delete the default project directory)
