@@ -251,10 +251,10 @@ class TemplateProvider{
      * @param boolean $create
      * @return string
      */
-    public static function get(string $template, bool $cache = true, bool $create = true) : string {
+    public static function get(string $template, bool $cache = true, bool $create = true, string $extension = ".atpl") : string {
         $templateName = self::getPath() . "views" . DIRECTORY_SEPARATOR . $template;
 
-        $templatePath = new File($templateName . ".atpl");
+        $templatePath = new File($templateName . $extension);
 
         $templateCache = new File(self::getPath() . "cache" . DIRECTORY_SEPARATOR . $template .  ".php");
 
