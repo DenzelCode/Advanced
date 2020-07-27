@@ -15,7 +15,7 @@
  * 
  */
 
-namespace advanced\components;
+namespace advanced\language;
 
 use advanced\config\Config;
 use advanced\config\IConfig;
