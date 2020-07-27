@@ -8,7 +8,7 @@ use advanced\http\router\Request;
 use advanced\session\SessionManager;
 use advanced\user\Guest;
 use advanced\user\IUser;
-use advanced\user\UsersFactory;
+use advanced\user\UserFactory;
 
 /**
 * Auth class
@@ -66,7 +66,7 @@ class Auth implements IAuth {
 
         if (!self::get("user_id") && !self::get("username") && !self::get("auth_code")) return false;
 
-        $user = Bootstrap::getUsersFactory()->getUser(self::get("username"));
+        $user = Bootstrap::getUserFactory()->getUser(self::get("username"));
 
         if (!$user) return false;
 
@@ -83,13 +83,13 @@ class Auth implements IAuth {
      * @return IUser|null
      */
     public static function getUser() : ?IUser {
-        $guest = UsersFactory::getGuestObject();
+        $guest = UserFactory::getGuestObject();
 
         if (!Bootstrap::getSQL()) return new $guest();
 
         if (!self::check()) return new $guest();
         
-        $user = Bootstrap::getUsersFactory()->getUser(self::get("username"));
+        $user = Bootstrap::getUserFactory()->getUser(self::get("username"));
 
         if (!$user) return new $guest();
 

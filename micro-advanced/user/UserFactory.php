@@ -23,12 +23,12 @@ use advanced\user\provider\IProvider;
 use advanced\user\provider\MySQLProvider;
 
 /**
- * UsersFactory class
+ * UserFactory class
  */
-class UsersFactory {
+class UserFactory {
 
     /**
-     * @var UsersFactory|null
+     * @var UserFactory|null
      */
     private static $instance;
 
@@ -63,9 +63,9 @@ class UsersFactory {
     }
 
     /**
-     * @return UsersFactory
+     * @return UserFactory
      */
-    public static function getInstance() : ?UsersFactory {
+    public static function getInstance() : ?UserFactory {
         return self::$instance;
     }
 

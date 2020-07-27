@@ -18,10 +18,10 @@
 namespace advanced\user;
 
 use advanced\Bootstrap;
-use advanced\exceptions\UserException;
+use advanced\exceptions\{UserException, MailerException};
 use advanced\user\auth\Auth;
 use advanced\mailer\Mail;
-use advanced\mailer\Receipient;
+use advanced\mailer\{Receipient, Attachment};
 
 /**
  * User class
@@ -40,7 +40,7 @@ class User extends AbstractUser {
 
         $this->password = $password;
 
-        UsersFactory::setup();
+        UserFactory::setup();
 
         if (!$this->exists()) {
             $config = Bootstrap::getMainConfig();
@@ -58,7 +58,7 @@ class User extends AbstractUser {
             } else if (!$this->create()) throw new UserException(3, "exception.database.error", Bootstrap::getSQL()->getLastError());
         }
 
-        $fetch = UsersFactory::getProvider()->getAll($this);
+        $fetch = UserFactory::getProvider()->getAll($this);
 
         if ($fetch) $this->data = $fetch;
     }
@@ -69,10 +69,12 @@ class User extends AbstractUser {
      * @param string $server
      * @param string $subject
      * @param string $body
+     * @param Attachment|Attachment[] $attachments
+     * @throws MailerException
      * @return void
      */
-    public function sendMail(string $server, string $subject, string $body) : void {
-        Mail::sendMail($server, $subject, $body, null, new Receipient($this->getName(), $this->getMail()));
+    public function sendMail(string $server, string $subject, string $body, $attachments = null, bool $html = true) : bool {
+        return Mail::sendMail($server, $subject, $body, $attachments, new Receipient($this->getName(), $this->getMail()));
     }
     
     /**
@@ -81,7 +83,7 @@ class User extends AbstractUser {
      * @return void
      */
     public function updateData() : void {
-        $this->data = UsersFactory::getProvider()->getAll($this);
+        $this->data = UserFactory::getProvider()->getAll($this);
     }
 
     /**
@@ -92,7 +94,7 @@ class User extends AbstractUser {
     public function delete() : bool {
         if (!$this->exists()) return false;
 
-        return UsersFactory::getProvider()->delete($this);
+        return UserFactory::getProvider()->delete($this);
     }
 
     /**
@@ -101,7 +103,7 @@ class User extends AbstractUser {
      * @return boolean
      */
     public function create() : bool {
-        return UsersFactory::getProvider()->create($this->data);
+        return UserFactory::getProvider()->create($this->data);
     }
 
     /**
@@ -110,7 +112,7 @@ class User extends AbstractUser {
      * @return boolean
      */
     public function exists() : bool {
-        $data = UsersFactory::getProvider()->getAll($this);
+        $data = UserFactory::getProvider()->getAll($this);
 
         return !empty($data);
     }
@@ -124,7 +126,7 @@ class User extends AbstractUser {
     public function setByArray(array $data) : bool {
         foreach ($data as $key => $value) $this->data[$key] = $value;
 
-        return UsersFactory::getProvider()->set($this, $data);
+        return UserFactory::getProvider()->set($this, $data);
     }
 
     /**

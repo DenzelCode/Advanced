@@ -280,7 +280,14 @@ class Mail {
 
         $attachments = (is_null($attachments) ? [] : ($attachments instanceof Attachment ? [$attachments] : (is_array($attachments) ? $attachments : [])));
 
-        return (new Mail($server))->setSubject($subject)->setBody($body)->setReplyTo($replyTo)->addRecipients($recipients)->addAttachments($attachments)->setHTML($html)->send();
+        return (new Mail($server))
+            ->setSubject($subject)
+            ->setBody($body)
+            ->setReplyTo($replyTo)
+            ->addRecipients($recipients)
+            ->addAttachments($attachments)
+            ->setHTML($html)
+            ->send();
     }
 
     /**
