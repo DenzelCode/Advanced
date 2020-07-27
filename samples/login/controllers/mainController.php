@@ -191,6 +191,10 @@ class mainController extends Controller {
         return "Testing method: {$method}";
     }
 
+    public function testingAllN(string $method = Request::ALL) : string {
+        return "Testing method: {$method}";
+    }
+
     /**
      * Url: /error404, this is going to be run by default when an URL doesn't exists or if you access /error404 url.
      *

@@ -96,25 +96,6 @@ class User extends AbstractUser {
     }
 
     /**
-     * Authenticate account.
-     *
-     * @param string|null $password
-     * @param boolean $cookie
-     * @return boolean
-     */
-    public function authenticate(?string $password = null, bool $cookie = false) : bool {
-        if ($password) $this->password = $password;
-
-        if ($this->exists()) {
-            if (empty($this->password)) return false;
-
-            return Auth::attempt($this->password, $this, $cookie);
-        }
-
-        return false;
-    }
-
-    /**
      * Create user.
      * 
      * @return boolean
@@ -153,16 +134,6 @@ class User extends AbstractUser {
      */
     public function getAll() : array {
         return !empty($this->data) ? $this->data : [];
-    }
-
-    /**
-     * Verify if the password match with user password.
-     *
-     * @param string $password
-     * @return boolean
-     */
-    public function verify(string $password): bool {
-        return Auth::verify($password, $this->getPassword());
     }
 }
 

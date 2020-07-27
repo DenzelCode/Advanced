@@ -21,7 +21,7 @@ use advanced\Bootstrap;
 use PDO;
 use advanced\exceptions\DatabaseException;
 use advanced\config\Config;
-use advanced\data\sql\MySQL;
+use advanced\sql\MySQL;
 use PDOException;
 use PDOStatement;
 

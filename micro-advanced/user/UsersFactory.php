@@ -54,7 +54,7 @@ class UsersFactory {
      */
     public function __construct() {
         self::$instance = $this;
-        
+
         self::$provider = new MySQLProvider(Bootstrap::getSQL());
     }
 

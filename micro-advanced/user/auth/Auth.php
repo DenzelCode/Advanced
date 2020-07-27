@@ -125,7 +125,7 @@ class Auth implements IAuth {
      * @return mixed
      */
     public static function get(string $data) {
-        return SessionManager::get($data);
+        return SessionManager::getFromSessionOrCookie($data);
     }
 
     /**
@@ -136,7 +136,9 @@ class Auth implements IAuth {
      * @return void
      */
     public static function unset(array $data, string $directory = "/") {
-        SessionManager::deleteByArray($data, $directory);
+        SessionManager::deleteByArray($data);
+        
+        SessionManager::deleteByArray($data, true, $directory);
     }
 
     /**

@@ -321,8 +321,8 @@ class Request{
     /**
      * Get GET parameter/s.
      *
-     * @param string|string[] $parameter name/names of the POST parameters that you want to get.
-     * @param mixed $default Default value on the POST parameter.
+     * @param string|string[] $parameter name/names of the GET parameters that you want to get.
+     * @param mixed $default Default value on the GET parameter.
      * @return mixed
      */
     public function get($parameter, $default = null) {

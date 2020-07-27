@@ -20,7 +20,7 @@ namespace advanced\user\provider;
 use advanced\Bootstrap;
 use advanced\config\Config;
 use advanced\data\Database;
-use advanced\data\sql\ISQL;
+use advanced\sql\ISQL;
 use advanced\exceptions\DatabaseException;
 use advanced\user\IUser;
 

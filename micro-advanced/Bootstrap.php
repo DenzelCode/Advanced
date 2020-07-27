@@ -23,7 +23,7 @@ use advanced\http\router\Request;
 use advanced\language\Language;
 use advanced\config\IConfig;
 use advanced\data\Database;
-use advanced\data\sql\ISQL;
+use advanced\sql\ISQL;
 use advanced\exceptions\AdvancedException;
 use advanced\exceptions\ConfigException;
 use advanced\user\UsersFactory;

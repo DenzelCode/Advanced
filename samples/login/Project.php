@@ -21,7 +21,7 @@ use advanced\project\Project as BaseProject;
 use advanced\exceptions\DatabaseException;
 use advanced\template\TemplateProvider;
 use advanced\Bootstrap;
-use advanced\data\sql\MySQL;
+use advanced\sql\MySQL;
 
 /**
 * Project class

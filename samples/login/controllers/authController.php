@@ -99,7 +99,7 @@ class authController extends Controller {
      * @param string $method
      * @return string
      */
-    public function register(string $method = Request::POST) : string {
+    public function register(string $method = Request::ALL) : string {
         // Register
         $response = [];
 

@@ -39,6 +39,11 @@ abstract class AbstractUser implements IUser
     protected $password = null;
 
     /**
+     * @var string
+     */
+    protected static $authProvider = "\\advanced\\user\\auth\\Auth";
+
+    /**
      * Get user id.
      * 
      * @return int
@@ -173,7 +178,17 @@ abstract class AbstractUser implements IUser
      * @param boolean $cookie
      * @return boolean
      */
-    abstract public function authenticate(?string $password = null, bool $cookie = false): bool;
+    public function authenticate(?string $password = null, bool $cookie = false) : bool {
+        if ($password) $this->password = $password;
+
+        if ($this->exists()) {
+            if (empty($this->password)) return false;
+
+            return call_user_func_array([self::$authProvider, "attempt"], [$this->password, $this, $cookie]);
+        }
+
+        return false;
+    }
 
     /**
      * Create account.
@@ -279,5 +294,26 @@ abstract class AbstractUser implements IUser
      * @param string $password
      * @return boolean
      */
-    abstract public function verify(string $password): bool;
+    public function verify(string $password): bool {
+        return call_user_func_array([self::$authProvider, "verify"], [$password, $this->getPassword()]);
+    }
+
+    /**
+     * Set the auth provider class.
+     *
+     * @param string $class
+     * @return void
+     */
+    public static function setAuthProvider(string $class): void {
+        self::$authProvider = $class;
+    }
+
+    /**
+     * Get auth provider class.
+     *
+     * @return string
+     */
+    public static function getAuthProvider(): string {
+        return self::$authProvider;
+    }
 }
