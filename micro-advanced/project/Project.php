@@ -18,7 +18,7 @@
 namespace advanced\project;
 
 use advanced\Bootstrap;
-use advanced\components\Language;
+use advanced\language\Language;
 use advanced\config\Config;
 use advanced\config\IConfig;
 use advanced\data\Database;

@@ -24,7 +24,7 @@ use advanced\Bootstrap;
 */	
 class AdvancedException extends Exception {
 
-    public function getLanguage(): \advanced\components\Language {
+    public function getLanguage(): \advanced\language\Language {
         return Bootstrap::getMainLanguage();
     }
 }

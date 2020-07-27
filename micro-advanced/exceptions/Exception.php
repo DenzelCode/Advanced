@@ -18,7 +18,7 @@
 namespace advanced\exceptions;
 
 use advanced\Bootstrap;
-use advanced\components\Language;
+use advanced\language\Language;
 
 /**
 * Exeption class

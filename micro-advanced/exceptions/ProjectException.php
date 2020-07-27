@@ -24,7 +24,7 @@ use advanced\Bootstrap;
 */	
 class ProjectException extends Exception {
 
-    public function getLanguage(): \advanced\components\Language {
+    public function getLanguage(): \advanced\language\Language {
         return Bootstrap::getLanguage();
     }
 }

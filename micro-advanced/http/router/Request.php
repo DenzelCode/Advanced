@@ -89,13 +89,13 @@ class Request{
 
         $controller = (file_exists($this->getControllerFile(ADVANCED)) ? $this->getControllerFile(ADVANCED) : $this->getControllerFile(PROJECT));
 
-        $i = file_exists($controller) ? 2 : 1;
-
         if (!file_exists($controller)) {
             $this->controller = "main";
 
             $this->method = !empty($route[0]) ? $route[0] : "index";
-        }
+
+            $i = 1;
+        } else $i = 2;
 
         for ($i; $i < count($route); $i++) $this->arguments[$i] = $route[$i];
     }
@@ -312,7 +312,7 @@ class Request{
      * @param string|string[] $parameter name/names of the POST parameters that you want to get.
      * @param mixed $default Default value on the POST parameter.
      * @param boolean $common True = $_POST, False = php://input.
-     * @return void
+     * @return mixed
      */
     public function post($parameter, $default = null, bool $common = true) {
         return (is_array($parameter) ? Post::get($parameter, $common) : Post::get([ $parameter => $default ], $common)[$parameter]);
@@ -323,7 +323,7 @@ class Request{
      *
      * @param string|string[] $parameter name/names of the POST parameters that you want to get.
      * @param mixed $default Default value on the POST parameter.
-     * @return void
+     * @return mixed
      */
     public function get($parameter, $default = null) {
         return (is_array($parameter) ? Get::get($parameter) : Get::get([ $parameter => $default ])[$parameter]);

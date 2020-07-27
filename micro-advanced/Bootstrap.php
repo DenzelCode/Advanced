@@ -20,7 +20,7 @@ namespace advanced;
 use advanced\config\Config;
 use advanced\http\Response;
 use advanced\http\router\Request;
-use advanced\components\Language;
+use advanced\language\Language;
 use advanced\config\IConfig;
 use advanced\data\Database;
 use advanced\data\sql\ISQL;
