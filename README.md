@@ -52,7 +52,7 @@ php -S localhost:8000
 
 Xampp [Windows](https://www.apachefriends.org/xampp-files/7.4.2/xampp-windows-x64-7.4.2-0-VC15-installer.exe) | [Linux](https://www.apachefriends.org/xampp-files/7.4.2/xampp-linux-x64-7.4.2-0-installer.run) | [OS X](https://www.apachefriends.org/xampp-files/7.4.2/xampp-osx-7.4.2-0-vm.dmg), **IIS** or **Hosting**
 
-Postdata: To use _IIS_ you are required to set the /project/public path as the root directory.
+Postdata: To use **IIS** you are required to set the /project/public path as the root directory.
 
 ## Authors
 
