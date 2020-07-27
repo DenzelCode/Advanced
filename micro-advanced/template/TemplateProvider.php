@@ -22,7 +22,7 @@ use advanced\file\File;
 use project\Project;
 use advanced\http\router\Request;
 use advanced\user\auth\Auth;
-use advanced\user\UsersFactory;
+use advanced\user\UserFactory;
 
 class TemplateProvider{
 
@@ -331,7 +331,7 @@ class TemplateProvider{
             "url" => Request::getInstance()->getFullURL(),
             "database" => Bootstrap::getDatabase(),
             "sql" => Bootstrap::getSQL(),
-            "usersFactory" => UsersFactory::getInstance()
+            "UserFactory" => UserFactory::getInstance()
         ];
     }
 

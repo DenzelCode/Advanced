@@ -26,7 +26,7 @@ use advanced\data\Database;
 use advanced\sql\ISQL;
 use advanced\exceptions\AdvancedException;
 use advanced\exceptions\ConfigException;
-use advanced\user\UsersFactory;
+use advanced\user\UserFactory;
 use advanced\project\Project;
 use environment;
 
@@ -188,10 +188,10 @@ class Bootstrap{
     /**
      * Get users factory.
      * 
-     * @return UsersFactory
+     * @return UserFactory
      */
-    public static function getUsersFactory() : UsersFactory {
-        if (empty(self::$classes["users"])) self::$classes["users"] = new UsersFactory();
+    public static function getUserFactory() : UserFactory {
+        if (empty(self::$classes["users"])) self::$classes["users"] = new UserFactory();
         
         return self::$classes["users"];
     }

@@ -56,10 +56,10 @@ class authController extends Controller {
             "remember" => null
         ]);
 
-        $user = Bootstrap::getUsersFactory()->getUser((string) $pop["username"]);
+        $user = Bootstrap::getUserFactory()->getUser((string) $pop["username"]);
 
         // Get user by mail
-        if (!$user) $user = Bootstrap::getUsersFactory()->getUserByMail((string) $pop["username"]);
+        if (!$user) $user = Bootstrap::getUserFactory()->getUserByMail((string) $pop["username"]);
 
         $language = Bootstrap::getLanguage();
 
@@ -113,15 +113,15 @@ class authController extends Controller {
         ]);
 
         // Get user
-        $user = Bootstrap::getUsersFactory()->getUser((string) $pop["username"]);
+        $user = Bootstrap::getUserFactory()->getUser((string) $pop["username"]);
 
-        $mailUser = Bootstrap::getUsersFactory()->getUserByMail((string) $pop["mail"]);
+        $mailUser = Bootstrap::getUserFactory()->getUserByMail((string) $pop["mail"]);
 
         $accountsLimit = Bootstrap::getConfig()->get("sign_up.accounts_limit");
 
         $ip = $this->request->getIp();
 
-        if ($accountsLimit) $usersByIp = Bootstrap::getUsersFactory()->getUsersByIp($ip);
+        if ($accountsLimit) $usersByIp = Bootstrap::getUserFactory()->getUsersByIp($ip);
 
         if (empty($usersByIp)) $usersByIp = [];
 
@@ -166,7 +166,7 @@ class authController extends Controller {
 
                 // Create user with data $data (keys are the columns from the database)
 
-                $user = Bootstrap::getUsersFactory()->createUser($data, $pop["password"]);
+                $user = Bootstrap::getUserFactory()->createUser($data, $pop["password"]);
 
                 // Authenticate the account and log in
 

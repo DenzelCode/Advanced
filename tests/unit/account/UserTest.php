@@ -34,7 +34,7 @@ class UserTest extends TestCase {
     }
 
     public function testCreateAccount() : void {
-        $user = Bootstrap::getUsersFactory()->createUser([
+        $user = Bootstrap::getUserFactory()->createUser([
             "username" => "dsdxzzx",
             "password" => Auth::hash("testing"),
             "mail" => "testing@example.com",
