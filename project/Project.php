@@ -22,6 +22,7 @@ use advanced\project\Project as BaseProject;
 class Project extends BaseProject {
 
     public function init() : void {
+        // Initialize the router
         self::initRouter();
     }
 

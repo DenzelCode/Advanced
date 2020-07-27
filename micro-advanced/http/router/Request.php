@@ -9,8 +9,8 @@
  * (at your option) any later version.
  *
  * 
- * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
+ * @copyright Copyright (c) 2019 - 2020 Advanced microFramework
+ * @author Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
  * 
  */
@@ -20,6 +20,7 @@ namespace advanced\http\router;
 use advanced\controllers\Controller;
 use advanced\file\UploadFile;
 use advanced\http\Post;
+use advanced\http\Get;
 
 class Request{
 
@@ -308,12 +309,23 @@ class Request{
     /**
      * Get POST parameter/s.
      *
-     * @param string|string[] $parameter Name/names of the POST parameters that you want to get.
+     * @param string|string[] $parameter name/names of the POST parameters that you want to get.
      * @param mixed $default Default value on the POST parameter.
      * @param boolean $common True = $_POST, False = php://input.
      * @return void
      */
     public function post($parameter, $default = null, bool $common = true) {
         return (is_array($parameter) ? Post::get($parameter, $common) : Post::get([ $parameter => $default ], $common)[$parameter]);
+    }
+
+    /**
+     * Get GET parameter/s.
+     *
+     * @param string|string[] $parameter name/names of the POST parameters that you want to get.
+     * @param mixed $default Default value on the POST parameter.
+     * @return void
+     */
+    public function get($parameter, $default = null) {
+        return (is_array($parameter) ? Get::get($parameter) : Get::get([ $parameter => $default ])[$parameter]);
     }
 }

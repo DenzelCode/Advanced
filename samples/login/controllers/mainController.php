@@ -9,15 +9,15 @@
  * (at your option) any later version.
  *
  * 
- * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
+ * @copyright Copyright (c) 2019 - 2020 Advanced microFramework
+ * @author Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
  * 
  */
 
 namespace project\controllers;
 
-use advanced\body\template\TemplateProvider;
+use advanced\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\controllers\Controller;
 use advanced\http\Response;

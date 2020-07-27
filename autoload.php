@@ -9,8 +9,8 @@
  * (at your option) any later version.
  *
  * 
- * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
+ * @copyright Copyright (c) 2019 - 2020 Advanced microFramework
+ * @author Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
  * 
  */
@@ -97,7 +97,7 @@ class autoload {
         foreach ($this->prefixes[$prefix] as $base_dir) {
             $file = $base_dir
                   . str_replace('\\', '/', $relative_class)
-				  . '.php';
+                  . '.php';
 				  
             if ($this->requireFile($file)) return $file;
         }
@@ -112,8 +112,12 @@ class autoload {
 	 * @throws FileException
      */
     protected function requireFile($file) : bool {
-        if (file_exists($file)) require_once $file;
-		
-        throw new FileException(0, "exception.file.not_exist", $file);
+        if (file_exists($file)) {
+            require_once $file;
+
+            return true;
+        } else {
+            throw new FileException(0, "exception.file.not_exist", $file);
+        }
     }
 }

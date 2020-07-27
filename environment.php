@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 
  * Advanced microFramework
@@ -10,8 +9,8 @@
  * (at your option) any later version.
  *
  * 
- * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
+ * @copyright Copyright (c) 2019 - 2020 Advanced microFramework
+ * @author Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
  * 
  */
@@ -22,7 +21,7 @@ use advanced\exceptions\FileException;
 class environment
 {
 
-    public const VERSION = "2.0.3.77";
+    public const VERSION = "2.0.4";
     public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**

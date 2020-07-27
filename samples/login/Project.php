@@ -9,8 +9,8 @@
  * (at your option) any later version.
  *
  * 
- * @copyright Copyright (c) 2019 Advanced microFramework
- * @author    Advanced microFramework Team (Denzel Code, Soull Darknezz)
+ * @copyright Copyright (c) 2019 - 2020 Advanced microFramework
+ * @author Advanced microFramework Team (Denzel Code, Soull Darknezz)
  * @link https://github.com/DenzelCode/Advanced
  * 
  */
@@ -19,7 +19,7 @@ namespace project;
 
 use advanced\project\Project as BaseProject;
 use advanced\exceptions\DatabaseException;
-use advanced\body\template\TemplateProvider;
+use advanced\template\TemplateProvider;
 use advanced\Bootstrap;
 use advanced\data\sql\MySQL;
 
