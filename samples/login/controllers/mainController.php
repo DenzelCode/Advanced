@@ -75,7 +75,7 @@ class mainController extends Controller {
     }
 
     /**
-     * URL: /login returning the login template
+     * URL: /logged returning the login logged
      *
      * @param string $method
      * @return string
@@ -188,10 +188,6 @@ class mainController extends Controller {
      * @return string
      */
     public function testingAll(string $method = Request::ALL) : string {
-        return "Testing method: {$method}";
-    }
-
-    public function testingAllN(string $method = Request::ALL) : string {
         return "Testing method: {$method}";
     }
 
