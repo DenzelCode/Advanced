@@ -268,7 +268,7 @@ class Mail {
      * @param string $server
      * @param string $subject
      * @param string $body
-     * @param IPerson $replyTo
+     * @param ReplyTo $replyTo
      * @param Recipient|Recipient[]                                                                                                                                                                                                                                                                                                                                                                                                                                                 $recipients
      * @param Attachment|Attachment[] $attachments
      * @param boolean $html

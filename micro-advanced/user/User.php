@@ -21,7 +21,7 @@ use advanced\Bootstrap;
 use advanced\exceptions\{UserException, MailerException};
 use advanced\user\auth\Auth;
 use advanced\mailer\Mail;
-use advanced\mailer\{Receipient, Attachment};
+use advanced\mailer\{Receipient, Attachment, ReplyTo};
 
 /**
  * User class
@@ -69,12 +69,13 @@ class User extends AbstractUser {
      * @param string $server
      * @param string $subject
      * @param string $body
+     * @param ReplyTo $replyTo
      * @param Attachment|Attachment[] $attachments
      * @throws MailerException
      * @return void
      */
-    public function sendMail(string $server, string $subject, string $body, $attachments = null, bool $html = true) : bool {
-        return Mail::sendMail($server, $subject, $body, $attachments, new Receipient($this->getName(), $this->getMail()));
+    public function sendMail(string $server, string $subject, string $body, $replyTo = null, $attachments = null, bool $html = true) : bool {
+        return Mail::sendMail($server, $subject, $body, $replyTo, $attachments, new Receipient($this->getName(), $this->getMail()));
     }
     
     /**
