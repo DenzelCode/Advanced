@@ -331,7 +331,7 @@ class TemplateProvider{
             "url" => Request::getInstance()->getFullURL(),
             "database" => Bootstrap::getDatabase(),
             "sql" => Bootstrap::getSQL(),
-            "UserFactory" => UserFactory::getInstance()
+            "userFactory" => UserFactory::getInstance()
         ];
     }
 
