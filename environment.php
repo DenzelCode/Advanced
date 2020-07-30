@@ -22,7 +22,6 @@ class environment
 {
 
     public const VERSION = "2.0.5.7";
-    public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**
      * @var autoload
@@ -95,8 +94,6 @@ class environment
 
         (new Bootstrap());
 
-        if (!(version_compare(PHP_VERSION, self::REQUIRED_PHP_VERSION) >= 0)) die(Bootstrap::getMainLanguage()->get("exception.version", null, PHP_VERSION, self::REQUIRED_PHP_VERSION));
-
         if (file_exists(PROJECT . "Project.php")) {
             $project = new project\Project();
 
@@ -104,15 +101,5 @@ class environment
         }
 
         self::$initialized = true;
-    }
-
-    /**
-     * Get Advanced version.
-     *
-     * @return string
-     */
-    public static function getVersion(): string
-    {
-        return self::REQUIRED_PHP_VERSION;
     }
 }
