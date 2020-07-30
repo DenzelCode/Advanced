@@ -21,11 +21,6 @@
             "advanced\\": "micro-advanced/",
             "project\\": "project/"
         },
-        
-        "classmap": [
-            "./"
-        ],
-
         "exclude-from-classmap": [
             "/samples"
         ]
