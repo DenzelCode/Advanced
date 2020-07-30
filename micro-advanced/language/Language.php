@@ -151,7 +151,7 @@ class Language{
     /**
      * Get default language,
      *
-     * @return string|null
+     * @return string
      */
     public static function getDefaultLanguage() : ?string {
         return self::$defaultLanguage;
