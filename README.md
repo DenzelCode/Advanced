@@ -54,10 +54,11 @@ Xampp [Windows](https://www.apachefriends.org/xampp-files/7.4.2/xampp-windows-x6
 
 Postdata: To use **IIS** you are required to set the /project/public path as the root directory.
 
-## Authors
+## Contributors
 
 -   Denzel Code (Advanced main developer)
--   Soull Darknezz (Some folder structures, logo design, and code)
+-   Soull Darknezz
+-   mamazu
 
 ## Documentation
 
