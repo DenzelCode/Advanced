@@ -34,13 +34,25 @@ class Project extends BaseProject {
     public function init() : void {
         // Set all elements on the web section of the config into all templates parameters
         // Example: {@name}, {@cdn}, etc.
-        TemplateProvider::setParameters(self::$config->get("web"));
+        TemplateProvider::setParameters(slf::$config->get("web"));
+        
+        $config = self::$config;
+        
+        $config->setIfNotExists("database", [
+            "host" => "127.0.0.1",
+            "port" => 3306,
+            "username" => "root",
+            "password" => "",
+            "database" => "testing_project"
+        ])->saveIfModified();
+        
+        $dbConfig = $config->get("database");
 
         try {
             // Initialize MySQL
-            $sql = new MySQL(self::$config->get("database.host"), self::$config->get("database.port"), self::$config->get("database.username"), self::$config->get("database.password"), self::$config->get("database.database"));
-            
-            self::setSQL($sql);
+            $sql = new MySQL($dbConfig["host"], $dbConfig["port"], $dbConfig["username"], $dbConfig["password"], $dbConfig["database"]);
+
+            self::setSQL($sql)
         } catch (DatabaseException $e) {
             die($e->getMessage());
         }
