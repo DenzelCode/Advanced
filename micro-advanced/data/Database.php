@@ -74,7 +74,7 @@ class Database{
      * @param string $database
      * @param MySQL $mysql
      */
-    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "", MySQL $mysql = null) {
+    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "") {
         self::$instance = $this;
 
         if (!extension_loaded("pdo")) {
@@ -82,14 +82,6 @@ class Database{
 
             return;
         }
-
-        if ($mysql instanceof MySQL) $this->con = $mysql;
-
-        $this->host = $mysql instanceof MySQL ? $mysql->getHost() : $host;
-        $this->port = $mysql instanceof MySQL ? $mysql->getPort() : $port;
-        $this->username = $mysql instanceof MySQL ? $mysql->getUsername() : $username;
-        $this->password = $mysql instanceof MySQL ? $mysql->getPassword() : $password;
-        $this->database = $mysql instanceof MySQL ? $mysql->getDatabase() : $database;
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -146,7 +138,7 @@ class Database{
      * @return Database
      */
     public static function fromMySQL(MySQL $mysql) : Database {
-        return new Database("127.0.0.1", 3306, "root", "", "", $mysql);
+        return new Database($mysql->getHost(), $mysql->getPort(), $mysql->getUsername(), $mysql->getPassword(), $mysql->getDatabase());
     }
 
     /**
