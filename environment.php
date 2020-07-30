@@ -25,49 +25,9 @@ class environment
     public const REQUIRED_PHP_VERSION = "7.2.0";
 
     /**
-     * @var autoload
-     */
-    private static $autoload;
-
-    /**
      * @var boolean
      */
     private static $initialized = false;
-
-    /**
-     * Run autoloads.
-     *
-     * @return void
-     */
-    private static function autoload(): void
-    {
-        require "autoload.php";
-
-        try {
-            self::$autoload = new autoload();
-
-            self::$autoload->addNamespace("", MAIN);
-            self::$autoload->addNamespace("advanced", ADVANCED);
-            self::$autoload->addNamespace("project", PROJECT);
-            self::$autoload->addNamespace("tests", TESTS);
-
-            self::$autoload->register();
-        } catch (FileException $e) {
-            die($e->getMessage());
-        }
-
-        @include "vendor/autoload.php";
-    }
-
-    /**
-     * Get autoloader.
-     *
-     * @return autoload
-     */
-    public static function getAutoload(): autoload
-    {
-        return self::$autoload;
-    }
 
     /**
      * Init application.
@@ -88,8 +48,6 @@ class environment
         define("TESTS", MAIN . "tests" . DIRECTORY_SEPARATOR);
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
         define("PROJECT_PUBLIC", PROJECT . "public" . DIRECTORY_SEPARATOR);
-
-        if (!$test) self::autoload();
 
         advanced\session\SessionManager::init();
 
