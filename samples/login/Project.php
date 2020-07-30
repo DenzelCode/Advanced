@@ -52,7 +52,7 @@ class Project extends BaseProject {
             // Initialize MySQL
             $sql = new MySQL($dbConfig["host"], $dbConfig["port"], $dbConfig["username"], $dbConfig["password"], $dbConfig["database"]);
 
-            self::setSQL($sql)
+            self::setSQL($sql);
         } catch (DatabaseException $e) {
             die($e->getMessage());
         }
