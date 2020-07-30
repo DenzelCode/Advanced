@@ -36,6 +36,11 @@ class Language{
     /**
      * @var string
      */
+    private static $defaultLanguage = "en";
+
+    /**
+     * @var string
+     */
     private $path;
 
     /**
@@ -127,6 +132,8 @@ class Language{
      * @return void
      */
     public static function setCurrentLanguage(string $language) {
+        if ($language == null) $language = self::$defaultLanguage;
+
         $language = new Language($language);
 
         SessionManager::set("language", $language->getName(), true);
@@ -139,6 +146,15 @@ class Language{
      */
     public static function getCurrentLanguage() : ?string {
         return SessionManager::get("language");
+    }
+
+    /**
+     * Get default language,
+     *
+     * @return string|null
+     */
+    public static function getDefaultLanguage() : ?string {
+        return self::$defaultLanguage;
     }
 
     /**
@@ -161,6 +177,8 @@ class Language{
      * @return void
      */
     public static function init(string $defaultLanguage = "en") : void {
+        self::$defaultLanguage = $defaultLanguage;
+
         $language = empty($_SERVER["HTTP_ACCEPT_LANGUAGE"]) ? $defaultLanguage : substr($_SERVER["HTTP_ACCEPT_LANGUAGE"], 0, 2);
     
         self::setCurrentLanguage(file_exists(ADVANCED . self::LANGUAGE_PATH) || !file_exists(PROJECT . self::LANGUAGE_PATH) ? $language : $defaultLanguage);
