@@ -18,7 +18,7 @@
 namespace tests\unit\data;
 
 use advanced\body\template\TemplateProvider;
-use advanced\mailer\Mail;
+use advanced\mailer\Mailer;
 use advanced\mailer\Receipient;
 use advanced\mailer\ReplyTo;
 use tests\TestCase;
@@ -26,7 +26,7 @@ use tests\TestCase;
 class MailerTest extends TestCase {
     
     public function testSendMail() : void {
-        $send = Mail::sendMail("default", "Testing", TemplateProvider::get("mail/test"), new ReplyTo("Testing", "test@example.com"), new Receipient("Denzel Code", "denzelcodedev@gmail.com"));
+        $send = Mailer::sendMail("default", "Testing", TemplateProvider::get("mail/test"), new ReplyTo("Testing", "test@example.com"), new Receipient("Denzel Code", "denzelcodedev@gmail.com"));
         
         $this->assertTrue($send);
     }

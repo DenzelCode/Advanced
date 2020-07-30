@@ -22,7 +22,7 @@ use advanced\exceptions\MailerException;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class Mail {
+class Mailer {
 
     /**
      * @var string
