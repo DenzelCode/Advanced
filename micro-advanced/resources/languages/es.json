@@ -7,7 +7,6 @@
     "exception": {
         "created": "Exception message created on language file {0}",
         "exception": "Error: {0} en el archivo {1} en la linea {2}",
-        "version": "Version de PHP incompatible ({0}), Advanced requiere PHP {1} o mayor",
         
         "router": {
             "method_not_exists": "El metodo {0} no existe"

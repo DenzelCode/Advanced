@@ -217,12 +217,4 @@ class Bootstrap{
         return self::$classes[$name];
     }
 
-    /**
-     * Get Advanced version.
-     *
-     * @return string
-     */
-    public static function getVersion() : string {
-        return environment::REQUIRED_PHP_VERSION;
-    }
 }
