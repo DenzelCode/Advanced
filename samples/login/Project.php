@@ -34,7 +34,7 @@ class Project extends BaseProject {
     public function init() : void {
         // Set all elements on the web section of the config into all templates parameters
         // Example: {@name}, {@cdn}, etc.
-        TemplateProvider::setParameters(slf::$config->get("web"));
+        TemplateProvider::setParameters(self::$config->get("web"));
         
         $config = self::$config;
         
