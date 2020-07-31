@@ -31,7 +31,7 @@ class MySQL extends SQL{
     /**
      * @var string
      */
-    private $host, $port, $username, $password;
+    private $host, $port, $username, $password, $database;
 
     /**
      * @var MySQL
@@ -62,13 +62,7 @@ class MySQL extends SQL{
 
         self::$instance = $this;
 
-        if ($db instanceof Database) $this->con = $db->getPDO();
-
-        $this->host = $db instanceof Database ? $db->getHost() : $host;
-        $this->port = $db instanceof Database ? $db->getPort() : $port;
-        $this->username = $db instanceof Database ? $db->getUsername() : $username;
-        $this->password = $db instanceof Database ? $db->getPassword() : $password;
-        $this->database = $db instanceof Database ? $db->getDatabase() : $database;
+        if ($db != null) $this->con = $db->getPDO();
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -94,7 +88,7 @@ class MySQL extends SQL{
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
-                    $temp = new PDO("mysql:host=" . $this->host, $this->username, $this->password);
+                    $temp = new PDO("mysql:host={$this->host};port={$this->port};charset=utf8mb4" . $this->host, $this->username, $this->password);
 
                     $temp->exec("CREATE DATABASE {$this->database}");
 
@@ -126,7 +120,7 @@ class MySQL extends SQL{
      * @return MySQL
      */
     public static function fromDatabase(Database $database) : MySQL {
-        return new MySQL("127.0.0.1", 3306, "root", "", "", $database);
+        return new MySQL($database->getHost(), $database->getPort(), $database->getUsername(), $database->getPassword(), $database->getDatabase(), $database);
     }
 
     /**

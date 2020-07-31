@@ -19,7 +19,7 @@ namespace tests\unit\account;
 
 use advanced\user\Auth;
 use advanced\Bootstrap;
-use advanced\data\sql\MySQL;
+use advanced\sql\MySQL;
 use advanced\http\router\Request;
 use advanced\project\Project;
 use Exception;
@@ -30,7 +30,7 @@ class UserTest extends TestCase {
     public function __construct() {
         parent::__construct();
 
-        Project::setSQL(new MySQL("127.0.0.1", 3306, "root", "", "testing"));
+        Project::setSQL(new MySQL("localhost", 3306, "root", "", "testing"));
     }
 
     public function testCreateAccount() : void {

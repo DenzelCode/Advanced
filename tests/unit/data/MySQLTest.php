@@ -18,7 +18,7 @@
 namespace tests\unit\data;
 
 use advanced\config\Config;
-use advanced\data\sql\MySQL;
+use advanced\sql\MySQL;
 use advanced\project\Project;
 use Exception;
 use tests\TestCase;

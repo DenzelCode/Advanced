@@ -52,7 +52,7 @@ class Database{
     /**
      * @var string
      */
-    private $host, $port, $username, $password;
+    private $host, $port, $username, $password, $database;
 
     /**
      * @var PDOStatement
@@ -74,7 +74,7 @@ class Database{
      * @param string $database
      * @param MySQL $mysql
      */
-    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "") {
+    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "", MySQL $mysql = null) {
         self::$instance = $this;
 
         if (!extension_loaded("pdo")) {
@@ -82,6 +82,8 @@ class Database{
 
             return;
         }
+
+        if ($mysql != null) $this->con = $mysql;
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -106,7 +108,7 @@ class Database{
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
-                    $temp = new PDO("mysql:host=" . $this->host, $this->username, $this->password);
+                    $temp = new PDO("mysql:host={$this->host};port={$this->port};charset=utf8mb4", $this->username, $this->password);
 
                     $temp->exec("CREATE DATABASE {$this->database}");
 
@@ -138,7 +140,7 @@ class Database{
      * @return Database
      */
     public static function fromMySQL(MySQL $mysql) : Database {
-        return new Database($mysql->getHost(), $mysql->getPort(), $mysql->getUsername(), $mysql->getPassword(), $mysql->getDatabase());
+        return new Database($mysql->getHost(), $mysql->getPort(), $mysql->getUsername(), $mysql->getPassword(), $mysql->getDatabase(), $mysql);
     }
 
     /**

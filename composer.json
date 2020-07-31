@@ -1,44 +1,48 @@
 {
-    "name": "denzelcode/advanced",
-    "type": "project",
-    "description": "Advanced Micro Framework - Create more by doing less",
-    "keywords": [
-        "framework",
-        "advanced",
-        "micro",
-        "microframework",
-        "micro-advanced"
-    ],
-    "license": "LGPL-3.0",
-    "authors": [
-        {
-            "name": "Denzel Giraldo (Denzel Code)",
-            "email": "denzelcodedev@gmail.com"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "advanced\\": "micro-advanced/",
-            "project\\": "project/"
-        },
-        "exclude-from-classmap": [
-            "/samples"
-        ]
-    },
-    "autoload-dev": {
-        "tests\\": "tests/"
-    },
-    "require": {
-        "php": "^7.2",
-        "phpmailer/phpmailer": "^6.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9"
-    }, 
-    "config": {
-        "optimize-autoloader": true
-    },
-    "archive": {
-        "exclude": ["/samples"]
-    }
+	"name": "denzelcode/advanced",
+	"type": "project",
+	"description": "Advanced microFramework - Create more by doing less",
+	"keywords": [
+		"framework",
+		"advanced",
+		"micro",
+		"microframework",
+		"micro-advanced"
+	],
+	"license": "LGPL-3.0",
+	"authors": [
+		{
+			"name": "Denzel Giraldo (Denzel Code)",
+			"email": "denzelcodedev@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"advanced\\": "micro-advanced/",
+			"project\\": "project/"
+		},
+		"exclude-from-classmap": [
+			"/samples"
+		]
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"tests\\": "tests/"
+		}
+	},
+	"require": {
+		"php": "^7.2",
+		"phpmailer/phpmailer": "^6.1"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "^9"
+	},
+	"config": {
+		"optimize-autoloader": true
+	},
+	"archive": {
+		"exclude": [
+			"/samples"
+		]
+	}
 }

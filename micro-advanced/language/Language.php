@@ -49,15 +49,15 @@ class Language{
     private $config;
 
     /**
-     * @param string $language
+     * @param string|null $language
      * @param string $path
      */
-    public function __construct(string $language, string $path = self::PATH_ADVANCED) {
-        $this->language = $language;
+    public function __construct(?string $language, string $path = self::PATH_ADVANCED) {
+        $this->language = $language === null ? self::$defaultLanguage : $language;
 
         $this->path = $path;
 
-        self::updateConfig($language);
+        self::updateConfig($this->language);
     }
 
     /**
