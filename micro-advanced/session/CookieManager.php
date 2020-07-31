@@ -40,6 +40,16 @@ class CookieManager implements IManager{
     }
 
     /**
+     * Get data from session or cookie.
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public static function getFromSessionOrCookie(string $name) {
+        return self::get($name) ?? SessionManager::get($name);
+    }
+
+    /**
      * Set data to cookie.
      *
      * @param string $name
