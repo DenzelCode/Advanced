@@ -31,18 +31,18 @@ cd project/public
 php -S localhost:8000
 ```
 
-Git:
+**THIS IS IMPORTANT**
+If Advanced file system is not working properly remember to add writing and reading permissions to the directory where you want to install the framework!
+
+Linux/Mac OS (Unix):
 
 ```
-mkdir new-folder
+sudo chmod -R 777 new-folder
+```
 
-cd new-folder
-
-git clone git@github.com:DenzelCode/Advanced.git .
-
-cd project/public
-
-php -S localhost:8000
+```
+CACLS new-folder /e /p Everyone:R
+CACLS new-folder /e /p Everyone:W
 ```
 
 ## Requirements
