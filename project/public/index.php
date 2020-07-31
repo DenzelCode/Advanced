@@ -15,7 +15,6 @@
  * 
  */
 
-require "../../vendor/autoload.php";
 require "../../environment.php";
 
 // Initialize project.

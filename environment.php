@@ -29,6 +29,16 @@ class environment
     private static $initialized = false;
 
     /**
+     * Run autoload.
+     *
+     * @return void
+     */
+    private static function autoload(): void
+    {
+        require_once "vendor/autoload.php";
+    }
+
+    /**
      * Init application.
      *
      * @param string $dir
@@ -38,6 +48,8 @@ class environment
     public static function init(string $dir, bool $test = false): void
     {
         if (self::$initialized) return;
+        
+        if (!$test) self::autoload();
 
         error_reporting(E_ALL);
         ini_set("display_errors", 1);
