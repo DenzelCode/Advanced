@@ -15,6 +15,7 @@
  * 
  */
 
+require "../../vendor/autoload.php";
 require "../../environment.php";
 
 environment::init(__DIR__);

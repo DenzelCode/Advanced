@@ -53,7 +53,7 @@ class MySQL extends SQL{
      * @param string $database
      * @param Database $db
      */
-    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "", Database $db = null) {
+    public function __construct(string $host = "127.0.0.1", int $port = 3306, string $username = "root", string $password = "", string $database = "testing", Database $db = null) {
         if (!extension_loaded("pdo")) {
             throw new DatabaseException(0, "exception.database.pdo_required");
 
@@ -61,8 +61,14 @@ class MySQL extends SQL{
         }
 
         self::$instance = $this;
-
+        
         if ($db != null) $this->con = $db->getPDO();
+
+        $this->host = $host;
+        $this->port = $port;
+        $this->username = $username;
+        $this->password = $password;
+        $this->database = $database;
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -72,7 +78,9 @@ class MySQL extends SQL{
     /**
      * @return void
      */
-    public function run() : void {
+    public function run() : void { 
+        if ($this->con) return;
+
         try {
             $options = [
                 // PDO::ATTR_EMULATE_PREPARES => false,
@@ -81,27 +89,27 @@ class MySQL extends SQL{
             ];
 
             $this->con = new PDO("mysql:host={$this->host};port={$this->port};dbname={$this->database};charset=utf8mb4", $this->username, $this->password);
-
+            
             foreach ($options as $key => $value) $this->con->setAttribute($key, $value);
-
+            
             $this->connected = true;
         } catch (\PDOException $e) {
             if ($e->getCode() == 1049) {
                 try {
-                    $temp = new PDO("mysql:host={$this->host};port={$this->port};charset=utf8mb4" . $this->host, $this->username, $this->password);
-
+                    $temp = new PDO("mysql:host={$this->host};port={$this->port};charset=utf8mb4", $this->username, $this->password);
+                    
                     $temp->exec("CREATE DATABASE {$this->database}");
-
+                    
                     $temp = null;
                 } catch (\PDOException $ex) {
                     throw new DatabaseException($ex->getCode(), "exception.database.connecting", $e->getMessage());
                 }
-
+                
                 $this->run();
-
+                
                 return;
             }
-
+            
             throw new DatabaseException($e->getCode(), "exception.database.connecting", $e->getMessage());
         }
     }

@@ -84,6 +84,12 @@ class Database{
         }
 
         if ($mysql != null) $this->con = $mysql;
+        
+        $this->host = $host;
+        $this->port = $port;
+        $this->username = $username;
+        $this->password = $password;
+        $this->database = $database;
 
         (new Config(self::$configPath, [ "import" => [], "update" => [] ]));
         
@@ -95,6 +101,8 @@ class Database{
      * @throws DatabaseException
      */
     public function run() : void {
+        if ($this->con) return;
+
         try {
             $options = [
                 // PDO::ATTR_EMULATE_PREPARES => false,

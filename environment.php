@@ -48,7 +48,7 @@ class environment
         define("PROJECT", dirname($dir) . DIRECTORY_SEPARATOR);
         define("PROJECT_PUBLIC", PROJECT . "public" . DIRECTORY_SEPARATOR);
 
-        advanced\session\SessionManager::init();
+        \advanced\session\SessionManager::init();
 
         (new Bootstrap());
 
