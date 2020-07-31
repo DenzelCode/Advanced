@@ -21,7 +21,7 @@ use advanced\exceptions\FileException;
 class environment
 {
 
-    public const VERSION = "2.0.5.9";
+    public const VERSION = "2.0.6";
 
     /**
      * @var boolean
