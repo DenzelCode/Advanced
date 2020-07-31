@@ -40,6 +40,8 @@ Linux/Mac OS (Unix):
 sudo chmod -R 777 new-folder
 ```
 
+Windows:
+
 ```
 CACLS new-folder /e /p Everyone:R
 CACLS new-folder /e /p Everyone:W
