@@ -66,21 +66,9 @@ class Bootstrap{
 
         self::$classes["mainLanguage"] = new Language(Language::getCurrentLanguage(), Language::PATH_ADVANCED);
         
-        self::$classes["language"] = new Language(Language::getCurrentLanguage(), Language::PATH_PROJECT);
+        self::$classes["language"] = clone self::$classes["mainLanguage"];
 
-        
-        // $handler = function ($exception) {
-        //     if (!$exception instanceof \Exception) {
-        //         die($exception);
-                
-        //         return;
-        //     }
-
-        //     die($this->getMainLanguage()->get("exception.exception", null, ($exception instanceof AdvancedException ? $exception->getTranslatedMessage() : $exception->getMessage()), $exception->getFile(), $exception->getLine()));
-        // };
-
-        // set_exception_handler($handler);
-        // set_error_handler($handler, -1 & ~E_NOTICE & ~E_USER_NOTICE);
+        self::$classes["language"]->setProjectMode();
     }
 
     /**

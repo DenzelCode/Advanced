@@ -68,7 +68,7 @@ class Router
             } else print($e);
         }
 
-        print($body);
+        if (isset($body)) print($body);
     }
 
     /**

@@ -5,7 +5,7 @@ namespace advanced\user\auth;
 use advanced\Bootstrap;
 use advanced\user\User;
 use advanced\http\router\Request;
-use advanced\session\SessionManager;
+use advanced\session\{SessionManager, CookieManager};
 use advanced\user\Guest;
 use advanced\user\IUser;
 use advanced\user\UserFactory;
@@ -74,8 +74,6 @@ class Auth implements IAuth {
 
         if (self::get("auth_code") == $auth_code) return true;
 
-        // self::destroy();
-
         return false;
     }
 
@@ -115,7 +113,7 @@ class Auth implements IAuth {
      * @return void
      */
     public static function set(array $data, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = "/") : void {
-        SessionManager::setByArray($data, $cookie, $time, $directory);
+        if ($cookie) CookieManager::setByArray($data, $time, $directory); else SessionManager::setByArray($data);
     }
 
     /**
@@ -138,7 +136,7 @@ class Auth implements IAuth {
     public static function unset(array $data, string $directory = "/") {
         SessionManager::deleteByArray($data);
         
-        SessionManager::deleteByArray($data, true, $directory);
+        CookieManager::deleteByArray($data, $directory);
     }
 
     /**

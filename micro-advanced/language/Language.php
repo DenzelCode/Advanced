@@ -19,7 +19,7 @@ namespace advanced\language;
 
 use advanced\config\Config;
 use advanced\config\IConfig;
-use advanced\session\SessionManager;
+use advanced\session\CookieManager;
 
 class Language{
 
@@ -136,7 +136,7 @@ class Language{
 
         $language = new Language($language);
 
-        SessionManager::set("language", $language->getName(), true);
+        CookieManager::set("language", $language->getName());
     }
 
     /**
@@ -145,7 +145,7 @@ class Language{
      * @return string|null
      */
     public static function getCurrentLanguage() : ?string {
-        return SessionManager::get("language");
+        return CookieManager::get("language");
     }
 
     /**

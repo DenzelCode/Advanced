@@ -17,7 +17,7 @@
 
 namespace advanced\session;
 
-class SessionManager{
+class SessionManager implements IManager{
 
     /**
      * Init session.
@@ -29,18 +29,13 @@ class SessionManager{
     }
     
     /**
-     * Get data feom session or cookie.
+     * Get data feom session.
      *
      * @param string $name
-     * @param boolean $cookie
      * @return mixed
      */
-    public static function get(string $name, bool $cookie = false) {
-        if ($cookie) {
-            if (!empty($_COOKIE[$name])) return $_COOKIE[$name]; else return null;
-        } else { 
-            if (!empty($_SESSION[$name])) return $_SESSION[$name]; else return null; 
-        }
+    public static function get(string $name) {
+        if (!empty($_SESSION[$name])) return $_SESSION[$name]; else return null; 
     }
 
     /**
@@ -50,78 +45,48 @@ class SessionManager{
      * @return mixed
      */
     public static function getFromSessionOrCookie(string $name) {
-        if (!empty($_SESSION[$name])) return $_SESSION[$name]; else if (!empty($_COOKIE[$name])) return $_COOKIE[$name]; else return null;
+        return self::get($name) ?? CookieManager::get($name);
     }
 
     /**
-     * Set data to session/cookie.
+     * Set data to session.
      *
      * @param string $name
      * @param mixed $value
-     * @param boolean $cookie
-     * @param integer $time
-     * @param string $directory
      * @return void
      */
-    public static function set(string $name, $value, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = "/") : void {
-        if (!$cookie) {
-            $_SESSION[$name] = $value;
-
-            return;
-        }
-
-        setcookie($name, $value, time() + $time, $directory);
+    public static function set(string $name, $value) : void {
+        $_SESSION[$name] = $value;
     }
 
     /**
-     * Set data to session/cookie as array.
+     * Set data to session by array.
      *
      * @param array $sessions
-     * @param boolean $cookie
-     * @param integer $time
-     * @param string $directory
      * @return void
      */
-    public static function setByArray(array $sessions, bool $cookie = false, int $time = 3600 * 24 * 365, string $directory = "/") : void {
-        foreach ($sessions as $key => $value) self::set($key, $value, $cookie, $time, $directory);
+    public static function setByArray(array $sessions) : void {
+        foreach ($sessions as $key => $value) self::set($key, $value);
     }
 
     /**
-     * Delete session/cookie by name.
+     * Delete session by name.
      *
      * @param string $name
-     * @param boolean $cookie
-     * @param string $directory
      * @return void
      */
-    public static function delete(string $name, bool $cookie = false, string $directory = "/") : void {
-        if (!$cookie) {
-            unset($_SESSION[$name]);
-
-            return;
-        }
-
-        setcookie($name, false, time() - 1000, $directory);
+    public static function delete(string $name) : void {
+        unset($_SESSION[$name]);
     }
 
     /**
-     * Delete session/cookie by array
+     * Delete session by array
      * 
      * @param array $sessions
-     * @param boolean $cookie
-     * @param string $directory
      * @return void
      */
-    public static function deleteByArray(array $sessions, bool $cookie = false, string $directory = "/") : void {
-        foreach ($sessions as $session) {
-            if (!$cookie) {
-                unset($_SESSION[$session]);
-
-                continue;
-            }
-
-            setcookie($session, false, time() - 1000, $directory);
-        }
+    public static function deleteByArray(array $sessions) : void {
+        foreach ($sessions as $session) unset($_SESSION[$session]);
     }
 
     /**
