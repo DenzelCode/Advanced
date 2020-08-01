@@ -15,6 +15,14 @@ Get started with Advanced and see what else it can provide you.
 -   [Discord](https://discord.gg/T7PsB5z)
 -   [StackOverflow](https://stackoverflow.com/tags/advanced-framework)
 
+## Sample projects
+
+[Advanced-Samples](https://github.com/DenzelCode/Advanced-Samples)
+
+## Documentation
+
+[Click here to go to the documentation](https://github.com/DenzelCode/Advanced/wiki/Get-started)
+
 ## Installation
 
 Composer:
@@ -61,10 +69,6 @@ Postdata: To use **IIS** you are required to set the /project/public path as the
 -   Denzel Code (Advanced main developer)
 -   Soull Darknezz
 -   mamazu
-
-## Documentation
-
-[Click here to go to the documentation](https://github.com/DenzelCode/Advanced/wiki/Get-started)
 
 ## Licensing information
 
