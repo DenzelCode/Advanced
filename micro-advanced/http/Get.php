@@ -31,7 +31,7 @@ class Get{
      * @return mixed
      */
     public static function get(array $pop) {
-        self::populate($common);
+        self::populate();
 
         foreach(self::$params as $key => $value) {
             $pop[$key] = $value;
@@ -55,7 +55,7 @@ class Get{
      * @param boolean $common
      * @return void
      */
-    private static function populate(bool $common = true) {
+    private static function populate() {
         $body = $_GET;
 
         foreach ($body as $key => $value) {

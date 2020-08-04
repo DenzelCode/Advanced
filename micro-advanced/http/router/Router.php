@@ -61,7 +61,7 @@ class Router
 
             $body = @call_user_func_array([$request->getControllerObject($preffix), $method], $execute);
         } catch (\TypeError $e) {
-            if (\strpos($e->getMessage(), $request->getControllerNamespace($preffix)) !== false) {
+            if (\strpos($e->getMessage(), "passed to " . $request->getControllerNamespace($preffix)) !== false) {
                 Bootstrap::getResponse()->setCode(Response::HTTP_NOT_FOUND);
 
                 $body = @call_user_func_array([$request->getControllerObject($preffix), "error404"], $execute); 

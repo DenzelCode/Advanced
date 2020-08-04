@@ -46,7 +46,7 @@ class mainController extends Controller
      * @param string $argument
      * @return string
      */
-    public function testing(string $method = Request::GET, string $argument = "default value"): string
+    public function testing(string $method = Request::GET, int $argument = 1): string
     {
         return "Testing URL: {$argument}";
     }
