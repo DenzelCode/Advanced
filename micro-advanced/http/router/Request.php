@@ -187,7 +187,7 @@ class Request{
      * @return string
      */
     public function getSecure() : string {
-        return (string) (!empty($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on") ? "https://" : "http://");
+        return (string) (!isset($_SERVER["HTTPS"]) && ($_SERVER["HTTPS"] == "on") ? "https://" : "http://");
     }
 
     /**
@@ -196,7 +196,7 @@ class Request{
      * @return string
      */
     public function getHost() : string {
-        return (string) !empty($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
+        return (string) !isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
     }
 
     /**

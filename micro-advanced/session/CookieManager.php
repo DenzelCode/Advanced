@@ -36,7 +36,7 @@ class CookieManager implements IManager{
      * @return mixed
      */
     public static function get(string $name) {
-        if (!empty($_COOKIE[$name])) return $_COOKIE[$name]; else return null;
+        if (isset($_COOKIE[$name])) return $_COOKIE[$name]; else return null;
     }
 
     /**

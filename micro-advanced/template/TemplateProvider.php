@@ -145,21 +145,20 @@ class TemplateProvider{
      * @return string
      */
     public static function filter(string $data) : string {
-        error_reporting(E_ALL);
         foreach (self::getParameters() as $key => $param) {
             foreach (self::getParameters() as $k => $v) {
-                if ($key == $k) break;
+                if ($key == $k) continue;
 
-                if  (!is_string($param["value"])) break; 
+                if (!is_string($param["value"])) continue;
 
-                $prefix = $v["prefix"] == true ? "{@" . $k . "}" : $k;
+                $prefix = $v["prefix"] == true ? "{@{$k}}" : $k;
 
                 $value = is_string($v["value"]) ? $v["value"] : Bootstrap::getMainLanguage()->get("error.parameter_not_string", null, $prefix);
 
                 $param["value"] = str_replace($prefix, $value, $param["value"]);
             }
 
-            $prefix = $param["prefix"] == true ? "{@" . $key . "}" : $key;
+            $prefix = $param["prefix"] == true ? "{@{$key}}" : $key;
 
             $value = is_string($param["value"]) ? $param["value"] : Bootstrap::getMainLanguage()->get("error.parameter_not_string", null, $prefix);
 

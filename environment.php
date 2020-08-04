@@ -16,7 +16,6 @@
  */
 
 use advanced\Bootstrap;
-use advanced\exceptions\FileException;
 
 class environment
 {
@@ -62,7 +61,7 @@ class environment
 
         \advanced\session\SessionManager::init();
 
-        (new Bootstrap());
+        new Bootstrap();
 
         if (file_exists(PROJECT . "Project.php")) {
             $project = new project\Project();
