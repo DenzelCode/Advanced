@@ -53,6 +53,15 @@ class ExecutionTime {
     }
 
     /**
+     * Print execution time.
+     *
+     * @return void
+     */
+    public function print() : void {
+        print($this);
+    }
+
+    /**
      * @return string
      */
     public function __toString() : string {
