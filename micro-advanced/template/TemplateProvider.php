@@ -108,10 +108,10 @@ class TemplateProvider{
      * Get parameter value.
      *
      * @param string $param
-     * @return string|null
+     * @return mixed
      */
-    public static function getParameter(string $param) : ?string {
-        return !empty(self::$params[$param]) ? self::$params[$param] : null;
+    public static function getParameter(string $param) {
+        return !empty(self::$params[$param]) ? self::$params[$param]['value'] : null;
     }
 
     /**
