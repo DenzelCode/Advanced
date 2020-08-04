@@ -125,6 +125,16 @@ class TemplateProvider{
     }
 
     /**
+     * Get parameter array.
+     *
+     * @param string $param
+     * @return mixed
+     */
+    public static function getParameterArray(string $param) {
+        return isset(self::$params[$param]) ? self::$params[$param] : null;
+    }
+
+    /**
      * @return array
      */
     public static function getParameters() : array {
