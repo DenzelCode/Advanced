@@ -111,7 +111,17 @@ class TemplateProvider{
      * @return mixed
      */
     public static function getParameter(string $param) {
-        return !empty(self::$params[$param]) ? self::$params[$param]['value'] : null;
+        return isset(self::$params[$param]) ? self::$params[$param]['value'] : null;
+    }
+
+    /**
+     * Get parameter prefix.
+     *
+     * @param string $param
+     * @return mixed
+     */
+    public static function getParameterPrefix(string $param) {
+        return isset(self::$params[$param]) ? self::$params[$param]['prefix'] : null;
     }
 
     /**
