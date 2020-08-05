@@ -196,7 +196,7 @@ class Request{
      * @return string
      */
     public function getHost() : string {
-        return (string) !isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
+        return (string) isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "";
     }
 
     /**

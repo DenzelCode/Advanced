@@ -50,11 +50,15 @@ abstract class Controller {
      * @return string
      */
     public function index(string $method = Request::ALL) : string {
+        $webConfig = Bootstrap::getConfig()->get('web');
+
         TemplateProvider::setParameters([
             "title" => Bootstrap::getMainLanguage()->get("general.description"),
-            "name" => Bootstrap::getConfig()->get('web.name'),
-            "cdn" => Bootstrap::getConfig()->get('web.cdn')
+            "name" => $webConfig["name"],
+            "cdn" => $webConfig["cdn"]
         ]);
+
+        echo Request::getInstance()->getFullURL();
 
         return TemplateProvider::getRootTemplate('main/index');
     }

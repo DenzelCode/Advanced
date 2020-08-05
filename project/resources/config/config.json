@@ -1,9 +1,9 @@
 {
-    "web": {
-        "name": "Advanced Framework",
-        "cdn": "{@url}\/assets"
-    },
-    "sign_up": {
-        "user": []
-    }
+	"web": {
+		"name": "Advanced Framework",
+		"cdn": "{@url}/assets"
+	},
+	"sign_up": {
+		"user": []
+	}
 }
