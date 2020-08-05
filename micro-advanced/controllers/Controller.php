@@ -58,8 +58,6 @@ abstract class Controller {
             "cdn" => $webConfig["cdn"]
         ]);
 
-        echo Request::getInstance()->getFullURL();
-
         return TemplateProvider::getRootTemplate('main/index');
     }
 
