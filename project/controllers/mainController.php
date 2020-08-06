@@ -18,7 +18,6 @@
 
 namespace project\controllers;
 
-use advanced\body\template\TemplateProvider;
 use advanced\controllers\Controller;
 use advanced\http\router\Request;
 
