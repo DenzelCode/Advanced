@@ -172,7 +172,7 @@ class MySQLProvider implements IProvider{
      * @return array
      */
     public function getUsersByMultiple(string $fields, array $values, int $limit = 0, ?string $orderBy = null) : array {
-        $fetchAll = $this->sql->table($this->table)->select()->where($fields, $values)->orderBy($orderBy)->limit($limit)->fetch();
+        $fetchAll = $this->sql->table($this->table)->select()->where($fields, $values)->orderBy($orderBy)->limit($limit)->fetchAll();
 
         return !$fetchAll ? [] : $fetchAll;
     }
