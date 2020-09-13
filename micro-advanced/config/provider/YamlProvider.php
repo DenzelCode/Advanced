@@ -17,25 +17,37 @@
 
 namespace advanced\config\provider;
 
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
+
 class YamlProvider implements IProvider {
 
+    /** {@inheritDoc} */
     public function getName(): string {
         return "Yaml";
     }
 
+    /** {@inheritDoc} */
     public function getExtension(): string {
         return ".yml";
     }
 
+    /** {@inheritDoc} */
     public function encode(array $data): string {
         return json_encode($data);
     }
 
+    /** {@inheritDoc} */
     public function decode(string $data): ?array {
-        return json_decode($data);
+        try {
+            return Yaml::parse($data, Yaml::PARSE_DATETIME);
+        } catch(ParseException $exception) {
+            return null;
+        }
     }
 
+    /** {@inheritDoc} */
     public function prettyPrint(array $data): string {
-        return json_encode($data, JSON_PRETTY_PRINT);
+        return Yaml::dump($data, 2, 4, Yaml::DUMP_NULL_AS_TILDE);
     }
 }

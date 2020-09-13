@@ -18,10 +18,42 @@
 namespace advanced\config\provider;
 
 interface IProvider {
-    
+
+    /**
+     * Get providername.
+     *
+     * @return string
+     */
     public function getName() : string;
+
+    /**
+     * Get provider extension.
+     *
+     * @return string
+     */
     public function getExtension() : string;
+
+    /**
+     * Encode data.
+     *
+     * @param array $data
+     * @return string
+     */
     public function encode(array $data) : string;
+
+    /**
+     * Decode data.
+     *
+     * @param string $data
+     * @return array|null
+     */
     public function decode(string $data) : ?array;
+
+    /**
+     * Pretty print data
+     *
+     * @param array $data
+     * @return string
+     */
     public function prettyPrint(array $data) : string;
 }
