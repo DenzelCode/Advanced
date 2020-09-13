@@ -19,50 +19,27 @@ namespace advanced\config\provider;
 
 class JsonProvider implements IProvider {
 
-    /**
-     * Get providername.
-     *
-     * @return string
-     */
+    /** {@inheritDoc} */
     public function getName(): string {
         return "JSON";
     }
 
-    /**
-     * Get provider extension.
-     *
-     * @return string
-     */
+    /** {@inheritDoc} */
     public function getExtension(): string {
         return ".json";
     }
 
-    /**
-     * Encode data.
-     *
-     * @param array $data
-     * @return string
-     */
+    /** {@inheritDoc} */
     public function encode(array $data): string {
         return json_encode($data);
     }
 
-    /**
-     * Decode data.
-     *
-     * @param string $data
-     * @return array|null
-     */
+    /** {@inheritDoc} */
     public function decode(string $data): ?array {
         return json_decode($data, true);
     }
 
-    /**
-     * Pretty print data
-     *
-     * @param array $data
-     * @return string
-     */
+    /** {@inheritDoc} */
     public function prettyPrint(array $data): string {
         return json_encode($data, JSON_PRETTY_PRINT);
     }
