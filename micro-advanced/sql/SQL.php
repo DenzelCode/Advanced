@@ -240,9 +240,9 @@ abstract class SQL implements ISQL{
     /**
      * Get PDO object.
      * 
-     * @return PDO
+     * @return \PDO
      */
-    public function getPDO() : PDO {
+    public function getPDO() : \PDO {
       return $this->con;
     }
 }
