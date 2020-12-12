@@ -236,4 +236,13 @@ abstract class SQL implements ISQL{
     public function getLastError() : string {
         return $this->getLastStatement()->errorInfo()[2];
     }
+
+    /**
+     * Get PDO object.
+     * 
+     * @return PDO
+     */
+    public function getPDO() : PDO {
+      return $this->con;
+    }
 }
